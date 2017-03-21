@@ -1,0 +1,11 @@
+{
+    "name": "bsbase",
+    "package-specs" : ["amdjs", "es6", "commonjs"],
+    "sources": [{
+        "dir": "src"
+    }, {
+        "dir": "test",
+        "type": "dev"
+    }]
+}
+
