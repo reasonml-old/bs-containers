@@ -1,0 +1,30 @@
+{
+  "name": "bscontainers",
+  "version": "1.0.0",
+  "description": "This is a bs port of the ocaml-containers project",
+  "main": "index.js",
+  "scripts": {
+    "build": "bsb",
+    "watch": "bsb -w",
+    "clean": "rm -rf lib",
+    "test": "ava lib/js/test/*_test.js"
+  },
+  "keywords": [],
+  "author": "Bob Fang",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "bs-platform": "^1.5.1"
+  },
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "tap-nyan": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dorafmon/bscontainers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dorafmon/bscontainers/issues"
+  },
+  "homepage": "https://github.com/dorafmon/bscontainers#readme"
+}
