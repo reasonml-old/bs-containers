@@ -1,3 +1,7 @@
+BS-Containers
+=============
+![travids](https://travis-ci.org/BuckleTypes/bs-containers.svg?branch=master)
+
 This is a bs port of the ocaml-containers project
 
 Some changes I made:
