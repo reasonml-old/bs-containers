@@ -1,4 +1,3 @@
-
 (* This file is free software, part of containers. See file "license" for more details. *)
 
 (** {1 Extensions of Standard Map}
@@ -11,12 +10,14 @@ type 'a printer = Format.formatter -> 'a -> unit
 
 module type S = sig
   include Map.S
+  
+  val size: 'a t -> int
 
   val get : key -> 'a t -> 'a option
   (** Safe version of {!find} *)
 
-  val get_or : key -> 'a t -> default:'a -> 'a
-  (** [get_or k m ~default] returns the value associated to [k] if present,
+  val getOr : key -> 'a t -> default:'a -> 'a
+  (** [getOr k m ~default] returns the value associated to [k] if present,
       and returns [default] otherwise (if [k] doesn't belong in [m])
       @since 0.16 *)
 
