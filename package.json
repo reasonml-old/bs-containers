@@ -4,6 +4,7 @@
   "description": "This is a bs port of the ocaml-containers project",
   "main": "index.js",
   "scripts": {
+    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli src/*.ml",
     "build": "bsb",
     "watch": "bsb -w",
     "clean": "rm -rf lib",

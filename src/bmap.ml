@@ -9,10 +9,12 @@ type 'a printer = Format.formatter -> 'a -> unit
 module type S = sig
   include Map.S
 
+  val size: 'a t -> int
+
   val get : key -> 'a t -> 'a option
   (** Safe version of {!find} *)
 
-  val get_or : key -> 'a t -> default:'a -> 'a
+  val getOr : key -> 'a t -> default:'a -> 'a
   (** [get_or k m ~default] returns the value associated to [k] if present,
       and returns [default] otherwise (if [k] doesn't belong in [m])
       @since 0.16 *)
@@ -59,11 +61,13 @@ end
 module Make(O : Map.OrderedType) = struct
   include Map.Make(O)
 
+  let size m = fold (fun _ _ v -> v + 1) m 0
+
   let get k m =
     try Some (find k m)
     with Not_found -> None
 
-  let get_or k m ~default =
+  let getOr k m ~default =
     try find k m
     with Not_found -> default
 
