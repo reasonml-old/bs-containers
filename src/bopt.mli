@@ -127,7 +127,7 @@ val forAll : ('a -> bool) -> 'a t -> bool
 val okOr : 'e -> 'a t -> ('a, 'e) Result.result
 
 (* new *)
-val okOrLazy : 'e -> 'a t -> ('a, 'e) Result.result
+val okOrLazy : (unit -> 'e) -> 'a t -> ('a, 'e) Result.result
 
 val toList : 'a t -> 'a list
 

@@ -91,7 +91,9 @@ let mapOr ~default f = function
   | None -> default
   | Some x -> f x
 
-(* mapOrLazy *)
+let mapOrLazy ~default f = function
+  | None -> default ()
+  | Some x -> f x
 
 let maybe f default = mapOr ~default f
 
@@ -108,8 +110,8 @@ let reduce f acc o = match o with
   | None -> acc
   | Some x -> f acc x
 
-let filter p = function
-  | Some x as o when p x -> o
+let filter p o = match o with
+  | Some x when p x -> o
   | o -> o
 
 
@@ -119,18 +121,22 @@ let apply f x = match f, x with
   | Some f, Some x -> Some (f x)
 
 
-(* and_ *)
+let and_ o = function
+  | None -> None
+  | Some _ -> o
 
-let andThen o f = match o with
+let andThen f o = match o with
   | None -> None
   | Some x -> f x
 
 
-let or_ b = function
+let or_ b a = match a with
   | None -> b
-  | Some _ as a -> a
+  | Some _ -> a
 
-(* orLazy *)
+let orLazy orFn a = match a with
+  | None -> orFn ()
+  | Some _ -> a
 
 let any l = List.fold_right or_ l None
 
@@ -144,9 +150,13 @@ let forAll p = function
   | Some x -> p x
 
 
-(* okOr *)
+let okOr e = function
+  | Some x -> Result.Ok x
+  | None -> Result.Error e
 
-(* okOrLazy *)
+let okOrLazy errFn = function
+  | Some x -> Result.Ok x
+  | None -> Result.Error (errFn ())
 
 let toList o = match o with
   | None -> []
