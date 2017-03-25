@@ -5,77 +5,18 @@
 
 type +'a t = 'a option
 
-val map : ('a -> 'b) -> 'a t -> 'b t
-(** Transform the element inside, if any *)
+(** {2 Construction} *)
 
-val map_or : default:'b -> ('a -> 'b) -> 'a t -> 'b
-(** [map_or ~default f o] is [f x] if [o = Some x], [default otherwise]
-    @since 0.16 *)
-
-val maybe : ('a -> 'b) -> 'b -> 'a option -> 'b
-
-val is_some : _ t -> bool
-
-val is_none : _ t -> bool
-(** @since 0.11 *)
-
-val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
-
-val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-
-val return : 'a -> 'a t
+(* was return *)
+val make : 'a -> 'a t
 (** Monadic return, that is [return x = Some x] *)
 
-val (>|=) : 'a t -> ('a -> 'b) -> 'b t
-(** Infix version of {!map} *)
-
-val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-(** Monadic bind *)
-
-val flat_map : ('a -> 'b t) -> 'a t -> 'b t
-(** Flip version of {!>>=} *)
-
-val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
-
-val iter : ('a -> unit) -> 'a t -> unit
-(** Iterate on 0 or 1 element *)
-
-val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-(** Fold on 0 or 1 element *)
-
-val get : 'a -> 'a option -> 'a
-
-val filter : ('a -> bool) -> 'a t -> 'a t
-(** Filter on 0 or 1 element
-    @since 0.5 *)
+val fromList : 'a list -> 'a t
+(** Head of list, or [None] *)
 
 val if_ : ('a -> bool) -> 'a -> 'a option
 (** [if_ f x] is [Some x] if [f x], [None] otherwise
     @since 0.17 *)
-
-val exists : ('a -> bool) -> 'a t -> bool
-(** @since 0.17 *)
-
-val for_all : ('a -> bool) -> 'a t -> bool
-(** @since 0.17 *)
-
-val get_or : default:'a -> 'a t -> 'a
-(** [get_or ~default o] extracts the value from [o], or
-    returns [default] if [o = None].
-    @since 0.18 *)
-
-val get_exn : 'a t -> 'a
-(** Open the option, possibly failing if it is [None]
-    @raise Invalid_argument if the option is [None] *)
-
-val get_lazy : (unit -> 'a) -> 'a t -> 'a
-(** [get_lazy default_fn x] unwraps [x], but if [x = None] it returns [default_fn ()] instead.
-    @since 0.6.1 *)
-
-val sequence_l : 'a t list -> 'a list t
-(** [sequence_l [x1; x2; ...; xn]] returns [Some [y1;y2;...;yn]] if
-    every [xi] is [Some yi]. Otherwise, if the list contains at least
-    one [None], the result is [None]. *)
 
 val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b option
 (** [wrap f x] calls [f x] and returns [Some y] if [f x = y]. If [f x] raises
@@ -87,54 +28,108 @@ val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b option
 val wrap2 : ?handler:(exn -> bool) -> ('a -> 'b -> 'c) -> 'a -> 'b -> 'c option
 (** [wrap2 f x y] is similar to {!wrap1} but for binary functions. *)
 
+(** {2 Comparison} *)
+
+val isSome : _ t -> bool
+
+val isNone : _ t -> bool
+(** @since 0.11 *)
+
+val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+
+val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+
+(** {2 Access} *)
+
+val get : 'a -> 'a option -> 'a
+
+val getOr : default:'a -> 'a t -> 'a
+(** [getOr ~default o] extracts the value from [o], or
+    returns [default] if [o = None].
+    @since 0.18 *)
+
+val getOrRaise : 'a t -> 'a
+(** Open the option, possibly failing if it is [None]
+    @raise Invalid_argument if the option is [None] *)
+
+val getLazy : (unit -> 'a) -> 'a t -> 'a
+(** [get_lazy defaultn x] unwraps [x], but if [x = None] it returns [default_fn ()] instead.
+    @since 0.6.1 *)
+
+(** {2 Iteration} *)
+
+val forEach : ('a -> unit) -> 'a t -> unit
+(** Iterate on 0 or 1 element *)
+
+val map : ('a -> 'b) -> 'a t -> 'b t
+(** Transform the element inside, if any *)
+
+val mapOr : default:'b -> ('a -> 'b) -> 'a t -> 'b
+(** [map_or ~default f o] is [f x] if [o = Some x], [default otherwise]
+    @since 0.16 *)
+
+(* new *)
+val mapOrLazy : default:(unit -> 'b) -> ('a -> 'b) -> 'a t -> 'b
+
+val maybe : ('a -> 'b) -> 'b -> 'a option -> 'b
+
+val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+
+val flatMap : ('a -> 'b t) -> 'a t -> 'b t
+(** Flip version of {!>>=} *)
+
+val reduce : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+(** reduce on 0 or 1 element *)
+
+val filter : ('a -> bool) -> 'a t -> 'a t
+(** Filter on 0 or 1 element
+    @since 0.5 *)
+
 (** {2 Applicative} *)
 
-val pure : 'a -> 'a t
-(** Alias to {!return} *)
+(* was (<*>) *)
+val apply : ('a -> 'b) t -> 'a t -> 'b t
 
-val (<*>) : ('a -> 'b) t -> 'a t -> 'b t
+(** {2 Sequencing} *)
 
-val (<$>) : ('a -> 'b) -> 'a t -> 'b t
+(* new *)
+val and_ : 'b t -> 'a t -> 'b t
+
+(* was (>>=) *)
+val andThen : ('a -> 'b t) -> 'a t -> 'b t
+(** Monadic bind *)
 
 (** {2 Alternatives} *)
 
-val (<+>) : 'a t -> 'a t -> 'a t
+(* was (<+>) *)
+val or_ : 'a t -> 'a t -> 'a t
 (** [a <+> b] is [a] if [a] is [Some _], [b] otherwise *)
 
-val choice : 'a t list -> 'a t
+(* new *)
+val orLazy : (unit -> 'a t) -> 'a t -> 'a t
+
+(* was choice *)
+val any : 'a t list -> 'a t
 (** [choice] returns the first non-[None] element of the list, or [None] *)
 
-(** {2 Infix Operators}
-    @since 0.16 *)
+(** {2 Quantification} *)
+(** TODO: too mathy? *)
 
-module Infix : sig
-  val (>|=) : 'a t -> ('a -> 'b) -> 'b t
-  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-  val (<*>) : ('a -> 'b) t -> 'a t -> 'b t
-  val (<$>) : ('a -> 'b) -> 'a t -> 'b t
-  val (<+>) : 'a t -> 'a t -> 'a t
-end
+val exists : ('a -> bool) -> 'a t -> bool
+(** @since 0.17 *)
+
+val forAll : ('a -> bool) -> 'a t -> bool
+(** @since 0.17 *)
 
 (** {2 Conversion and IO} *)
 
-val to_list : 'a t -> 'a list
+(* new *)
+val okOr : 'e -> 'a t -> ('a, 'e) Result.result
 
-val of_list : 'a list -> 'a t
-(** Head of list, or [None] *)
+(* new *)
+val okOrLazy : 'e -> 'a t -> ('a, 'e) Result.result
+
+val toList : 'a t -> 'a list
 
 type 'a sequence = ('a -> unit) -> unit
-type 'a gen = unit -> 'a option
-type 'a printer = Format.formatter -> 'a -> unit
-type 'a random_gen = Random.State.t -> 'a
-
-val random : 'a random_gen -> 'a t random_gen
-
-val choice_seq : 'a t sequence -> 'a t
-(** [choice_seq s] is similar to {!choice}, but works on sequences.
-    It returns the first [Some x] occurring in [s], or [None] otherwise.
-    @since 0.13 *)
-
-val to_gen : 'a t -> 'a gen
-val to_seq : 'a t -> 'a sequence
-
-val pp : 'a printer -> 'a t printer
+val toSeq : 'a t -> 'a sequence
