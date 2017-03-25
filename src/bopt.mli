@@ -99,11 +99,11 @@ val and_ : 'b t -> 'a t -> 'b t
 (** {2 Alternatives} *)
 
 (* was (<+>) *)
-val or_ : 'a t -> 'a t -> 'a t
-(** [a <+> b] is [a] if [a] is [Some _], [b] otherwise *)
+val or_ : else_:'a t -> 'a t -> 'a t
+(** [or_ ~else_ a] is [a] if [a] is [Some _], [b] otherwise *)
 
 (* new *)
-val orLazy : (unit -> 'a t) -> 'a t -> 'a t
+val orLazy : else_:(unit -> 'a t) -> 'a t -> 'a t
 
 (* was choice *)
 val any : 'a t list -> 'a t

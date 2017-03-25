@@ -125,20 +125,16 @@ let and_ o = function
   | None -> None
   | Some _ -> o
 
-let andThen f o = match o with
-  | None -> None
-  | Some x -> f x
 
-
-let or_ b a = match a with
-  | None -> b
+let or_ ~else_ a = match a with
+  | None -> else_
   | Some _ -> a
 
-let orLazy orFn a = match a with
-  | None -> orFn ()
+let orLazy ~else_ a = match a with
+  | None -> else_ ()
   | Some _ -> a
 
-let any l = List.fold_right or_ l None
+let any l = List.fold_left (fun a b -> or_ ~else_:b a) None l
 
 
 let exists p = function
