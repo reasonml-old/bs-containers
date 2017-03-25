@@ -4,6 +4,7 @@
   "description": "This is a Bucklescript port of the ocaml-containers project",
   "main": "index.js",
   "scripts": {
+    "start": "bsb -w",
     "build": "bsb",
     "clean": "rm -rf lib",
     "coverage": "nyc report --reporter=html",
