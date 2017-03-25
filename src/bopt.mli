@@ -75,6 +75,7 @@ val maybe : ('a -> 'b) -> 'b -> 'a option -> 'b
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 
+(* alternative name: andThen *)
 val flatMap : ('a -> 'b t) -> 'a t -> 'b t
 (** Flip version of {!>>=} *)
 
@@ -94,10 +95,6 @@ val apply : ('a -> 'b) t -> 'a t -> 'b t
 
 (* new *)
 val and_ : 'b t -> 'a t -> 'b t
-
-(* was (>>=) *)
-val andThen : ('a -> 'b t) -> 'a t -> 'b t
-(** Monadic bind *)
 
 (** {2 Alternatives} *)
 
