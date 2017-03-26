@@ -1,13 +1,17 @@
-
 (* This file is free software, part of containers. See file "license" for more details. *)
 
 (** {1 Extensions of Standard Map} *)
 
-type 'a sequence = ('a -> unit) -> unit
-type 'a printer = Format.formatter -> 'a -> unit
-
 module type S = sig
   include Map.S
+
+  val isEmpty: 'a t -> bool
+
+  val forAll: (key -> 'a -> bool) -> 'a t -> bool
+
+  val minBinding: 'a t -> key * 'a
+
+  val maxBinding: 'a t -> key * 'a 
 
   val size: 'a t -> int
 
@@ -25,41 +29,31 @@ module type S = sig
       [k] is removed from [m], and if the result is [Some v'] then
       [add k v' m] is returned. *)
 
-  val merge_safe :
+  val mergeSafe :
     f:(key -> [`Left of 'a | `Right of 'b | `Both of 'a * 'b] -> 'c option) ->
     'a t -> 'b t -> 'c t
-  (** [merge_safe ~f a b] merges the maps [a] and [b] together.
+  (** [mergeSafe ~f a b] merges the maps [a] and [b] together.
       @since 0.17 *)
 
-  val of_seq : (key * 'a) sequence -> 'a t
+  val ofList : (key * 'a) list -> 'a t
 
-  val add_seq : 'a t -> (key * 'a) sequence -> 'a t
+  val addList : 'a t -> (key * 'a) list -> 'a t
   (** @since 0.14 *)
 
-  val to_seq : 'a t -> (key * 'a) sequence
+ val toList : 'a t -> (key * 'a) list
 
-  val of_list : (key * 'a) list -> 'a t
-
-  val add_list : 'a t -> (key * 'a) list -> 'a t
-  (** @since 0.14 *)
-
-  val keys : _ t -> key sequence
-  (** Iterate on keys only
-      @since 0.15 *)
-
-  val values : 'a t -> 'a sequence
-  (** Iterate on values only
-      @since 0.15 *)
-
-  val to_list : 'a t -> (key * 'a) list
-
-  val pp :
-    ?start:string -> ?stop:string -> ?arrow:string -> ?sep:string ->
-    key printer -> 'a printer -> 'a t printer
 end
 
 module Make(O : Map.OrderedType) = struct
   include Map.Make(O)
+
+  let isEmpty = is_empty
+
+  let forAll = for_all
+
+  let minBinding = min_binding
+
+  let maxBinding = max_binding
 
   let size m = fold (fun _ _ v -> v + 1) m 0
 
@@ -80,7 +74,7 @@ module Make(O : Map.OrderedType) = struct
       | None -> remove k m
       | Some v' -> add k v' m
 
-  let merge_safe ~f a b =
+  let mergeSafe ~f a b =
     merge
       (fun k v1 v2 -> match v1, v2 with
          | None, None -> assert false
@@ -89,42 +83,10 @@ module Make(O : Map.OrderedType) = struct
          | Some v1, Some v2 -> f k (`Both (v1,v2)))
       a b
 
-  let add_seq m s =
-    let m = ref m in
-    s (fun (k,v) -> m := add k v !m);
-    !m
+  let addList m l = List.fold_left (fun m (k,v) -> add k v m) m l
 
-  let of_seq s = add_seq empty s
+  let ofList l = addList empty l
 
-  let to_seq m yield =
-    iter (fun k v -> yield (k,v)) m
-
-  let keys m yield =
-    iter (fun k _ -> yield k) m
-
-  let values m yield =
-    iter (fun _ v -> yield v) m
-
-  let add_list m l = List.fold_left (fun m (k,v) -> add k v m) m l
-
-  let of_list l = add_list empty l
-
-  let to_list m =
+  let toList m =
     fold (fun k v acc -> (k,v)::acc) m []
-
-  let pp ?(start="") ?(stop="") ?(arrow="->") ?(sep=", ") pp_k pp_v fmt m =
-    Format.pp_print_string fmt start;
-    let first = ref true in
-    iter
-      (fun k v ->
-         if !first then first := false
-         else (
-           Format.pp_print_string fmt sep;
-           Format.pp_print_cut fmt ()
-         );
-         pp_k fmt k;
-         Format.pp_print_string fmt arrow;
-         pp_v fmt v)
-      m;
-    Format.pp_print_string fmt stop
 end
