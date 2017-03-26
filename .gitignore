@@ -1,4 +1,5 @@
 lib
 *.install
 _build
-
+.nyc*
+.DS_Store

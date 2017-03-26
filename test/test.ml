@@ -1,23 +1,16 @@
 type ava
-type exe
+type t
 
-external t:ava = "ava" [@@bs.module]
+external ava: ava = "ava" [@@bs.module]
 
-(*external ava: ava = "ava" [@@bs.module];;*)
+external _test: ava -> (t -> unit) -> unit = "test" [@@bs.send]
 
-external _test: ava -> (exe -> bool) -> unit = "test" [@@bs.send]
+external _test_with_msg: ava -> string -> (t -> unit) -> unit = "test" [@@bs.send]
 
-external _test_with_msg: ava -> string -> (exe -> bool) -> unit = "test" [@@bs.send]
+let test = function run -> _test ava run
 
-(* I would love to keep this interface, but this will trigger a warning for BS *)
-external _truthy: exe -> 'a -> Js.boolean = "truthy" [@@bs.send]
+let test_with_msg = function run -> _test_with_msg ava run
 
-external _falsy: exe -> 'a -> Js.boolean = "falsy" [@@bs.send]
+external truthy: t -> 'a -> unit = "truthy" [@@bs.send]
 
-let test = _test t
-
-let test_with_msg = _test_with_msg t
-
-let truthy x a = Js.to_bool @@ _truthy x a 
-
-let falsy x a = Js.to_bool @@ _falsy x a
+external falsy: t -> 'a -> unit = "falsy" [@@bs.send]

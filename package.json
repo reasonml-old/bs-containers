@@ -4,10 +4,11 @@
   "description": "This is a bs port of the ocaml-containers project",
   "main": "index.js",
   "scripts": {
+    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli src/*.ml",
     "build": "bsb",
     "watch": "bsb -w",
     "clean": "rm -rf lib",
-    "test": "ava lib/js/test/*_test.js"
+    "test": "nyc ava lib/js/test/*_test.js"
   },
   "keywords": [],
   "author": "Bob Fang",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "ava": "^0.18.2",
+    "nyc": "^10.1.2",
     "tap-nyan": "^1.1.0"
   },
   "repository": {
