@@ -11,8 +11,8 @@ external deepEqual: t -> 'a -> 'a -> unit = "deepEqual" [@@bs.send]
 
 external plan: t -> int -> unit = "" [@@bs.send]
 
-
 let () = test "dummy" (fun t ->
   deepEqual t 1 1;
   pass t
 )
+
