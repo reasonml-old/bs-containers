@@ -112,7 +112,7 @@ let reduce f acc o = match o with
 
 let filter p o = match o with
   | Some x when p x -> o
-  | _ -> o
+  | _ -> None
 
 
 let apply f x = match f, x with
