@@ -37,7 +37,7 @@ val isNone : _ t -> bool
 
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 
-val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+val compare : ('a -> 'a -> Comparison.comparison) -> 'a t -> 'a t -> Comparison.comparison
 
 (** {2 Access} *)
 

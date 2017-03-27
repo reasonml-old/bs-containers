@@ -56,9 +56,9 @@ let equal f o1 o2 = match o1, o2 with
   | Some x, Some y -> f x y
 
 let compare f o1 o2 = match o1, o2 with
-  | None, None -> 0
-  | Some _, None -> 1
-  | None, Some _ -> -1
+  | None, None -> Comparison.Equal
+  | Some _, None -> Comparison.Greater
+  | None, Some _ -> Comparison.Less
   | Some x, Some y -> f x y
 
 
