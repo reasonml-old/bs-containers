@@ -45,7 +45,7 @@ val guardToStringTrace : (unit -> 'a) -> ('a, string) t
 (** Same as {!guard_str} but uses {!of_exn_trace} instead of {!of_exn} so
     that the stack trace is printed. *)
 
-val wrap1 : ('a -> 'b) -> 'a -> ('b, exn) t
+val wrap : ('a -> 'b) -> 'a -> ('b, exn) t
 (** Same as {!guard} but gives the function one argument. *)
 
 val wrap2 : ('a -> 'b -> 'c) -> 'a -> 'b -> ('c, exn) t
@@ -127,12 +127,12 @@ val filter : ('a -> bool) -> 'e -> ('a, 'e) t -> ('a, 'e) t
 (* new *)
 val and_ : ('b, 'e) t -> ('a, 'e) t -> ('b, 'e) t
 
-val join : (('a, 'err) t, 'err) t -> ('a, 'err) t
-(** [join t], in case of success, returns [Ok o] from [Ok (Ok o)]. Otherwise,
+val flatten : (('a, 'err) t, 'err) t -> ('a, 'err) t
+(** [flatten t], in case of success, returns [Ok o] from [Ok (Ok o)]. Otherwise,
     it fails with [Error e] where [e] is the unwrapped error of [t]. *)
 
-val both : ('a, 'err) t  -> ('b, 'err) t -> (('a * 'b), 'err) t
-(** [both a b], in case of success, returns [Ok (o, o')] with the ok values
+val zip : ('a, 'err) t  -> ('b, 'err) t -> (('a * 'b), 'err) t
+(** [zip a b], in case of success, returns [Ok (o, o')] with the ok values
     of [a] and [b]. Otherwise, it fails, and the error of [a] is chosen over the
     error of [b] if both fail. *)
 

@@ -51,7 +51,7 @@ let guardToStringTrace f =
   try Ok (f())
   with e -> fromExceptionTrace e
 
-let wrap1 f x =
+let wrap f x =
   try make (f x)
   with e -> Error e
 
@@ -150,12 +150,12 @@ let and_ b = function
   | Ok _ -> b
   | Error e -> Error e
 
-let join = function
+let flatten = function
   | Ok (Ok x) -> Ok x
   | Ok (Error e) -> Error e
   | (Error _) as e -> e
 
-let both a b = match a, b with
+let zip a b = match a, b with
   | Ok x, Ok y -> Ok (x, y)
   | Ok _, Error e -> Error e
   | Error e, _  -> Error e
