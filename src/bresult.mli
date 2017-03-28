@@ -9,8 +9,7 @@
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
-type 'a ord = 'a -> 'a -> int
-type 'a printer = Format.formatter -> 'a -> unit
+type 'a ord = 'a -> 'a -> Comparison.comparison
 
 (** {2 Basics} *)
 

@@ -19,8 +19,7 @@
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
-type 'a ord = 'a -> 'a -> int
-type 'a printer = Format.formatter -> 'a -> unit
+type 'a ord = 'a -> 'a -> Comparison.comparison
 
 (** {2 Basics} *)
 
@@ -85,10 +84,10 @@ let equal ?(err=Pervasives.(=)) eq a b = match a, b with
   | Error s, Error s' -> err s s'
   | _ -> false
 
-let compare ?(err=Pervasives.compare) cmp a b = match a, b with
+let compare ?(err=Comparison.compare) cmp a b = match a, b with
   | Ok x, Ok y -> cmp x y
-  | Ok _, _  -> 1
-  | _, Ok _ -> -1
+  | Ok _, _  -> Comparison.Greater
+  | _, Ok _ -> Comparison.Less
   | Error s, Error s' -> err s s'
 
 let reduce ~ok ~error x = match x with
