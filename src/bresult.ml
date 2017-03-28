@@ -21,11 +21,11 @@ type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
 type 'a ord = 'a -> 'a -> Comparison.comparison
 
-(** {2 Basics} *)
 
 type (+'good, +'bad) t = ('good, 'bad) Result.result =
   | Ok of 'good
   | Error of 'bad
+
 
 let make x = Ok x
 
@@ -40,69 +40,6 @@ let fromExceptionTrace e =
       (Printexc.to_string e) (Printexc.get_backtrace ())
   in
   Error res
-
-let map f e = match e with
-  | Ok x -> Ok (f x)
-  | Error s -> Error s
-
-let mapError f e = match e with
-  | Ok _ as res -> res
-  | Error y -> Error (f y)
-
-let map2 f g e = match e with
-  | Ok x -> Ok (f x)
-  | Error s -> Error (g s)
-
-let forEach f e = match e with
-  | Ok x -> f x
-  | Error _ -> ()
-
-exception GetError
-
-let getOrRaise = function
-  | Ok x -> x
-  | Error _ -> raise GetError
-
-let getOr e ~default = match e with
-  | Ok x -> x
-  | Error _ -> default
-
-let mapOr f e ~default = match e with
-  | Ok x -> f x
-  | Error _ -> default
-
-let catch e ~ok ~err = match e with
-  | Ok x -> ok x
-  | Error y -> err y
-
-let flatMap f e = match e with
-  | Ok x -> f x
-  | Error s -> Error s
-
-let equal ?(err=Pervasives.(=)) eq a b = match a, b with
-  | Ok x, Ok y -> eq x y
-  | Error s, Error s' -> err s s'
-  | _ -> false
-
-let compare ?(err=Comparison.compare) cmp a b = match a, b with
-  | Ok x, Ok y -> cmp x y
-  | Ok _, _  -> Comparison.Greater
-  | _, Ok _ -> Comparison.Less
-  | Error s, Error s' -> err s s'
-
-let reduce ~ok ~error x = match x with
-  | Ok x -> ok x
-  | Error s -> error s
-
-let isOk = function
-  | Ok _ -> true
-  | Error _ -> false
-
-let isError = function
-  | Ok _ -> false
-  | Error _ -> true
-
-(** {2 Wrappers} *)
 
 let guard f =
   try Ok (f ())
@@ -128,11 +65,92 @@ let wrap3 f x y z =
   try make (f x y z)
   with e -> Error e
 
-(** {2 Applicative} *)
 
-let apply f x = match f with
-  | Error s -> fail s
-  | Ok f -> map f x
+let isOk = function
+  | Ok _ -> true
+  | Error _ -> false
+
+let isError = function
+  | Ok _ -> false
+  | Error _ -> true
+
+let equal ?(err=Pervasives.(=)) eq a b = match a, b with
+  | Ok x, Ok y -> eq x y
+  | Error s, Error s' -> err s s'
+  | _ -> false
+
+let compare ?(err=Comparison.compare) cmp a b = match a, b with
+  | Ok x, Ok y -> cmp x y
+  | Ok _, _  -> Comparison.Greater
+  | _, Ok _ -> Comparison.Less
+  | Error s, Error s' -> err s s'
+
+
+exception GetError
+
+let get default = function
+  | Ok x -> x
+  | Error _ -> default
+
+let getOrRaise = function
+  | Ok x -> x
+  | Error _ -> raise GetError
+
+let getOr ~default = function
+  | Ok x -> x
+  | Error _ -> default
+
+let getLazy defaultFn = function
+  | Ok x -> x
+  | Error _ -> defaultFn ()
+
+
+let forEach f e = match e with
+  | Ok x -> f x
+  | Error _ -> ()
+
+let map f = function
+  | Ok x -> Ok (f x)
+  | Error s -> Error s
+
+let mapOr ~default f = function
+  | Ok x -> f x
+  | Error _ -> default
+
+let mapOrLazy ~default f = function
+  | Ok x -> f x
+  | Error _ -> default ()
+
+let mapError f = function
+  | Ok _ as res -> res
+  | Error y -> Error (f y)
+
+let maybe f default = mapOr ~default f
+
+let map2 f g = function
+  | Ok x -> Ok (f x)
+  | Error e -> Error (g e)
+
+let catch e ~ok ~err = match e with
+  | Ok x -> ok x
+  | Error y -> err y
+
+let flatMap f e = match e with
+  | Ok x -> f x
+  | Error e -> Error e
+
+let reduce ~ok ~error a = match a with
+  | Ok x -> ok x
+  | Error e -> error e
+
+let filter p e a = match a with
+  | Ok x when p x -> a
+  | Error _ -> a
+  | _ -> Error e
+
+let and_ b = function
+  | Ok _ -> b
+  | Error e -> Error e
 
 let join t = match t with
   | Ok (Ok o) -> Ok o
@@ -144,7 +162,31 @@ let both x y = match x,y with
   | Ok _, Error e -> Error e
   | Error e, _  -> Error e
 
-(** {2 Collections} *)
+
+let apply f x = match f with
+  | Error s -> fail s
+  | Ok f -> map f x
+
+
+let or_ ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_
+
+let orLazy ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_ ()
+
+let any l =
+  let rec find_ = function
+    | [] -> raise Not_found
+    | ((Ok _) as res) :: _ -> res
+    | (Error _) :: l' -> find_ l'
+  in
+  try find_ l
+  with Not_found ->
+    let l' = List.map (function Error s -> s | Ok _ -> assert false) l in
+    Error l'
+
 
 let mapList f l =
   let rec map acc l = match l with
@@ -157,7 +199,7 @@ let mapList f l =
 
 exception LocalExit
 
-let foldSeq f acc seq =
+let reduceSeq f acc seq =
   let err = ref None in
   try
     let acc = ref acc in
@@ -169,20 +211,8 @@ let foldSeq f acc seq =
   with LocalExit ->
   match !err with None -> assert false | Some s -> Error s
 
-let foldList f acc l = foldSeq f acc (fun k -> List.iter k l)
+let reduceList f acc l = reduceSeq f acc (fun k -> List.iter k l)
 
-(** {2 Misc} *)
-
-let choose l =
-  let rec find_ = function
-    | [] -> raise Not_found
-    | ((Ok _) as res) :: _ -> res
-    | (Error _) :: l' -> find_ l'
-  in
-  try find_ l
-  with Not_found ->
-    let l' = List.map (function Error s -> s | Ok _ -> assert false) l in
-    Error l'
 
 let retry n f =
   let rec retry n acc = match n with
@@ -193,7 +223,6 @@ let retry n f =
       | Error e -> retry (n-1) (e::acc)
   in retry n []
 
-(** {2 Conversions} *)
 
 let toOption = function
   | Ok x -> Some x
