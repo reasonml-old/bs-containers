@@ -6,10 +6,10 @@
 - [x] Use `camelCase` instead of `snake_case`
 - [x] Get rid of scary monadic and math-y terminology
 - [x] Follow the conventions used in the `Js.*` modules
-- [ ] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
+- [x] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
 - [x] Remove operators and aliases, e.g. `pure` as an alias for `return`
 - [ ] Remove the use of exceptions for internal logic (maybe? seems very sketchy to me but perhaps there's a really really good reason, see [this example](https://github.com/BuckleTypes/bs-containers/blob/master/src/bopt.ml#L163))
-- [ ] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
+- [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
 - [ ] Document everything properly, with examples
 - [ ] Add tests for everything
 
@@ -36,8 +36,8 @@ let fromException e =
   Error msg
 
 let fromExceptionTrace e =
-  let res = Printf.sprintf "%s\n%s"
-      (Printexc.to_string e) (Printexc.get_backtrace ())
+  let res =
+      (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ())
   in
   Error res
 
