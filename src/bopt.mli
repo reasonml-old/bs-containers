@@ -108,13 +108,11 @@ val apply : ('a -> 'b) t -> 'a t -> 'b t
 (** [apply maybeF a] is [Some (f x)] if [maybeF) is [Some f] and [a] is [Some x],
     [None] otherwise *)
 
-(** {2 Sequencing} *)
+(** {2 Composition} *)
 
 (* new *)
 val and_ : 'b t -> 'a t -> 'b t
 (** [and_ a b] is [b] if [a] is [Some _], [None] otherwise *)
-
-(** {2 Alternatives} *)
 
 (* was (<+>) *)
 val or_ : else_:'a t -> 'a t -> 'a t
@@ -138,7 +136,7 @@ val exists : ('a -> bool) -> 'a t -> bool
 val forAll : ('a -> bool) -> 'a t -> bool
 (** [forAll f a] is [f x] if [a] is [Some x], [true] otherwise *)
 
-(** {2 Conversion and IO} *)
+(** {2 Conversion} *)
 
 (* new *)
 val okOr : 'e -> 'a t -> ('a, 'e) Result.result
