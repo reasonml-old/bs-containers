@@ -7,11 +7,11 @@ TODO:
 - [x] Use `camelCase` instead of `snake_case`
 - [x] Get rid of scary monadic and math-y terminology
 - [x] Follow the conventions used in the `Js.*` modules
-- [ ] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
+- [x] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
 - [x] Remove operators and aliases, e.g. `pure` as an alias for `return`
 - [x] Remove the use of exceptions for internal logic (maybe? seems very sketchy to me but perhaps there's a really really good reason, see [this example](https://github.com/BuckleTypes/bs-containers/blob/master/src/bopt.ml#L163))
 - [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
-- [ ] Document everything properly, with examples
+- [/] Document everything properly, with examples
 - [ ] Add tests for everything
 *)
 
@@ -49,24 +49,24 @@ let isNone = function
   | None -> true
   | Some _ -> false
 
-let equal f o1 o2 = match o1, o2 with
+let equal f a b = match a, b with
   | None, None -> true
   | Some _, None
   | None, Some _ -> false
   | Some x, Some y -> f x y
 
-let compare f o1 o2 = match o1, o2 with
+let compare f a b = match a, b with
   | None, None -> Comparison.Equal
   | Some _, None -> Comparison.Greater
   | None, Some _ -> Comparison.Less
   | Some x, Some y -> f x y
 
 
-let get default x = match x with
+let get default = function
   | None -> default
   | Some y -> y
 
-let getOr ~default x = match x with
+let getOr ~default = function
   | None -> default
   | Some y -> y
 
@@ -74,12 +74,12 @@ let getOrRaise = function
   | Some x -> x
   | None -> invalid_arg "CCOpt.get_exn"
 
-let getLazy defaultFn x = match x with
+let getLazy defaultFn = function
   | None -> defaultFn ()
   | Some y -> y
   
 
-let forEach f o = match o with
+let forEach f = function
   | None -> ()
   | Some x -> f x
 
@@ -97,33 +97,33 @@ let mapOrLazy ~default f = function
 
 let maybe f default = mapOr ~default f
 
-let map2 f o1 o2 = match o1, o2 with
+let map2 f a b = match a, b with
   | None, _
   | _, None -> None
   | Some x, Some y -> Some (f x y)
 
-let flatMap f o = match o with
+let flatMap f = function
   | None -> None
   | Some x -> f x
 
-let reduce f acc o = match o with
+let reduce f acc = function
   | None -> acc
   | Some x -> f acc x
 
-let filter p o = match o with
-  | Some x when p x -> o
+let filter p a = match a with
+  | Some x when p x -> a
   | _ -> None
 
 
-let apply f x = match f, x with
+let apply f a = match f, a with
   | None, _
   | _, None -> None
   | Some f, Some x -> Some (f x)
 
 
-let and_ o = function
+let and_ b = function
   | None -> None
-  | Some _ -> o
+  | Some _ -> b
 
 
 let or_ ~else_ a = match a with
@@ -154,7 +154,7 @@ let okOrLazy errFn = function
   | Some x -> Result.Ok x
   | None -> Result.Error (errFn ())
 
-let toList o = match o with
+let toList = function
   | None -> []
   | Some x -> [x]
 
