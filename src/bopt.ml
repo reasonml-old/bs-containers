@@ -134,6 +134,14 @@ let orLazy ~else_ a = match a with
   | None -> else_ ()
   | Some _ -> a
 
+let flatten = function
+  | Some a -> a
+  | None -> None
+
+let zip a b = match a, b with
+  | (Some x, Some y) -> Some (x, y)
+  | _ -> None
+
 let any l = List.fold_left (fun a b -> or_ ~else_:b a) None l
 
 

@@ -122,6 +122,12 @@ val or_ : else_:'a t -> 'a t -> 'a t
 val orLazy : else_:(unit -> 'a t) -> 'a t -> 'a t
 (** [orLazy ~else_ a] is [a] if [a] is [Some _], [else_ ()] otherwise *)
 
+(* new *)
+val flatten : 'a t t -> 'a t
+
+(* new *)
+val zip : 'a t -> 'b t -> ('a * 'b) t
+
 (* was choice *)
 val any : 'a t list -> 'a t
 (** [choice l] returns the first non-[None] element of the list if it exists,
