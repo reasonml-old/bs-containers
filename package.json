@@ -1,13 +1,15 @@
 {
-  "name": "bscontainers",
-  "version": "1.0.0",
-  "description": "This is a bs port of the ocaml-containers project",
+  "name": "bs-containers",
+  "version": "0.0.1",
+  "description": "This is a Bucklescript port of the ocaml-containers project",
   "main": "index.js",
   "scripts": {
     "build": "bsb",
-    "watch": "bsb -w",
     "clean": "rm -rf lib",
-    "test": "ava lib/js/test/*_test.js"
+    "coverage": "nyc report --reporter=html",
+    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli",
+    "start": "bsb -w",
+    "test": "nyc ava lib/js/test/*test.js lib/js/test/*Test.js"
   },
   "keywords": [],
   "author": "Bob Fang",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "ava": "^0.18.2",
+    "nyc": "^10.1.2",
     "tap-nyan": "^1.1.0"
   },
   "repository": {
