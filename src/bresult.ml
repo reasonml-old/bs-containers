@@ -36,9 +36,7 @@ let fromException e =
   Error msg
 
 let fromExceptionTrace e =
-  let res =
-      (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ())
-  in
+  let res = (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ()) in
   Error res
 
 let guard f =
@@ -76,14 +74,14 @@ let isError = function
 
 let equal ?(err=Pervasives.(=)) eq a b = match a, b with
   | Ok x, Ok y -> eq x y
-  | Error s, Error s' -> err s s'
+  | Error e, Error e' -> err e e'
   | _ -> false
 
 let compare ?(err=Comparison.compare) cmp a b = match a, b with
   | Ok x, Ok y -> cmp x y
   | Ok _, _  -> Comparison.Greater
   | _, Ok _ -> Comparison.Less
-  | Error s, Error s' -> err s s'
+  | Error e, Error e' -> err e e'
 
 
 exception GetError
@@ -111,7 +109,7 @@ let forEach f e = match e with
 
 let map f = function
   | Ok x -> Ok (f x)
-  | Error s -> Error s
+  | Error e -> Error e
 
 let mapOr ~default f = function
   | Ok x -> f x
@@ -123,7 +121,7 @@ let mapOrLazy ~default f = function
 
 let mapError f = function
   | Ok _ as res -> res
-  | Error y -> Error (f y)
+  | Error e -> Error (f e)
 
 let maybe f default = mapOr ~default f
 
@@ -133,7 +131,7 @@ let map2 f g = function
 
 let catch e ~ok ~err = match e with
   | Ok x -> ok x
-  | Error y -> err y
+  | Error e -> err e
 
 let flatMap f e = match e with
   | Ok x -> f x
@@ -152,20 +150,20 @@ let and_ b = function
   | Ok _ -> b
   | Error e -> Error e
 
-let join t = match t with
-  | Ok (Ok o) -> Ok o
+let join = function
+  | Ok (Ok x) -> Ok x
   | Ok (Error e) -> Error e
   | (Error _) as e -> e
 
-let both x y = match x,y with
-  | Ok o, Ok o' -> Ok (o, o')
+let both a b = match a, b with
+  | Ok x, Ok y -> Ok (x, y)
   | Ok _, Error e -> Error e
   | Error e, _  -> Error e
 
 
-let apply f x = match f with
-  | Error s -> fail s
-  | Ok f -> map f x
+let apply f a = match f with
+  | Error e -> fail e
+  | Ok f -> map f a
 
 
 let or_ ~else_ a = match a with
@@ -180,21 +178,20 @@ let any l =
   let rec find_ = function
     | [] -> raise Not_found
     | ((Ok _) as res) :: _ -> res
-    | (Error _) :: l' -> find_ l'
+    | (Error _) :: rest -> find_ rest
   in
   try find_ l
   with Not_found ->
-    let l' = List.map (function Error s -> s | Ok _ -> assert false) l in
-    Error l'
+    Error (List.map (function Error e -> e | Ok _ -> assert false) l)
 
 
 let mapList f l =
-  let rec map acc l = match l with
+  let rec map acc = function
     | [] -> Ok (List.rev acc)
-    | x::l' ->
-      match f x with
-      | Error s -> Error s
-      | Ok y -> map (y::acc) l'
+    | a::rest ->
+      match f a with
+        | Error e -> Error e
+        | Ok x -> map (x::acc) rest
   in map [] l
 
 exception LocalExit
@@ -204,12 +201,16 @@ let reduceSeq f acc seq =
   try
     let acc = ref acc in
     seq
-      (fun x -> match f !acc x with
-         | Error s -> err := Some s; raise LocalExit
-         | Ok y -> acc := y);
+      (fun a -> match f !acc a with
+         | Error e ->
+          err := Some e;
+          raise LocalExit
+         | Ok x -> acc := x);
     Ok !acc
   with LocalExit ->
-  match !err with None -> assert false | Some s -> Error s
+    match !err with
+      | None -> assert false
+      | Some e -> Error e
 
 let reduceList f acc l = reduceSeq f acc (fun k -> List.iter k l)
 
