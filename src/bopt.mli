@@ -16,10 +16,10 @@ val fromList : 'a list -> 'a t
 (** [fromList l] is [Some x] is [l] is [x :: _], [None] otherwise (ie. if [l] is
     [\[\]]) *)
 
-val if_ : ('a -> bool) -> 'a -> 'a option
+val if_ : ('a -> bool) -> 'a -> 'a t
 (** [if_ f x] is [Some x] if [f x], [None] otherwise *)
 
-val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b option
+val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b t
 (** [wrap f x] is [Some (f x)] if [f x] does not raise an exception, [None] if
     it does and [handler e] is [true], otherwise reraises the exception.
 
@@ -27,7 +27,7 @@ val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b option
         exception is to be caught.
 *)
 
-val wrap2 : ?handler:(exn -> bool) -> ('a -> 'b -> 'c) -> 'a -> 'b -> 'c option
+val wrap2 : ?handler:(exn -> bool) -> ('a -> 'b -> 'c) -> 'a -> 'b -> 'c t
 (** [wrap2 f x y] is [Some (f x y)] if [f x y] does not raise an exception,
     [None] if it does and [handler e] is [true], otherwise reraises the exception.
 
@@ -53,7 +53,7 @@ val compare : ('a -> 'a -> Comparison.comparison) -> 'a t -> 'a t -> Comparison.
 
 (** {2 Access} *)
 
-val get : 'a -> 'a option -> 'a
+val get : 'a -> 'a t -> 'a
 (** [get default a] is [x] if [a] is [Some x], [default] otherwise *)
 
 val getOr : default:'a -> 'a t -> 'a
