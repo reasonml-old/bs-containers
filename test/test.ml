@@ -1,8 +1,6 @@
 type t
 
-external ava:< 
-    test : string -> (t -> unit) -> unit[@bs.meth]
-> Js.t = "ava" [@@bs.module]
+external ava:'a Js.t = "ava" [@@bs.module]
 
 let test = fun name run -> ava##test name run
 
