@@ -2,11 +2,8 @@
 type t
 
 val test: string -> (t -> unit) -> unit
-
 val test_: (t -> unit) -> unit
 
-val deepEqual: t -> 'a -> 'a -> unit
-
 val pass: t -> unit -> unit
-
 val fail: t -> unit -> unit
+val deepEqual: t -> 'a -> 'a -> unit

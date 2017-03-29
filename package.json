@@ -7,10 +7,9 @@
     "start": "bsb -w",
     "build": "bsb",
     "clean": "rm -rf lib",
-    "coverage": "nyc report --reporter=html",
+    "coverage": "npm run build && nyc ava && nyc report --reporter=html",
     "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli",
-    "start": "bsb -w",
-    "test": "nyc ava lib/js/test/*test.js lib/js/test/*Test.js"
+    "test": "npm run build && ava"
   },
   "keywords": [],
   "author": "Bob Fang",
@@ -30,5 +29,14 @@
   "bugs": {
     "url": "https://github.com/dorafmon/bscontainers/issues"
   },
-  "homepage": "https://github.com/dorafmon/bscontainers#readme"
+  "homepage": "https://github.com/dorafmon/bscontainers#readme",
+
+  "ava": {
+    "files": [
+      "**/*_test.js",
+      "!**/amdjs/**",
+      "!**/es6/**",
+      "!**/commonjs/**"
+    ]
+  }
 }
