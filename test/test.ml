@@ -1,23 +1,18 @@
-type ava
-type exe
+type t
 
-external t:ava = "ava" [@@bs.module]
+external ava:'a Js.t = "ava" [@@bs.module]
 
-(*external ava: ava = "ava" [@@bs.module];;*)
+let test = fun name run -> ava##test name run
 
-external _test: ava -> (exe -> bool) -> unit = "test" [@@bs.send]
+let test_ = fun run -> ava##test "" run
 
-external _test_with_msg: ava -> string -> (exe -> bool) -> unit = "test" [@@bs.send]
+external deepEqual: t -> 'a -> 'a -> unit = "deepEqual" [@@bs.send]
 
-(* I would love to keep this interface, but this will trigger a warning for BS *)
-external _truthy: exe -> 'a -> Js.boolean = "truthy" [@@bs.send]
+external pass: t -> unit -> unit = "" [@@bs.send]
 
-external _falsy: exe -> 'a -> Js.boolean = "falsy" [@@bs.send]
+external fail: t -> unit -> unit = "" [@@bs.send]
 
-let test = _test t
-
-let test_with_msg = _test_with_msg t
-
-let truthy x a = Js.to_bool @@ _truthy x a 
-
-let falsy x a = Js.to_bool @@ _falsy x a
+let () = test "dummy" (fun t ->
+    deepEqual t 1 1;
+    pass t ()
+)

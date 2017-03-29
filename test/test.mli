@@ -1,11 +1,12 @@
 (*Ideally we should have a unified interface of testing framework, I am still thinking about how to abstract away the difference between JS testing and OUnit.*)
-type ava
-type exe
+type t
 
-val test: (exe -> bool) -> unit
+val test: string -> (t -> unit) -> unit
 
-val test_with_msg: string -> (exe -> bool) -> unit
+val test_: (t -> unit) -> unit
 
-val truthy: exe -> 'a -> bool 
+val deepEqual: t -> 'a -> 'a -> unit
 
-val falsy: exe -> 'a -> bool
+val pass: t -> unit -> unit
+
+val fail: t -> unit -> unit

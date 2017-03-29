@@ -1,4 +1,7 @@
 lib
 *.install
 _build
+.nyc*
+.merlin
+node_modules
 

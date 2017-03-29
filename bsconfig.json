@@ -1,5 +1,5 @@
 {
-    "name": "bsbase",
+    "name": "bs-containers",
     "package-specs" : ["amdjs", "es6", "commonjs"],
     "sources": [{
         "dir": "src"
