@@ -5,6 +5,7 @@
         "dir": "src"
     }, {
         "dir": "test",
+        "subdirs": ["__tests__"],
         "type": "dev"
     }]
 }

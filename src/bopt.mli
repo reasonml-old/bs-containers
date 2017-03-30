@@ -4,137 +4,159 @@
 (** {1 Options} *)
 
 type +'a t = 'a option
+(** alias of the standard [option] type *)
 
-val map : ('a -> 'b) -> 'a t -> 'b t
-(** Transform the element inside, if any *)
+(** {2 Construction} *)
 
-val map_or : default:'b -> ('a -> 'b) -> 'a t -> 'b
-(** [map_or ~default f o] is [f x] if [o = Some x], [default otherwise]
-    @since 0.16 *)
+(* was return *)
+val make : 'a -> 'a t
+(** [make x] is [Some x] *)
 
-val maybe : ('a -> 'b) -> 'b -> 'a option -> 'b
+val fromList : 'a list -> 'a t
+(** [fromList l] is [Some x] is [l] is [x :: _], [None] otherwise (ie. if [l] is
+    [\[\]]) *)
 
-val is_some : _ t -> bool
+val if_ : ('a -> bool) -> 'a -> 'a t
+(** [if_ f x] is [Some x] if [f x], [None] otherwise *)
 
-val is_none : _ t -> bool
-(** @since 0.11 *)
+val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b t
+(** [wrap f x] is [Some (f x)] if [f x] does not raise an exception, [None] if
+    it does and [handler e] is [true], otherwise reraises the exception.
 
-val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+    @param handler the exception handler, which returns [true] if the
+        exception is to be caught.
+*)
+
+val wrap2 : ?handler:(exn -> bool) -> ('a -> 'b -> 'c) -> 'a -> 'b -> 'c t
+(** [wrap2 f x y] is [Some (f x y)] if [f x y] does not raise an exception,
+    [None] if it does and [handler e] is [true], otherwise reraises the exception.
+
+    @param handler the exception handler, which returns [true] if the
+        exception is to be caught.
+*)
+
+(** {2 Comparison} *)
+
+val isSome : _ t -> bool
+(** [isSome a] is [true] if [a] is [Some _], [false] otherwise *)
+
+val isNone : _ t -> bool
+(** [isNone a] is [true] if [a] is [None], [false] otherwise *)
 
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+(** [equal f a b] is [true] if both are [None], [f x y] if both are [Some _],
+    [false] otherwise *)
 
-val return : 'a -> 'a t
-(** Monadic return, that is [return x = Some x] *)
+val compare : ('a -> 'a -> Comparison.comparison) -> 'a t -> 'a t -> Comparison.comparison
+(** [compare f a b] is [Equal] if both are [None], [f x y] if both are [Some _],
+    [Greater] if [a] is [Some _] and [b] is [None], [Less] if vice versa. *)
 
-val (>|=) : 'a t -> ('a -> 'b) -> 'b t
-(** Infix version of {!map} *)
+(** {2 Access} *)
 
-val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-(** Monadic bind *)
+val get : 'a -> 'a t -> 'a
+(** [get default a] is [x] if [a] is [Some x], [default] otherwise *)
 
-val flat_map : ('a -> 'b t) -> 'a t -> 'b t
-(** Flip version of {!>>=} *)
+val getOr : default:'a -> 'a t -> 'a
+(** [getOr ~default a] is [x] if [a] is [Some x], [default] otherwise *)
+
+val getOrRaise : 'a t -> 'a
+(** [getOrRaise a] is [x] if [a] is [Some x], raises [Invalid_argument] otherwise
+
+    @raise Invaliud_argument if given option is None    
+*)
+
+val getLazy : (unit -> 'a) -> 'a t -> 'a
+(** [getLazy defaultFn a] is [x] if [a] is [Some x], [defaultFn ()] otherwise *)
+
+(** {2 Iteration} *)
+
+val forEach : ('a -> unit) -> 'a t -> unit
+(** [forEach f a] calls [f x] if [a] is [Some x] *)
+
+val map : ('a -> 'b) -> 'a t -> 'b t
+(** [map f a] is [Some (f x)] if [a] is [Some x], [None] otherwise *)
+
+val mapOr : default:'b -> ('a -> 'b) -> 'a t -> 'b
+(** [mapOr ~default f a] is [Some (f x)] if [a] is [Some x], [default] otherwise *)
+
+(* new *)
+val mapOrLazy : default:(unit -> 'b) -> ('a -> 'b) -> 'a t -> 'b
+(** [mapOrLazy ~default f a] is [Some (f x)] if [a] is [Some x], [default ()]
+    otherwise *)
+
+val maybe : ('a -> 'b) -> 'b -> 'a t -> 'b
+(** [maybe f default a] is [Some (f x)] if [a] is [Some x], [default] otherwise *)
 
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+(** [map2 f a b] is [Some (f x y)] if [a] is [Some x], and [b] is [Some y],
+    [None] otherwise *)
 
-val iter : ('a -> unit) -> 'a t -> unit
-(** Iterate on 0 or 1 element *)
+(* alternative name: andThen *)
+val flatMap : ('a -> 'b t) -> 'a t -> 'b t
+(** [flatMap f a] is [f x] is [a] is [Some x], [None] otherwise *)
 
-val fold : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-(** Fold on 0 or 1 element *)
-
-val get : 'a -> 'a option -> 'a
+val reduce : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+(** [reduce f initial a] is [f inital x] if [a] is [Some x], [initial] otherwise *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t
-(** Filter on 0 or 1 element
-    @since 0.5 *)
-
-val if_ : ('a -> bool) -> 'a -> 'a option
-(** [if_ f x] is [Some x] if [f x], [None] otherwise
-    @since 0.17 *)
-
-val exists : ('a -> bool) -> 'a t -> bool
-(** @since 0.17 *)
-
-val for_all : ('a -> bool) -> 'a t -> bool
-(** @since 0.17 *)
-
-val get_or : default:'a -> 'a t -> 'a
-(** [get_or ~default o] extracts the value from [o], or
-    returns [default] if [o = None].
-    @since 0.18 *)
-
-val get_exn : 'a t -> 'a
-(** Open the option, possibly failing if it is [None]
-    @raise Invalid_argument if the option is [None] *)
-
-val get_lazy : (unit -> 'a) -> 'a t -> 'a
-(** [get_lazy default_fn x] unwraps [x], but if [x = None] it returns [default_fn ()] instead.
-    @since 0.6.1 *)
-
-val sequence_l : 'a t list -> 'a list t
-(** [sequence_l [x1; x2; ...; xn]] returns [Some [y1;y2;...;yn]] if
-    every [xi] is [Some yi]. Otherwise, if the list contains at least
-    one [None], the result is [None]. *)
-
-val wrap : ?handler:(exn -> bool) -> ('a -> 'b) -> 'a -> 'b option
-(** [wrap f x] calls [f x] and returns [Some y] if [f x = y]. If [f x] raises
-    any exception, the result is [None]. This can be useful to wrap functions
-    such as [Map.S.find].
-    @param handler the exception handler, which returns [true] if the
-        exception is to be caught. *)
-
-val wrap2 : ?handler:(exn -> bool) -> ('a -> 'b -> 'c) -> 'a -> 'b -> 'c option
-(** [wrap2 f x y] is similar to {!wrap1} but for binary functions. *)
+(** [filter f a] is [a] if [a] is [Some x] and [f x] is [true], [None] otherwise *)
 
 (** {2 Applicative} *)
 
-val pure : 'a -> 'a t
-(** Alias to {!return} *)
+(* was (<*>) *)
+val apply : ('a -> 'b) t -> 'a t -> 'b t
+(** [apply maybeF a] is [Some (f x)] if [maybeF) is [Some f] and [a] is [Some x],
+    [None] otherwise *)
 
-val (<*>) : ('a -> 'b) t -> 'a t -> 'b t
+(** {2 Composition} *)
 
-val (<$>) : ('a -> 'b) -> 'a t -> 'b t
+(* new *)
+val and_ : 'b t -> 'a t -> 'b t
+(** [and_ a b] is [b] if [a] is [Some _], [None] otherwise *)
 
-(** {2 Alternatives} *)
+(* was (<+>) *)
+val or_ : else_:'a t -> 'a t -> 'a t
+(** [or_ ~else_ a] is [a] if [a] is [Some _], [else_] otherwise *)
 
-val (<+>) : 'a t -> 'a t -> 'a t
-(** [a <+> b] is [a] if [a] is [Some _], [b] otherwise *)
+(* new *)
+val orLazy : else_:(unit -> 'a t) -> 'a t -> 'a t
+(** [orLazy ~else_ a] is [a] if [a] is [Some _], [else_ ()] otherwise *)
 
-val choice : 'a t list -> 'a t
-(** [choice] returns the first non-[None] element of the list, or [None] *)
+(* new *)
+val flatten : 'a t t -> 'a t
+(** [flatten a] is [Some x] if [a] is [Some (Some x)], [None] otherwise *)
 
-(** {2 Infix Operators}
-    @since 0.16 *)
+(* new *)
+val zip : 'a t -> 'b t -> ('a * 'b) t
+(** [zip a b] is [Some (x, y)] if [a, b] is [Some x, Some y], [None] otherwise *)
 
-module Infix : sig
-  val (>|=) : 'a t -> ('a -> 'b) -> 'b t
-  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-  val (<*>) : ('a -> 'b) t -> 'a t -> 'b t
-  val (<$>) : ('a -> 'b) -> 'a t -> 'b t
-  val (<+>) : 'a t -> 'a t -> 'a t
-end
+(* was choice *)
+val any : 'a t list -> 'a t
+(** [choice l] returns the first non-[None] element of the list if it exists,
+    [None] otherwise *)
 
-(** {2 Conversion and IO} *)
+(** {2 Quantification} *)
+(** TODO: too mathy? *)
 
-val to_list : 'a t -> 'a list
+val exists : ('a -> bool) -> 'a t -> bool
+(** [exists f a] is [f x] if [a] is [Some x], [false] otherwise *)
 
-val of_list : 'a list -> 'a t
-(** Head of list, or [None] *)
+val forAll : ('a -> bool) -> 'a t -> bool
+(** [forAll f a] is [f x] if [a] is [Some x], [true] otherwise *)
+
+(** {2 Conversion} *)
+
+(* new *)
+val okOr : 'e -> 'a t -> ('a, 'e) Result.result
+(** [okOr e a] is [Ok x] if [a] is [Some x], [Error e] otherwise *)
+
+(* new *)
+val okOrLazy : (unit -> 'e) -> 'a t -> ('a, 'e) Result.result
+(** [okOr errorFn a] is [Ok x] if [a] is [Some x], [Error (errorFn ())] otherwise *)
+
+val toList : 'a t -> 'a list
+(** [toList a] is [\[x\]] if [a] is [Some x], [\[\]] otherwise *)
 
 type 'a sequence = ('a -> unit) -> unit
-type 'a gen = unit -> 'a option
-type 'a printer = Format.formatter -> 'a -> unit
-type 'a random_gen = Random.State.t -> 'a
-
-val random : 'a random_gen -> 'a t random_gen
-
-val choice_seq : 'a t sequence -> 'a t
-(** [choice_seq s] is similar to {!choice}, but works on sequences.
-    It returns the first [Some x] occurring in [s], or [None] otherwise.
-    @since 0.13 *)
-
-val to_gen : 'a t -> 'a gen
-val to_seq : 'a t -> 'a sequence
-
-val pp : 'a printer -> 'a t printer
+val toSeq : 'a t -> 'a sequence
+(** [toSeq a] returns a sequence of [x] if a is [Some x], empty sequence otherwise *)
