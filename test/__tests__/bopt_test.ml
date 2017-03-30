@@ -116,33 +116,33 @@ let _ =
     forEach (fun _ -> fail t) None);
 
   test "map - Some _" (fun t ->
-    deepEqual t (map (( *) 3) (Some 7)) (Some 21));
+    deepEqual t (map (( * ) 3) (Some 7)) (Some 21));
   test "map - None" (fun t ->
-    deepEqual t (map (( *) 3) None) None);
+    deepEqual t (map (( * ) 3) None) None);
 
   test "mapOr - Some _" (fun t ->
-    deepEqual t (mapOr ~default:42 (( *) 3) (Some 7)) 21);
+    deepEqual t (mapOr ~default:42 (( * ) 3) (Some 7)) 21);
   test "mapOr - None" (fun t ->
-    deepEqual t (mapOr ~default:42 (( *) 3) None) 42);
+    deepEqual t (mapOr ~default:42 (( * ) 3) None) 42);
 
   test "mapiOrLazy - Some _" (fun t ->
-    deepEqual t (mapOrLazy ~default:(fun () -> 42) (( *) 3) (Some 7)) 21);
+    deepEqual t (mapOrLazy ~default:(fun () -> 42) (( * ) 3) (Some 7)) 21);
   test "mapOrLazy - None" (fun t ->
-    deepEqual t (mapOrLazy ~default:(fun () -> 42) (( *) 3) None) 42);
+    deepEqual t (mapOrLazy ~default:(fun () -> 42) (( * ) 3) None) 42);
 
   test "maybe - Some _" (fun t ->
-    deepEqual t (maybe (( *) 3) 42 (Some 7)) 21);
+    deepEqual t (maybe (( * ) 3) 42 (Some 7)) 21);
   test "maybe - None" (fun t ->
-    deepEqual t (maybe (( *) 3) 42 None) 42);
+    deepEqual t (maybe (( * ) 3) 42 None) 42);
 
   test "map2 - Some a, Some b" (fun t ->
-    deepEqual t (map2 ( *) (Some 7) (Some 5)) (Some 35));
+    deepEqual t (map2 ( * ) (Some 7) (Some 5)) (Some 35));
   test "map2 - Some a, None" (fun t ->
-    deepEqual t (map2 ( *) (Some 5) None) None);
+    deepEqual t (map2 ( * ) (Some 5) None) None);
   test "map2 - None, Some b" (fun t ->
-    deepEqual t (map2 ( *) None (Some 5)) None);
+    deepEqual t (map2 ( * ) None (Some 5)) None);
   test "map2 - None, None" (fun t ->
-    deepEqual t (map2 ( *) None None) None);
+    deepEqual t (map2 ( * ) None None) None);
 
   test "flatMap - Some _ -> Some _" (fun t ->
     deepEqual t (flatMap (fun x -> Some (x * 4)) (Some 7)) (Some 28));
@@ -164,9 +164,9 @@ let _ =
     deepEqual t (filter (fun _ -> true) None) None);
 
   test "apply - Some f, Some x" (fun t ->
-    deepEqual t (apply (Some (( *) 3)) (Some 7)) (Some 21));
+    deepEqual t (apply (Some (( * ) 3)) (Some 7)) (Some 21));
   test "apply - Some f, None" (fun t ->
-    deepEqual t (apply (Some (( *) 3)) None) None);
+    deepEqual t (apply (Some (( * ) 3)) None) None);
   test "apply - None, Some x" (fun t ->
     deepEqual t (apply None (Some 7)) None);
   test "apply - None, None" (fun t ->
