@@ -124,9 +124,11 @@ val orLazy : else_:(unit -> 'a t) -> 'a t -> 'a t
 
 (* new *)
 val flatten : 'a t t -> 'a t
+(** [flatten a] is [Some x] if [a] is [Some (Some x)], [None] otherwise *)
 
 (* new *)
 val zip : 'a t -> 'b t -> ('a * 'b) t
+(** [zip a b] is [Some (x, y)] if [a, b] is [Some x, Some y], [None] otherwise *)
 
 (* was choice *)
 val any : 'a t list -> 'a t
