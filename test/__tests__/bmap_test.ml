@@ -50,8 +50,8 @@ let () = test "update_1" (fun t ->
     let map1 = IntMap.update (to_int64 1) (function
         | Some _ -> Some "two"
         | None -> None) map0 in 
-        deepEqual t (IntMap.get (to_int64 1) map1) (Some "two"); 
-        deepEqual t (IntMap.size map1) 1
+    deepEqual t (IntMap.get (to_int64 1) map1) (Some "two"); 
+    deepEqual t (IntMap.size map1) 1
   )
 
 let () = test "update_2" (fun t ->
@@ -92,9 +92,19 @@ let () = test "toList_0" (fun t ->
 let () = test "fromSeq_0" (fun t ->
     let map1 = IntMap.fromSeq (Sequence.singleton (to_int64 1, "hello")) in
     deepEqual t (IntMap.size map1) 1 
-)
+  )
 
 let () = test "toSeq_0" (fun t ->
     let s = IntMap.toSeq map0
     in s (fun x -> let _, v = x in deepEqual t v "one")
-)
+  )
+
+let () = test "keys" (fun t ->
+    let k = IntMap.keys map0 
+    in deepEqual t k [(to_int64 1)]
+  )
+
+let () = test "values" (fun t ->
+    let v = IntMap.values map0 
+    in deepEqual t v ["one"]
+  )

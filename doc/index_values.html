@@ -864,6 +864,12 @@ Addition.
 Addition
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALadd">add</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">add x y m</code> returns a map containing the same bindings as
+      <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>.
+</div>
+</td></tr>
 <tr><td><a href="Bheap.S.html#VALadd">add</a> [<a href="Bheap.S.html">Bheap.S</a>]</td>
 <td><div class="info">
 Synonym to <a href="Bheap.S.html#VALinsert"><code class="code">Bheap.S.insert</code></a>
@@ -1244,6 +1250,11 @@ Bind a socket to an address.
 Return the list of all bindings of the given map.
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALbindings">bindings</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Return the list of all bindings of the given map.
+</div>
+</td></tr>
 <tr><td><a href="Random.State.html#VALbits">bits</a> [<a href="Random.State.html">Random.State</a>]</td>
 <td></td></tr>
 <tr><td><a href="Random.html#VALbits">bits</a> [<a href="Random.html">Random</a>]</td>
@@ -1500,6 +1511,11 @@ Return the number of elements of a set.
 Return the number of bindings of a map.
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALcardinal">cardinal</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Return the number of bindings of a map.
+</div>
+</td></tr>
 <tr><td><a href="Bytes.html#VALcat">cat</a> [<a href="Bytes.html">Bytes</a>]</td>
 <td><div class="info">
 <code class="code">cat s1 s2</code> concatenates <code class="code">s1</code> and <code class="code">s2</code> and returns the result
@@ -1642,6 +1658,12 @@ Return one binding of the given map, or raise <code class="code">Not_found</code
 <tr><td><a href="Brandom.html#VALchoose">choose</a> [<a href="Brandom.html">Brandom</a>]</td>
 <td><div class="info">
 Choose a generator within the list.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALchoose">choose</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Return one binding of the given map, or raise <code class="code">Not_found</code> if
+      the map is empty.
 </div>
 </td></tr>
 <tr><td><a href="Brandom.html#VALchoose_array">choose_array</a> [<a href="Brandom.html">Brandom</a>]</td>
@@ -2056,6 +2078,11 @@ Polymorphic "magic" comparison
 <td><div class="info">
 <code class="code">compare f a b</code> is <code class="code">Equal</code> if both are <code class="code">None</code>, <code class="code">f x y</code> if both are <code class="code">Some _</code>,
     <code class="code">Greater</code> if <code class="code">a</code> is <code class="code">Some _</code> and <code class="code">b</code> is <code class="code">None</code>, <code class="code">Less</code> if vice versa.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALcompare">compare</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Total ordering between maps.
 </div>
 </td></tr>
 <tr><td><a href="Blistlabels.html#VALcompare">compare</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
@@ -2921,6 +2948,11 @@ A byte sequence of size 0.
 Empty sequence.
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALempty">empty</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+The empty map.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALempty">empty</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td></td></tr>
 <tr><td><a href="Blist.html#VALempty">empty</a> [<a href="Blist.html">Blist</a>]</td>
@@ -3037,6 +3069,13 @@ The equality predicate used to compare keys.
 <td><div class="info">
 <code class="code">equal f a b</code> is <code class="code">true</code> if both are <code class="code">None</code>, <code class="code">f x y</code> if both are <code class="code">Some _</code>,
     <code class="code">false</code> otherwise
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALequal">equal</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">equal cmp m1 m2</code> tests whether the maps <code class="code">m1</code> and <code class="code">m2</code> are
+      equal, that is, contain equal keys and associate them with
+      equal data.
 </div>
 </td></tr>
 <tr><td><a href="Blistlabels.html#VALequal">equal</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
@@ -3239,6 +3278,12 @@ True for some char?
 <tr><td><a href="Bopt.html#VALexists">exists</a> [<a href="Bopt.html">Bopt</a>]</td>
 <td><div class="info">
 <code class="code">exists f a</code> is <code class="code">f x</code> if <code class="code">a</code> is <code class="code">Some x</code>, <code class="code">false</code> otherwise
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALexists">exists</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">exists p m</code> checks if at least one binding of the map
+      satisfy the predicate <code class="code">p</code>.
 </div>
 </td></tr>
 <tr><td><a href="Barraylabels.html#VALexists">exists</a> [<a href="Barraylabels.html">Barraylabels</a>]</td>
@@ -3524,6 +3569,12 @@ Filter elements from the vector.
 <code class="code">filter f a</code> is <code class="code">a</code> if <code class="code">a</code> is <code class="code">Some x</code> and <code class="code">f x</code> is <code class="code">true</code>, <code class="code">None</code> otherwise
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALfilter">filter</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">filter p m</code> returns the map with all the bindings in <code class="code">m</code>
+      that satisfy predicate <code class="code">p</code>.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALfilter">filter</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td><div class="info">
 Safe version of <a href="List.html#VALfilter"><code class="code">List.filter</code></a>
@@ -3688,6 +3739,12 @@ Search for <code class="code">pattern</code> in the string, left-to-right
 <tr><td><a href="Bstring.html#VALfind">find</a> [<a href="Bstring.html">Bstring</a>]</td>
 <td><div class="info">
 Find <code class="code">sub</code> in string, returns its first index or <code class="code">-1</code>.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALfind">find</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">find x m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+      or raises <code class="code">Not_found</code> if no such binding exists.
 </div>
 </td></tr>
 <tr><td><a href="Barraylabels.html#VALfind">find</a> [<a href="Barraylabels.html">Barraylabels</a>]</td>
@@ -4167,6 +4224,13 @@ Fold on chars by increasing index.
 Synonym to <a href="Bpair.html#VALmerge"><code class="code">Bpair.merge</code></a>
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALfold">fold</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 a)...)</code>,
+      where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">m</code>
+      (in increasing order), and <code class="code">d1 ... dN</code> are the associated data.
+</div>
+</td></tr>
 <tr><td><a href="Bheap.S.html#VALfold">fold</a> [<a href="Bheap.S.html">Bheap.S</a>]</td>
 <td><div class="info">
 Fold on all values
@@ -4485,6 +4549,12 @@ Universal test (do all the elements satisfy the predicate?)
 True for all chars?
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALfor_all">for_all</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">for_all p m</code> checks if all the bindings of the map
+      satisfy the predicate <code class="code">p</code>.
+</div>
+</td></tr>
 <tr><td><a href="Barraylabels.html#VALfor_all">for_all</a> [<a href="Barraylabels.html">Barraylabels</a>]</td>
 <td></td></tr>
 <tr><td><a href="Barray_slice.html#VALfor_all">for_all</a> [<a href="Barray_slice.html">Barray_slice</a>]</td>
@@ -4666,7 +4736,7 @@ Copy the vector into an immutable version
 <tr><td><a href="Bmap.S.html#VALfromList">fromList</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
 <td><div class="info">
 Build a map from the given list of bindings <code class="code">k_i -&gt; v_i</code>,
-      added in order using <code class="code">add</code>.
+      added in order using <a href="Bmap.S.html#VALadd"><code class="code">Bmap.S.add</code></a>.
 </div>
 </td></tr>
 <tr><td><a href="Bmap.S.html#VALfromSeq">fromSeq</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
@@ -4932,7 +5002,7 @@ Access element by its index, or
 </td></tr>
 <tr><td><a href="Bmap.S.html#VALget">get</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
 <td><div class="info">
-Safe version of <code class="code">find</code>
+Safe version of <a href="Bmap.S.html#VALfind"><code class="code">Bmap.S.find</code></a>
 </div>
 </td></tr>
 <tr><td><a href="Blistlabels.Assoc.html#VALget">get</a> [<a href="Blistlabels.Assoc.html">Blistlabels.Assoc</a>]</td>
@@ -6325,6 +6395,11 @@ Is the sequence empty? Forces the sequence.
 Is the vector empty?
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALis_empty">is_empty</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Test whether a map is empty or not.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALis_empty">is_empty</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td><div class="info">
 <code class="code">is_empty l</code> returns <code class="code">true</code> iff <code class="code">l = []</code>
@@ -6563,6 +6638,11 @@ Call the function on the content of the reference
 </td></tr>
 <tr><td><a href="Bpair.html#VALiter">iter</a> [<a href="Bpair.html">Bpair</a>]</td>
 <td></td></tr>
+<tr><td><a href="Bmap.S.html#VALiter">iter</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">iter f m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+</div>
+</td></tr>
 <tr><td><a href="Bheap.S.html#VALiter">iter</a> [<a href="Bheap.S.html">Bheap.S</a>]</td>
 <td><div class="info">
 Iterate on elements
@@ -6740,6 +6820,11 @@ Same as <code class="code">bprintf</code>, but instead of returning immediately,
 </td></tr>
 <tr><td><a href="Sequence.Map.S.html#VALkeys">keys</a> [<a href="Sequence.Map.S.html">Sequence.Map.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="Bmap.S.html#VALkeys">keys</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Iterate on keys only
+</div>
+</td></tr>
 <tr><td><a href="Bhashtbl.S.html#VALkeys">keys</a> [<a href="Bhashtbl.S.html">Bhashtbl.S</a>]</td>
 <td><div class="info">
 Iterate on keys (similar order as <a href="Hashtbl.html#VALiter"><code class="code">Hashtbl.iter</code></a>)
@@ -7631,6 +7716,13 @@ Transform the value
 <code class="code">map f a</code> is <code class="code">Some (f x)</code> if <code class="code">a</code> is <code class="code">Some x</code>, <code class="code">None</code> otherwise
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALmap">map</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
+      associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
+      replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALmap">map</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td><div class="info">
 Safe version of map
@@ -7865,6 +7957,12 @@ Map objects, along with their index in the sequence
 Map chars with their index
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALmapi">mapi</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Same as <a href="Map.S.html#VALmap"><code class="code">Map.S.map</code></a>, but the function receives as arguments both the
+      key and the associated value for each binding of the map.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALmapi">mapi</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td></td></tr>
 <tr><td><a href="Blist.html#VALmapi">mapi</a> [<a href="Blist.html">Blist</a>]</td>
@@ -7900,6 +7998,12 @@ Maximum length of a normal array.
 <td><div class="info">
 Same as <a href="Map.S.html#VALmin_binding"><code class="code">Map.S.min_binding</code></a>, but returns the largest binding
         of the given map.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALmax_binding">max_binding</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Same as <a href="Map.S.html#VALmin_binding"><code class="code">Map.S.min_binding</code></a>, but returns the largest binding
+      of the given map.
 </div>
 </td></tr>
 <tr><td><a href="Set.S.html#VALmax_elt">max_elt</a> [<a href="Set.S.html">Set.S</a>]</td>
@@ -8016,6 +8120,12 @@ Is the value a member of the sequence?
 <code class="code">mem ~sub s</code> is true iff <code class="code">sub</code> is a substring of <code class="code">s</code>
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALmem">mem</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">mem x m</code> returns <code class="code">true</code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
+      and <code class="code">false</code> otherwise.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.Assoc.html#VALmem">mem</a> [<a href="Blistlabels.Assoc.html">Blistlabels.Assoc</a>]</td>
 <td><div class="info">
 <code class="code">mem x l</code> returns <code class="code">true</code> iff <code class="code">x</code> is a key in <code class="code">l</code>
@@ -8122,6 +8232,12 @@ Merge two lists:
 Uncurrying (merges the two components of a tuple)
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALmerge">merge</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">merge f m1 m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
+      and of <code class="code">m2</code>.
+</div>
+</td></tr>
 <tr><td><a href="Bheap.S.html#VALmerge">merge</a> [<a href="Bheap.S.html">Bheap.S</a>]</td>
 <td><div class="info">
 Merge two heaps
@@ -8157,6 +8273,13 @@ Min element of the sequence, using the given comparison function.
 Return the smallest binding of the given map
        (with respect to the <code class="code">Ord.compare</code> ordering), or raise
        <code class="code">Not_found</code> if the map is empty.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALmin_binding">min_binding</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Return the smallest binding of the given map
+      (with respect to the <code class="code">Ord.compare</code> ordering), or raise
+      <code class="code">Not_found</code> if the map is empty.
 </div>
 </td></tr>
 <tr><td><a href="Set.S.html#VALmin_elt">min_elt</a> [<a href="Set.S.html">Set.S</a>]</td>
@@ -9298,6 +9421,14 @@ Specialization of <a href="Bparse.html#VALparse"><code class="code">Bparse.parse
    elements of <code class="code">l</code> that do not satisfy <code class="code">p</code>.
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALpartition">partition</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">partition p m</code> returns a pair of maps <code class="code">(m1, m2)</code>, where
+      <code class="code">m1</code> contains all the bindings of <code class="code">s</code> that satisfy the
+      predicate <code class="code">p</code>, and <code class="code">m2</code> is the map with all the bindings of
+      <code class="code">s</code> that do not satisfy <code class="code">p</code>.
+</div>
+</td></tr>
 <tr><td><a href="Blistlabels.html#VALpartition_map">partition_map</a> [<a href="Blistlabels.html">Blistlabels</a>]</td>
 <td><div class="info">
 <code class="code">partition_map f l</code> maps <code class="code">f</code> on <code class="code">l</code> and gather results in lists: if <code class="code">f x = `Left y</code>, adds <code class="code">y</code> to the first list, if <code class="code">f x = `Right z</code>, adds <code class="code">z</code> to the second list, if <code class="code">f x = `Drop</code>, ignores <code class="code">x</code>
@@ -10322,6 +10453,12 @@ Remove the given file name from the file system.
 <tr><td><a href="Bvector.html#VALremove">remove</a> [<a href="Bvector.html">Bvector</a>]</td>
 <td><div class="info">
 Remove the <code class="code">n-th</code> element of the vector.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALremove">remove</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">remove x m</code> returns a map containing the same bindings as
+      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.
 </div>
 </td></tr>
 <tr><td><a href="Blistlabels.Assoc.html#VALremove">remove</a> [<a href="Blistlabels.Assoc.html">Blistlabels.Assoc</a>]</td>
@@ -11651,6 +11788,12 @@ Same as <code class="code">single_write</code>, but take the data from a string 
 Singleton sequence, with exactly one element.
 </div>
 </td></tr>
+<tr><td><a href="Bmap.S.html#VALsingleton">singleton</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">singleton x y</code> returns the one-element map that contains a binding <code class="code">y</code>
+      for <code class="code">x</code>.
+</div>
+</td></tr>
 <tr><td><a href="Pervasives.html#VALsinh">sinh</a> [<a href="Pervasives.html">Pervasives</a>]</td>
 <td><div class="info">
 Hyperbolic sine.
@@ -12025,6 +12168,17 @@ Transform a list of pairs into a pair of lists:
 <tr><td><a href="Brandom.html#VALsplit">split</a> [<a href="Brandom.html">Brandom</a>]</td>
 <td><div class="info">
 Split a positive value <code class="code">n</code> into <code class="code">n1,n2</code> where <code class="code">n = n1 + n2</code>.
+</div>
+</td></tr>
+<tr><td><a href="Bmap.S.html#VALsplit">split</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+<code class="code">split x m</code> returns a triple <code class="code">(l, data, r)</code>, where
+        <code class="code">l</code> is the map with all the bindings of <code class="code">m</code> whose key
+      is strictly less than <code class="code">x</code>;
+        <code class="code">r</code> is the map with all the bindings of <code class="code">m</code> whose key
+      is strictly greater than <code class="code">x</code>;
+        <code class="code">data</code> is <code class="code">None</code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
+        or <code class="code">Some v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.
 </div>
 </td></tr>
 <tr><td><a href="Brandom.html#VALsplit_list">split_list</a> [<a href="Brandom.html">Brandom</a>]</td>
@@ -13629,6 +13783,11 @@ Set the last access time (second arg) and last modification time
 <td></td></tr>
 <tr><td><a href="Sequence.Map.S.html#VALvalues">values</a> [<a href="Sequence.Map.S.html">Sequence.Map.S</a>]</td>
 <td></td></tr>
+<tr><td><a href="Bmap.S.html#VALvalues">values</a> [<a href="Bmap.S.html">Bmap.S</a>]</td>
+<td><div class="info">
+Iterate on values only
+</div>
+</td></tr>
 <tr><td><a href="Bhashtbl.S.html#VALvalues">values</a> [<a href="Bhashtbl.S.html">Bhashtbl.S</a>]</td>
 <td><div class="info">
 Iterate on values in the table

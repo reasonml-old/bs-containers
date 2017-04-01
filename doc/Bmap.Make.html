@@ -112,41 +112,209 @@
 </table>
 <hr width="100%">
 
-<pre><span class="keyword">include</span> <a href="Map.S.html">Map.S</a></pre>
-
-<pre><span id="VALisEmpty"><span class="keyword">val</span> isEmpty</span> : <code class="type">'a t -> bool</code></pre>
-<pre><span id="VALforAll"><span class="keyword">val</span> forAll</span> : <code class="type">(key -> 'a -> bool) -> 'a t -> bool</code></pre>
-<pre><span id="VALminBinding"><span class="keyword">val</span> minBinding</span> : <code class="type">'a t -> key * 'a</code></pre>
-<pre><span id="VALmaxBinding"><span class="keyword">val</span> maxBinding</span> : <code class="type">'a t -> key * 'a</code></pre>
-<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a t -> int</code></pre>
-<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">key -> 'a t -> 'a option</code></pre><div class="info ">
-Safe version of <code class="code">find</code><br>
+<pre><span id="TYPEkey"><span class="keyword">type</span> <code class="type"></code>key</span> </pre>
+<div class="info ">
+The type of the map keys.<br>
 </div>
 
-<pre><span id="VALgetOr"><span class="keyword">val</span> getOr</span> : <code class="type">key -> 'a t -> default:'a -> 'a</code></pre><div class="info ">
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">+'a</code> t</span> </pre>
+<div class="info ">
+The type of maps from type <code class="code">key</code> to type <code class="code">'a</code>.<br>
+</div>
+
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+The empty map.<br>
+</div>
+
+<pre><span id="VALis_empty"><span class="keyword">val</span> is_empty</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+Test whether a map is empty or not.<br>
+</div>
+
+<pre><span id="VALmem"><span class="keyword">val</span> mem</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">mem x m</code> returns <code class="code">true</code> if <code class="code">m</code> contains a binding for <code class="code">x</code>,
+      and <code class="code">false</code> otherwise.<br>
+</div>
+
+<pre><span id="VALadd"><span class="keyword">val</span> add</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">add x y m</code> returns a map containing the same bindings as
+      <code class="code">m</code>, plus a binding of <code class="code">x</code> to <code class="code">y</code>. If <code class="code">x</code> was already bound
+      in <code class="code">m</code>, its previous binding disappears.<br>
+</div>
+
+<pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">singleton x y</code> returns the one-element map that contains a binding <code class="code">y</code>
+      for <code class="code">x</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">remove x m</code> returns a map containing the same bindings as
+      <code class="code">m</code>, except for <code class="code">x</code> which is unbound in the returned map.<br>
+</div>
+
+<pre><span id="VALmerge"><span class="keyword">val</span> merge</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a option -> 'b option -> 'c option) -><br>       'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b <a href="Bmap.S.html#TYPEt">t</a> -> 'c <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">merge f m1 m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
+      and of <code class="code">m2</code>. The presence of each such binding, and the corresponding
+      value, is determined with the function <code class="code">f</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+Total ordering between maps.  The first argument is a total ordering
+      used to compare data associated with equal keys in the two maps.<br>
+</div>
+
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">('a -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">equal cmp m1 m2</code> tests whether the maps <code class="code">m1</code> and <code class="code">m2</code> are
+      equal, that is, contain equal keys and associate them with
+      equal data.  <code class="code">cmp</code> is the equality predicate used to compare
+      the data associated with the keys.<br>
+</div>
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> unit) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<code class="code">iter f m</code> applies <code class="code">f</code> to all bindings in map <code class="code">m</code>.
+      <code class="code">f</code> receives the key as first argument, and the associated value
+      as second argument.  The bindings are passed to <code class="code">f</code> in increasing
+      order with respect to the ordering over the type of the keys.<br>
+</div>
+
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'b -> 'b) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b -> 'b</code></pre><div class="info ">
+<code class="code">fold f m a</code> computes <code class="code">(f kN dN ... (f k1 d1 a)...)</code>,
+      where <code class="code">k1 ... kN</code> are the keys of all bindings in <code class="code">m</code>
+      (in increasing order), and <code class="code">d1 ... dN</code> are the associated data.<br>
+</div>
+
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">for_all p m</code> checks if all the bindings of the map
+      satisfy the predicate <code class="code">p</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+<code class="code">exists p m</code> checks if at least one binding of the map
+      satisfy the predicate <code class="code">p</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">filter p m</code> returns the map with all the bindings in <code class="code">m</code>
+      that satisfy predicate <code class="code">p</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> * 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">partition p m</code> returns a pair of maps <code class="code">(m1, m2)</code>, where
+      <code class="code">m1</code> contains all the bindings of <code class="code">s</code> that satisfy the
+      predicate <code class="code">p</code>, and <code class="code">m2</code> is the map with all the bindings of
+      <code class="code">s</code> that do not satisfy <code class="code">p</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+Return the number of bindings of a map.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list</code></pre><div class="info ">
+Return the list of all bindings of the given map.
+      The returned list is sorted in increasing order with respect
+      to the ordering <code class="code">Ord.compare</code>, where <code class="code">Ord</code> is the argument
+      given to <a href="Map.Make.html"><code class="code">Map.Make</code></a>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
+Return the smallest binding of the given map
+      (with respect to the <code class="code">Ord.compare</code> ordering), or raise
+      <code class="code">Not_found</code> if the map is empty.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
+Same as <a href="Map.S.html#VALmin_binding"><code class="code">Map.S.min_binding</code></a>, but returns the largest binding
+      of the given map.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
+Return one binding of the given map, or raise <code class="code">Not_found</code> if
+      the map is empty. Which binding is chosen is unspecified,
+      but equal bindings will be chosen for equal maps.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> * 'a option * 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">split x m</code> returns a triple <code class="code">(l, data, r)</code>, where
+        <code class="code">l</code> is the map with all the bindings of <code class="code">m</code> whose key
+      is strictly less than <code class="code">x</code>;
+        <code class="code">r</code> is the map with all the bindings of <code class="code">m</code> whose key
+      is strictly greater than <code class="code">x</code>;
+        <code class="code">data</code> is <code class="code">None</code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
+        or <code class="code">Some v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.<br>
+<b>Since</b> 3.12.0<br>
+</div>
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+<code class="code">find x m</code> returns the current binding of <code class="code">x</code> in <code class="code">m</code>,
+      or raises <code class="code">Not_found</code> if no such binding exists.<br>
+</div>
+
+<pre><span id="VALmap"><span class="keyword">val</span> map</span> : <code class="type">('a -> 'b) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+<code class="code">map f m</code> returns a map with same domain as <code class="code">m</code>, where the
+      associated value <code class="code">a</code> of all bindings of <code class="code">m</code> has been
+      replaced by the result of the application of <code class="code">f</code> to <code class="code">a</code>.
+      The bindings are passed to <code class="code">f</code> in increasing order
+      with respect to the ordering over the type of the keys.<br>
+</div>
+
+<pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'b) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
+Same as <a href="Map.S.html#VALmap"><code class="code">Map.S.map</code></a>, but the function receives as arguments both the
+      key and the associated value for each binding of the map.<br>
+</div>
+
+<pre><span id="VALisEmpty"><span class="keyword">val</span> isEmpty</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALforAll"><span class="keyword">val</span> forAll</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALminBinding"><span class="keyword">val</span> minBinding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre>
+<pre><span id="VALmaxBinding"><span class="keyword">val</span> maxBinding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre>
+<pre><span id="VALsize"><span class="keyword">val</span> size</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> int</code></pre>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a option</code></pre><div class="info ">
+Safe version of <a href="Bmap.S.html#VALfind"><code class="code">Bmap.S.find</code></a><br>
+</div>
+
+<pre><span id="VALgetOr"><span class="keyword">val</span> getOr</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> default:'a -> 'a</code></pre><div class="info ">
 <code class="code">getOr k m ~default</code> returns the value associated to <code class="code">k</code> if present,
       and returns <code class="code">default</code> otherwise (if <code class="code">k</code> doesn't belong in <code class="code">m</code>).<br>
 </div>
 
-<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type">key -> ('a option -> 'a option) -> 'a t -> 'a t</code></pre><div class="info ">
+<pre><span id="VALupdate"><span class="keyword">val</span> update</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> ('a option -> 'a option) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">update k f m</code> calls <code class="code">f (Some v)</code> if <code class="code">find k m = v</code>,
       otherwise it calls <code class="code">f None</code>. In any case, if the result is <code class="code">None</code>
       <code class="code">k</code> is removed from <code class="code">m</code>, and if the result is <code class="code">Some v'</code> then
       <code class="code">add k v' m</code> is returned.<br>
 </div>
 
-<pre><span id="VALmergeSafe"><span class="keyword">val</span> mergeSafe</span> : <code class="type">f:(key -> [ `Both of 'a * 'b | `Left of 'a | `Right of 'b ] -> 'c option) -><br>       'a t -> 'b t -> 'c t</code></pre><div class="info ">
+<pre><span id="VALmergeSafe"><span class="keyword">val</span> mergeSafe</span> : <code class="type">f:(<a href="Bmap.S.html#TYPEkey">key</a> -><br>          [ `Both of 'a * 'b | `Left of 'a | `Right of 'b ] -> 'c option) -><br>       'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b <a href="Bmap.S.html#TYPEt">t</a> -> 'c <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">mergeSafe ~f a b</code> merges the maps <code class="code">a</code> and <code class="code">b</code> together.<br>
 </div>
 
-<pre><span id="VALfromList"><span class="keyword">val</span> fromList</span> : <code class="type">(key * 'a) list -> 'a t</code></pre><div class="info ">
+<pre><span id="VALfromList"><span class="keyword">val</span> fromList</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
 Build a map from the given list of bindings <code class="code">k_i -&gt; v_i</code>,
-      added in order using <code class="code">add</code>.
+      added in order using <a href="Bmap.S.html#VALadd"><code class="code">Bmap.S.add</code></a>.
       If a key occurs several times, only its last binding
       will be present in the result.<br>
 </div>
 
-<pre><span id="VALaddList"><span class="keyword">val</span> addList</span> : <code class="type">'a t -> (key * 'a) list -> 'a t</code></pre>
-<pre><span id="VALtoList"><span class="keyword">val</span> toList</span> : <code class="type">'a t -> (key * 'a) list</code></pre>
-<pre><span id="VALfromSeq"><span class="keyword">val</span> fromSeq</span> : <code class="type">(key * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a> -> 'a t</code></pre>
-<pre><span id="VALtoSeq"><span class="keyword">val</span> toSeq</span> : <code class="type">'a t -> (key * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a></code></pre></body></html>
+<pre><span id="VALaddList"><span class="keyword">val</span> addList</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre>
+<pre><span id="VALtoList"><span class="keyword">val</span> toList</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list</code></pre>
+<pre><span id="VALfromSeq"><span class="keyword">val</span> fromSeq</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre>
+<pre><span id="VALtoSeq"><span class="keyword">val</span> toSeq</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a></code></pre>
+<pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
+Iterate on keys only<br>
+</div>
+
+<pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
+Iterate on values only<br>
+</div>
+</body></html>
