@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Containers.ArrayLabels.html">
+<link rel="next" href="Containers.Bool.html">
+<link rel="Up" href="Containers.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Barray" rel="Chapter" href="Barray.html">
+<link title="Barray_slice" rel="Chapter" href="Barray_slice.html">
+<link title="Barraylabels" rel="Chapter" href="Barraylabels.html">
+<link title="Bbool" rel="Chapter" href="Bbool.html">
+<link title="Bchar" rel="Chapter" href="Bchar.html">
+<link title="Bfloat" rel="Chapter" href="Bfloat.html">
+<link title="Bformat" rel="Chapter" href="Bformat.html">
+<link title="Bfun" rel="Chapter" href="Bfun.html">
+<link title="Bhash" rel="Chapter" href="Bhash.html">
+<link title="Bhashtbl" rel="Chapter" href="Bhashtbl.html">
+<link title="Bheap" rel="Chapter" href="Bheap.html">
+<link title="Bint" rel="Chapter" href="Bint.html">
+<link title="Bint64" rel="Chapter" href="Bint64.html">
+<link title="Blist" rel="Chapter" href="Blist.html">
+<link title="Blistlabels" rel="Chapter" href="Blistlabels.html">
+<link title="Bmap" rel="Chapter" href="Bmap.html">
+<link title="Bopt" rel="Chapter" href="Bopt.html">
+<link title="Bord" rel="Chapter" href="Bord.html">
+<link title="Bpair" rel="Chapter" href="Bpair.html">
+<link title="Bparse" rel="Chapter" href="Bparse.html">
+<link title="Brandom" rel="Chapter" href="Brandom.html">
+<link title="Bref" rel="Chapter" href="Bref.html">
+<link title="Bresult" rel="Chapter" href="Bresult.html">
+<link title="Bset" rel="Chapter" href="Bset.html">
+<link title="Bstring" rel="Chapter" href="Bstring.html">
+<link title="Bvector" rel="Chapter" href="Bvector.html">
+<link title="Sequence" rel="Chapter" href="Sequence.html">
+<link title="Comparison" rel="Chapter" href="Comparison.html">
+<link title="Containers" rel="Chapter" href="Containers.html">
+<link title="Result" rel="Chapter" href="Result.html"><title>Containers.Array_slice</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Containers.ArrayLabels.html" title="Containers.ArrayLabels">Previous</a>
+&nbsp;<a class="up" href="Containers.html" title="Containers">Up</a>
+&nbsp;<a class="post" href="Containers.Bool.html" title="Containers.Bool">Next</a>
+</div>
+<h1>Module <a href="type_Containers.Array_slice.html">Containers.Array_slice</a></h1>
+
+<pre><span class="keyword">module</span> Array_slice: <code class="type"><a href="Barray_slice.html">Barray_slice</a></code></pre><hr width="100%">
+
+<pre><span id="TYPEsequence"><span class="keyword">type</span> <code class="type">'a</code> sequence</span> = <code class="type">('a -> unit) -> unit</code> </pre>
+
+
+<pre><span id="TYPEklist"><span class="keyword">type</span> <code class="type">'a</code> klist</span> = <code class="type">unit -> [ `Cons of 'a * 'a <a href="Barray_slice.html#TYPEklist">klist</a> | `Nil ]</code> </pre>
+
+
+<pre><span id="TYPEgen"><span class="keyword">type</span> <code class="type">'a</code> gen</span> = <code class="type">unit -> 'a option</code> </pre>
+
+
+<pre><span id="TYPEequal"><span class="keyword">type</span> <code class="type">'a</code> equal</span> = <code class="type">'a -> 'a -> bool</code> </pre>
+
+
+<pre><span id="TYPEord"><span class="keyword">type</span> <code class="type">'a</code> ord</span> = <code class="type">'a -> 'a -> int</code> </pre>
+
+
+<pre><span id="TYPErandom_gen"><span class="keyword">type</span> <code class="type">'a</code> random_gen</span> = <code class="type">Random.State.t -> 'a</code> </pre>
+
+
+<pre><span id="TYPEprinter"><span class="keyword">type</span> <code class="type">'a</code> printer</span> = <code class="type">Format.formatter -> 'a -> unit</code> </pre>
+
+
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> </pre>
+<div class="info ">
+Array slice, containing elements of type <code class="code">'a</code><br>
+</div>
+
+
+<pre><span id="VALempty"><span class="keyword">val</span> empty</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a></code></pre>
+<pre><span id="VALequal"><span class="keyword">val</span> equal</span> : <code class="type">'a <a href="Barray_slice.html#TYPEequal">equal</a> -> 'a <a href="Barray_slice.html#TYPEt">t</a> <a href="Barray_slice.html#TYPEequal">equal</a></code></pre>
+<pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">'a <a href="Barray_slice.html#TYPEord">ord</a> -> 'a <a href="Barray_slice.html#TYPEt">t</a> <a href="Barray_slice.html#TYPEord">ord</a></code></pre>
+<pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> 'a</code></pre>
+<pre><span id="VALget_safe"><span class="keyword">val</span> get_safe</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> 'a option</code></pre><div class="info ">
+<code class="code">get_safe a i</code> returns <code class="code">Some a.(i)</code> if <code class="code">i</code> is a valid index<br>
+<b>Since</b> 0.18<br>
+</div>
+
+<pre><span id="VALmake"><span class="keyword">val</span> make</span> : <code class="type">'a array -> int -> len:int -> 'a <a href="Barray_slice.html#TYPEt">t</a></code></pre><div class="info ">
+Create a slice from given offset and length..<br>
+<b>Raises</b> <code>Invalid_argument</code> if the slice isn't valid<br>
+</div>
+
+<pre><span id="VALof_slice"><span class="keyword">val</span> of_slice</span> : <code class="type">'a array * int * int -> 'a <a href="Barray_slice.html#TYPEt">t</a></code></pre><div class="info ">
+Make a sub-array from a triple <code class="code">(arr, i, len)</code> where <code class="code">arr</code> is the array,
+    <code class="code">i</code> the offset in <code class="code">arr</code>, and <code class="code">len</code> the number of elements of the slice.<br>
+<b>Raises</b> <code>Invalid_argument</code> if the slice isn't valid (See <a href="Barray_slice.html#VALmake"><code class="code">Barray_slice.make</code></a>)<br>
+</div>
+
+<pre><span id="VALto_slice"><span class="keyword">val</span> to_slice</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a array * int * int</code></pre><div class="info ">
+Convert into a triple <code class="code">(arr, i, len)</code> where <code class="code">len</code> is the length of
+    the subarray of <code class="code">arr</code> starting at offset <code class="code">i</code><br>
+</div>
+
+<pre><span id="VALto_list"><span class="keyword">val</span> to_list</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
+Convert directly to a list<br>
+<b>Since</b> 1.0<br>
+</div>
+
+<pre><span id="VALfull"><span class="keyword">val</span> full</span> : <code class="type">'a array -> 'a <a href="Barray_slice.html#TYPEt">t</a></code></pre><div class="info ">
+Slice that covers the full array<br>
+</div>
+
+<pre><span id="VALunderlying"><span class="keyword">val</span> underlying</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
+Underlying array (shared). Modifying this array will modify the slice<br>
+</div>
+
+<pre><span id="VALcopy"><span class="keyword">val</span> copy</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
+Copy into a new array<br>
+</div>
+
+<pre><span id="VALsub"><span class="keyword">val</span> sub</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> int -> 'a <a href="Barray_slice.html#TYPEt">t</a></code></pre><div class="info ">
+Sub-slice<br>
+</div>
+
+<pre><span id="VALset"><span class="keyword">val</span> set</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> 'a -> unit</code></pre>
+<pre><span id="VALlength"><span class="keyword">val</span> length</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int</code></pre>
+<pre><span id="VALfold"><span class="keyword">val</span> fold</span> : <code class="type">('a -> 'b -> 'a) -> 'a -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> 'a</code></pre>
+<pre><span id="VALfoldi"><span class="keyword">val</span> foldi</span> : <code class="type">('a -> int -> 'b -> 'a) -> 'a -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+Fold left on array, with index<br>
+</div>
+
+<pre><span id="VALfold_while"><span class="keyword">val</span> fold_while</span> : <code class="type">('a -> 'b -> 'a * [ `Continue | `Stop ]) -> 'a -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
+Fold left on array until a stop condition via <code class="code">('a, `Stop)</code> is
+    indicated by the accumulator<br>
+<b>Since</b> 0.8<br>
+</div>
+
+<pre><span id="VALiter"><span class="keyword">val</span> iter</span> : <code class="type">('a -> unit) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre>
+<pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
+<code class="code">blit from i into j len</code> copies <code class="code">len</code> elements from the first array
+    to the second. See <code class="code">Array.blit</code>.<br>
+</div>
+
+<pre><span id="VALreverse_in_place"><span class="keyword">val</span> reverse_in_place</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+Reverse the array in place<br>
+</div>
+
+<pre><span id="VALsorted"><span class="keyword">val</span> sorted</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a array</code></pre><div class="info ">
+<code class="code">sorted cmp a</code> makes a copy of <code class="code">a</code> and sorts it with <code class="code">cmp</code>.<br>
+<b>Since</b> 1.0<br>
+</div>
+
+<pre><span id="VALsort_indices"><span class="keyword">val</span> sort_indices</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> int array</code></pre><div class="info ">
+<code class="code">sort_indices cmp a</code> returns a new array <code class="code">b</code>, with the same length as <code class="code">a</code>,
+    such that <code class="code">b.(i)</code> is the index of the <code class="code">i</code>-th element of <code class="code">a</code> in <code class="code">sort cmp a</code>.
+    In other words, <code class="code">map (fun i -&gt; a.(i)) (sort_indices a) = sorted cmp a</code>.
+    <code class="code">a</code> is not modified.<br>
+<b>Since</b> 1.0<br>
+</div>
+
+<pre><span id="VALsort_ranking"><span class="keyword">val</span> sort_ranking</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> int array</code></pre><div class="info ">
+<code class="code">sort_ranking cmp a</code> returns a new array <code class="code">b</code>, with the same length as <code class="code">a</code>,
+    such that <code class="code">b.(i)</code> is the position in <code class="code">sorted cmp a</code> of the <code class="code">i</code>-th
+    element of <code class="code">a</code>.
+    <code class="code">a</code> is not modified.
+<p>
+
+    In other words, <code class="code">map (fun i -&gt; (sorted cmp a).(i)) (sort_ranking cmp a) = a</code>.
+<p>
+
+    Without duplicates, we also have
+    <code class="code">lookup_exn a.(i) (sorted a) = (sorted_ranking a).(i)</code><br>
+<b>Since</b> 1.0<br>
+</div>
+
+<pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type">('a -> 'b option) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b option</code></pre><div class="info ">
+<code class="code">find f a</code> returns <code class="code">Some y</code> if there is an element <code class="code">x</code> such
+    that <code class="code">f x = Some y</code>, else it returns <code class="code">None</code><br>
+</div>
+
+<pre><span id="VALfindi"><span class="keyword">val</span> findi</span> : <code class="type">(int -> 'a -> 'b option) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b option</code></pre><div class="info ">
+Like <a href="Barray_slice.html#VALfind"><code class="code">Barray_slice.find</code></a>, but also pass the index to the predicate function.<br>
+<b>Since</b> 0.3.4<br>
+</div>
+
+<pre><span id="VALfind_idx"><span class="keyword">val</span> find_idx</span> : <code class="type">('a -> bool) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> (int * 'a) option</code></pre><div class="info ">
+<code class="code">find_idx p x</code> returns <code class="code">Some (i,x)</code> where <code class="code">x</code> is the <code class="code">i</code>-th element of <code class="code">l</code>,
+    and <code class="code">p x</code> holds. Otherwise returns <code class="code">None</code><br>
+<b>Since</b> 0.3.4<br>
+</div>
+
+<pre><span id="VALlookup"><span class="keyword">val</span> lookup</span> : <code class="type">?cmp:'a <a href="Barray_slice.html#TYPEord">ord</a> -> 'a -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> int option</code></pre><div class="info ">
+Lookup the index of some value in a sorted array.<br>
+<b>Returns</b> <code class="code">None</code> if the key is not present, or
+      <code class="code">Some i</code> (<code class="code">i</code> the index of the key) otherwise<br>
+</div>
+
+<pre><span id="VALlookup_exn"><span class="keyword">val</span> lookup_exn</span> : <code class="type">?cmp:'a <a href="Barray_slice.html#TYPEord">ord</a> -> 'a -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> int</code></pre><div class="info ">
+Same as <a href="Barray_slice.html#VALlookup_exn"><code class="code">Barray_slice.lookup_exn</code></a>, but<br>
+<b>Raises</b> <code>Not_found</code> if the key is not present<br>
+</div>
+
+<pre><span id="VALbsearch"><span class="keyword">val</span> bsearch</span> : <code class="type">?cmp:('a -> 'a -> int) -><br>       'a -><br>       'a <a href="Barray_slice.html#TYPEt">t</a> -><br>       [ `All_bigger | `All_lower | `At of int | `Empty | `Just_after of int ]</code></pre><div class="info ">
+<code class="code">bsearch ?cmp x arr</code> finds the index of the object <code class="code">x</code> in the array <code class="code">arr</code>,
+    provided <code class="code">arr</code> is <b>sorted</b> using <code class="code">cmp</code>. If the array is not sorted,
+    the result is not specified (may raise Invalid_argument).
+<p>
+
+    Complexity: O(log n) where n is the length of the array
+    (dichotomic search).<br>
+<b>Since</b> 0.13<br>
+<b>Raises</b> <code>Invalid_argument</code> if the array is found to be unsorted w.r.t <code class="code">cmp</code><br>
+<b>Returns</b> - <code class="code">`At i</code> if <code class="code">cmp arr.(i) x = 0</code> (for some i)<ul>
+<li><code class="code">`All_lower</code> if all elements of <code class="code">arr</code> are lower than <code class="code">x</code></li>
+<li><code class="code">`All_bigger</code> if all elements of <code class="code">arr</code> are bigger than <code class="code">x</code></li>
+<li><code class="code">`Just_after i</code> if <code class="code">arr.(i) &lt; x &lt; arr.(i+1)</code></li>
+<li><code class="code">`Empty</code> if the array is empty</li>
+</ul>
+<br>
+</div>
+
+<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">('a -> bool) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALfor_all2"><span class="keyword">val</span> for_all2</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+Forall on pairs of arrays.<br>
+<b>Since</b> 0.20<br>
+<b>Raises</b> <code>Invalid_argument</code> if they have distinct lengths
+    allow different types<br>
+</div>
+
+<pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">('a -> bool) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> bool</code></pre>
+<pre><span id="VALexists2"><span class="keyword">val</span> exists2</span> : <code class="type">('a -> 'b -> bool) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
+Exists on pairs of arrays.<br>
+<b>Since</b> 0.20<br>
+<b>Raises</b> <code>Invalid_argument</code> if they have distinct lengths
+    allow different types<br>
+</div>
+
+<pre><span id="VALfold2"><span class="keyword">val</span> fold2</span> : <code class="type">('acc -> 'a -> 'b -> 'acc) -><br>       'acc -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> 'acc</code></pre><div class="info ">
+Fold on two arrays stepwise.<br>
+<b>Since</b> 0.20<br>
+<b>Raises</b> <code>Invalid_argument</code> if they have distinct lengths<br>
+</div>
+
+<pre><span id="VALiter2"><span class="keyword">val</span> iter2</span> : <code class="type">('a -> 'b -> unit) -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> 'b <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+Iterate on two arrays stepwise.<br>
+<b>Since</b> 0.20<br>
+<b>Raises</b> <code>Invalid_argument</code> if they have distinct lengths<br>
+</div>
+
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+Shuffle randomly the array, in place<br>
+</div>
+
+<pre><span id="VALshuffle_with"><span class="keyword">val</span> shuffle_with</span> : <code class="type">Random.State.t -> 'a <a href="Barray_slice.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+Like shuffle but using a specialized random state<br>
+</div>
+
+<pre><span id="VALrandom_choose"><span class="keyword">val</span> random_choose</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a <a href="Barray_slice.html#TYPErandom_gen">random_gen</a></code></pre><div class="info ">
+Choose an element randomly.<br>
+<b>Raises</b> <code>Not_found</code> if the array/slice is empty<br>
+</div>
+
+<pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a <a href="Barray_slice.html#TYPEsequence">sequence</a></code></pre>
+<pre><span id="VALto_gen"><span class="keyword">val</span> to_gen</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a <a href="Barray_slice.html#TYPEgen">gen</a></code></pre>
+<pre><span id="VALto_klist"><span class="keyword">val</span> to_klist</span> : <code class="type">'a <a href="Barray_slice.html#TYPEt">t</a> -> 'a <a href="Barray_slice.html#TYPEklist">klist</a></code></pre>
+<pre><span id="VALpp"><span class="keyword">val</span> pp</span> : <code class="type">?sep:string -><br>       'a <a href="Barray_slice.html#TYPEprinter">printer</a> -> 'a <a href="Barray_slice.html#TYPEt">t</a> <a href="Barray_slice.html#TYPEprinter">printer</a></code></pre><div class="info ">
+Print an array of items with printing function<br>
+</div>
+
+<pre><span id="VALpp_i"><span class="keyword">val</span> pp_i</span> : <code class="type">?sep:string -><br>       (int -> 'a <a href="Barray_slice.html#TYPEprinter">printer</a>) -> 'a <a href="Barray_slice.html#TYPEt">t</a> <a href="Barray_slice.html#TYPEprinter">printer</a></code></pre><div class="info ">
+Print an array, giving the printing function both index and item<br>
+</div>
+</body></html>
