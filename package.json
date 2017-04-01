@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "bsb -w",
+    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli src/*.ml",
     "build": "bsb",
     "clean": "rm -rf lib",
     "coverage": "npm run build && nyc ava && nyc report --reporter=html",
-    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli",
     "test": "npm run build && ava",
     "watch:bsb": "bsb -make-world -w",
     "watch:ava": "ava -w",

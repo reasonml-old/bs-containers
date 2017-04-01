@@ -82,3 +82,4 @@ module String = struct
   include Bstring
 end
 module Vector = Bvector
+module Sequence = Sequence
