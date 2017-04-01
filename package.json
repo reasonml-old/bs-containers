@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "bsb -w",
-    "doc": "ocamldoc -html -I lib/bs/src -d doc src/*.mli src/*.ml",
+    "doc": "ocamldoc -html -I lib/bs/src -I doc/stdlib-cmi -d doc src/*.mli doc/stdlib-cmi/*.mli",
     "build": "bsb",
     "clean": "rm -rf lib",
     "coverage": "npm run build && nyc ava && nyc report --reporter=html",

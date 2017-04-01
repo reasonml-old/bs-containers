@@ -105,7 +105,7 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 
 (* was (<*>) *)
 val apply : ('a -> 'b) t -> 'a t -> 'b t
-(** [apply maybeF a] is [Some (f x)] if [maybeF) is [Some f] and [a] is [Some x],
+(** [apply maybeF a] is [Some (f x)] if [maybeF] is [Some f] and [a] is [Some x],
     [None] otherwise *)
 
 (** {2 Composition} *)
