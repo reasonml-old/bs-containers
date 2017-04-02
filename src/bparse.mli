@@ -13,9 +13,9 @@
 
       let ptree = fix @@ fun self ->
         skip_space *>
-          ( (try_ (char '(') *> (pure mk_node <*> self <*> self) <* char ')')
-            <|>
-              (U.int >|= mk_leaf) )
+        ( (try_ (char '(') *> (pure mk_node <*> self <*> self) <* char ')')
+          <|>
+          (U.int >|= mk_leaf) )
       ;;
 
       parse_string_exn ptree "(1 (2 3))" ;;

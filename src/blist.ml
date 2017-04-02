@@ -55,10 +55,10 @@ let append l1 l2 =
     List.rev_append (List.rev l1) l2
   in
   match l1 with
-    | [] -> l2
-    | [x] -> x::l2
-    | [x;y] -> x::y::l2
-    | _ -> direct direct_depth_append_ l1 l2
+  | [] -> l2
+  | [x] -> x::l2
+  | [x;y] -> x::y::l2
+  | _ -> direct direct_depth_append_ l1 l2
 
 let (@) = append
 
@@ -126,8 +126,8 @@ let rec fold_while f acc = function
   | [] -> acc
   | e::l -> let acc, cont = f acc e in
     match cont with
-      | `Stop -> acc
-      | `Continue -> fold_while f acc l
+    | `Stop -> acc
+    | `Continue -> fold_while f acc l
 
 (*$T
   fold_while (fun acc b -> if b then acc+1, `Continue else acc, `Stop) 0 [true;true;false;true] = 2
@@ -301,9 +301,9 @@ let partition_map f l =
     | [] -> List.rev l1, List.rev l2
     | x :: tl ->
       match f x with
-        | `Left y -> iter f (y :: l1) l2 tl
-        | `Right y -> iter f l1 (y :: l2) tl
-        | `Drop -> iter f l1 l2 tl
+      | `Left y -> iter f (y :: l1) l2 tl
+      | `Right y -> iter f l1 (y :: l2) tl
+      | `Drop -> iter f l1 l2 tl
   in
   iter f [] [] l
 
@@ -383,11 +383,11 @@ let sorted_insert ?(cmp=Pervasives.compare) ?(uniq=false) x l =
     | [] -> List.rev_append left [x]
     | y :: tail ->
       match cmp x y with
-        | 0 ->
-          let l' = if uniq then l else x :: l in
-          List.rev_append left l'
-        | n when n<0 -> List.rev_append left (x :: l)
-        | _ -> aux cmp uniq x (y::left) tail
+      | 0 ->
+        let l' = if uniq then l else x :: l in
+        List.rev_append left l'
+      | n when n<0 -> List.rev_append left (x :: l)
+      | _ -> aux cmp uniq x (y::left) tail
   in
   aux cmp uniq x [] l
 
@@ -639,8 +639,8 @@ let find_mapi f l =
     | [] -> None
     | x::l' ->
       match f i x with
-        | Some _ as res -> res
-        | None -> aux f (i+1) l'
+      | Some _ as res -> res
+      | None -> aux f (i+1) l'
   in aux f 0 l
 
 let find_map f l = find_mapi (fun _ -> f) l
@@ -972,7 +972,7 @@ module Assoc = struct
   let update ?(eq=(=)) ~f x l =
     search_set eq [] l x
       ~f:(fun x opt_y rest ->
-        match f opt_y with
+          match f opt_y with
           | None -> rest (* drop *)
           | Some y' -> (x,y') :: rest)
   (*$=
@@ -990,8 +990,8 @@ module Assoc = struct
   let remove ?(eq=(=)) x l =
     search_set eq [] l x
       ~f:(fun _ opt_y rest -> match opt_y with
-        | None -> l  (* keep as is *)
-        | Some _ -> rest)
+          | None -> l  (* keep as is *)
+          | Some _ -> rest)
 
   (*$=
     [1,"1"] \
@@ -1116,9 +1116,9 @@ let to_gen l =
   let l = ref l in
   fun () ->
     match !l with
-      | [] -> None
-      | x::l' ->
-        l := l'; Some x
+    | [] -> None
+    | x::l' ->
+      l := l'; Some x
 
 let of_gen g =
   let rec direct i g =

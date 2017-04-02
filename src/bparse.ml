@@ -49,11 +49,11 @@ let rec string_of_branch l =
     | Some s -> Format.sprintf "while parsing %s, " s
   in
   match l with
-    | [] -> ""
-    | [l,c,s] ->
-      Format.sprintf "@[%aat line %d, col %d@]" pp_s s l c
-    | (l,c,s) :: tail ->
-      Format.sprintf "@[%aat line %d, col %d@]@,%s" pp_s s l c (string_of_branch tail)
+  | [] -> ""
+  | [l,c,s] ->
+    Format.sprintf "@[%aat line %d, col %d@]" pp_s s l c
+  | (l,c,s) :: tail ->
+    Format.sprintf "@[%aat line %d, col %d@]@,%s" pp_s s l c (string_of_branch tail)
 
 let () = Printexc.register_printer
     (function
@@ -151,9 +151,9 @@ let char c =
 let char_if p st ~ok ~err =
   next st ~err
     ~ok:(fun c ->
-      if p c then ok c
-      else fail_ ~err st (fun () -> Printf.sprintf "unexpected char '%c'" c)
-    )
+        if p c then ok c
+        else fail_ ~err st (fun () -> Printf.sprintf "unexpected char '%c'" c)
+      )
 
 let chars_if p st ~ok ~err:_ =
   let i = st.i in
@@ -164,9 +164,9 @@ let chars_if p st ~ok ~err:_ =
 let chars1_if p st ~ok ~err =
   chars_if p st ~err
     ~ok:(fun s ->
-      if s = ""
-      then fail_ ~err st (const_ "unexpected sequence of chars")
-      else ok s)
+        if s = ""
+        then fail_ ~err st (const_ "unexpected sequence of chars")
+        else ok s)
 
 let rec skip_chars p st ~ok ~err =
   if not (is_done st) && p (cur st) then (
@@ -190,8 +190,8 @@ let white = char_if is_white
 let endline st ~ok ~err =
   next st ~err
     ~ok:(function
-      | '\n' as c -> ok c
-      | _ -> fail_ ~err st (const_ "expected end-of-line"))
+        | '\n' as c -> ok c
+        | _ -> fail_ ~err st (const_ "expected end-of-line"))
 
 let skip_space = skip_chars is_space
 let skip_white = skip_chars is_white
@@ -201,18 +201,18 @@ let (<|>) : 'a t -> 'a t -> 'a t
     let i = st.i in
     x st ~ok
       ~err:(fun e ->
-        let j = st.i in
-        if i=j then y st ~ok ~err (* try [y] *)
-        else err e (* fail *)
-      )
+          let j = st.i in
+          if i=j then y st ~ok ~err (* try [y] *)
+          else err e (* fail *)
+        )
 
 let try_ : 'a t -> 'a t
   = fun p st ~ok ~err ->
     let i = pos st in
     p st ~ok
       ~err:(fun e ->
-        backtrack st i;
-        err e)
+          backtrack st i;
+          err e)
 
 let suspend f st ~ok ~err = f () st ~ok ~err
 
@@ -221,9 +221,9 @@ let (<?>) : 'a t -> string -> 'a t
     let i = st.i in
     x st ~ok
       ~err:(fun e ->
-        if st.i = i
-        then fail_ ~err st (fun () -> msg)
-        else err e)
+          if st.i = i
+          then fail_ ~err st (fun () -> msg)
+          else err e)
 
 let string s st ~ok ~err =
   let rec check i =
@@ -231,9 +231,9 @@ let string s st ~ok ~err =
     else
       next st ~err
         ~ok:(fun c ->
-          if c = s.[i]
-          then check (i+1)
-          else fail_ ~err st (fun () -> Printf.sprintf "expected \"%s\"" s))
+            if c = s.[i]
+            then check (i+1)
+            else fail_ ~err st (fun () -> Printf.sprintf "expected \"%s\"" s))
   in
   check 0
 
@@ -242,12 +242,12 @@ let rec many_rec : 'a t -> 'a list -> 'a list t = fun p acc st ~ok ~err ->
   else
     p st ~err
       ~ok:(fun x ->
-        let i = pos st in
-        many_rec p (x :: acc) st ~ok
-          ~err:(fun _ ->
-            backtrack st i;
-            ok(List.rev acc))
-      )
+          let i = pos st in
+          many_rec p (x :: acc) st ~ok
+            ~err:(fun _ ->
+                backtrack st i;
+                ok(List.rev acc))
+        )
 
 let many : 'a t -> 'a list t
   = fun p st ~ok ~err -> many_rec p [] st ~ok ~err
@@ -261,9 +261,9 @@ let rec skip p st ~ok ~err =
   p st
     ~ok:(fun _ -> skip p st ~ok ~err)
     ~err:(fun _ ->
-      backtrack st i;
-      ok()
-    )
+        backtrack st i;
+        ok()
+      )
 
 (* by (sep1 ~by p) *)
 let rec sep_rec ~by p = try_ by *> sep1 ~by p
@@ -304,11 +304,11 @@ let memo (type a) (p:a t):a t =
       (* parse, and save *)
       p st
         ~err:(fun e ->
-          MemoTbl.H.replace tbl (i,id) (fun () -> r := Some (MemoTbl.Fail e));
-          err e)
+            MemoTbl.H.replace tbl (i,id) (fun () -> r := Some (MemoTbl.Fail e));
+            err e)
         ~ok:(fun x ->
-          MemoTbl.H.replace tbl (i,id) (fun () -> r := Some (MemoTbl.Ok x));
-          ok x)
+            MemoTbl.H.replace tbl (i,id) (fun () -> r := Some (MemoTbl.Ok x));
+            ok x)
 
 let fix_memo f =
   let rec p =
@@ -325,8 +325,8 @@ let parse_exn p st =
   let res = ref None in
   p st ~ok:(fun x -> res := Some x) ~err:(fun e -> raise e);
   match !res with
-    | None -> assert false
-    | Some x -> x
+  | None -> assert false
+  | Some x -> x
 
 let exn_to_err e =Result.Error (Printexc.to_string e)
 
@@ -382,8 +382,8 @@ module U = struct
 
   let list ?(start="[") ?(stop="]") ?(sep=";") p =
     string start *> skip_white *>
-      sep_ ~by:(skip_white *> string sep *> skip_white) p <*
-      skip_white <* string stop
+    sep_ ~by:(skip_white *> string sep *> skip_white) p <*
+    skip_white <* string stop
 
   let int =
     chars1_if (fun c -> is_num c || c='-')
@@ -398,17 +398,17 @@ module U = struct
 
   let pair ?(start="(") ?(stop=")") ?(sep=",") p1 p2 =
     string start *> skip_white *>
-      p1 >>= fun x1 ->
+    p1 >>= fun x1 ->
     skip_white *> string sep *> skip_white *>
-      p2 >>= fun x2 ->
+    p2 >>= fun x2 ->
     string stop *> return (x1,x2)
 
   let triple ?(start="(") ?(stop=")") ?(sep=",") p1 p2 p3 =
     string start *> skip_white *>
-      p1 >>= fun x1 ->
+    p1 >>= fun x1 ->
     skip_white *> string sep *> skip_white *>
-      p2 >>= fun x2 ->
+    p2 >>= fun x2 ->
     skip_white *> string sep *> skip_white *>
-      p3 >>= fun x3 ->
+    p3 >>= fun x3 ->
     string stop *> return (x1,x2,x3)
 end

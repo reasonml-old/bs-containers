@@ -127,8 +127,8 @@ let fold_filter_map f init seq yield =
        let acc', y = f !r x in
        r := acc';
        match y with
-         | None -> ()
-         | Some y' -> yield y')
+       | None -> ()
+       | Some y' -> yield y')
 
 let map f seq k = seq (fun x -> k (f x))
 
@@ -182,9 +182,9 @@ let flat_map_l f seq k =
   seq (fun x -> List.iter k (f x))
 
 let rec seq_list_map f l k = match l with
- | [] -> k []
- | x :: tail ->
-   f x (fun x' -> seq_list_map f tail (fun tail' -> k (x'::tail')))
+  | [] -> k []
+  | x :: tail ->
+    f x (fun x' -> seq_list_map f tail (fun tail' -> k (x'::tail')))
 
 let seq_list l = seq_list_map (fun x->x) l
 
@@ -375,8 +375,8 @@ let sorted ?(cmp=Pervasives.compare) seq =
   let prev = ref None in
   try
     seq (fun x -> match !prev with
-      | Some y when cmp y x > 0 -> raise Exit_sorted
-      | _ -> prev := Some x);
+        | Some y when cmp y x > 0 -> raise Exit_sorted
+        | _ -> prev := Some x);
     true
   with Exit_sorted -> false
 
@@ -454,13 +454,13 @@ let uniq ?(eq=fun x y -> x = y) seq k =
   and prev = ref (Obj.magic 0) in  (* avoid option type, costly *)
   seq
     (fun x ->
-      if !has_prev && eq !prev x
-      then ()  (* duplicate *)
-      else (
-        has_prev := true;
-        prev := x;
-        k x
-      ))
+       if !has_prev && eq !prev x
+       then ()  (* duplicate *)
+       else (
+         has_prev := true;
+         prev := x;
+         k x
+       ))
 
 (*$R
   [1;2;2;3;4;4;4;3;3]
@@ -509,7 +509,7 @@ let rec diagonal_l l yield = match l with
 
 (*$=
   [0,1; 0,2; 1,2] (diagonal_l [0;1;2] |> to_list)
-  *)
+*)
 
 let diagonal seq =
   let l = ref [] in
@@ -518,7 +518,7 @@ let diagonal seq =
 
 (*$=
   [0,1; 0,2; 1,2] (of_list [0;1;2] |> diagonal |> to_list)
-  *)
+*)
 
 let join ~join_row s1 s2 k =
   s1 (fun a ->
@@ -647,9 +647,9 @@ let inter (type a) ?(eq=(=)) ?(hash=Hashtbl.hash) c1 c2 =
     (fun x ->
        try
          match Tbl.find tbl x with
-           | Inter_left ->
-             Tbl.replace tbl x Inter_both; (* save *)
-           | Inter_both -> ()
+         | Inter_left ->
+           Tbl.replace tbl x Inter_both; (* save *)
+         | Inter_both -> ()
        with Not_found -> ());
   fun yield -> Tbl.iter (fun x res -> if res=Inter_both then yield x) tbl
 
@@ -702,8 +702,8 @@ let max ?(lt=fun x y -> x < y) seq =
   let ret = ref None in
   seq
     (fun x -> match !ret with
-      | None -> ret := Some x
-      | Some y -> if lt y x then ret := Some x);
+       | None -> ret := Some x
+       | Some y -> if lt y x then ret := Some x);
   !ret
 
 let max_exn ?lt seq = match max ?lt seq with
@@ -714,8 +714,8 @@ let min ?(lt=fun x y -> x < y) seq =
   let ret = ref None in
   seq
     (fun x -> match !ret with
-      | None -> ret := Some x
-      | Some y -> if lt x y then ret := Some x);
+       | None -> ret := Some x
+       | Some y -> if lt x y then ret := Some x);
   !ret
 
 let min_exn ?lt seq = match min ?lt seq with
@@ -747,9 +747,9 @@ let take n seq k =
   try
     seq
       (fun x ->
-        if !count = n then raise ExitTake;
-        incr count;
-        k x)
+         if !count = n then raise ExitTake;
+         incr count;
+         k x)
   with ExitTake -> ()
 
 (*$R
@@ -798,9 +798,9 @@ let drop_while p seq k =
   let drop = ref true in
   seq
     (fun x ->
-      if !drop
-      then if p x then () else (drop := false; k x)
-      else k x)
+       if !drop
+       then if p x then () else (drop := false; k x)
+       else k x)
 
 let rev seq =
   let l = MList.of_seq seq in
@@ -857,8 +857,8 @@ let find_map f seq =
     try
       seq
         (fun x -> match f x with
-          | None -> ()
-          | Some _ as res -> r := res; raise ExitFind);
+           | None -> ()
+           | Some _ as res -> r := res; raise ExitFind);
     with ExitFind -> ()
   end;
   !r
@@ -872,8 +872,8 @@ let find_mapi f seq =
     try
       seq
         (fun x -> match f !i x with
-          | None -> incr i
-          | Some _ as res -> r := res; raise ExitFind);
+           | None -> incr i
+           | Some _ as res -> r := res; raise ExitFind);
     with ExitFind -> ()
   end;
   !r

@@ -62,8 +62,8 @@ let fold_while f acc a =
     if i < Array.length a then
       let acc, cont = f acc a.(i) in
       match cont with
-        | `Stop -> acc
-        | `Continue -> fold_while_i f acc (i+1)
+      | `Stop -> acc
+      | `Continue -> fold_while_i f acc (i+1)
     else acc
   in fold_while_i f acc 0
 
@@ -235,21 +235,21 @@ let rec _lookup_rec ~cmp k a i j =
   else
     let middle = (j+i)/2 in
     match cmp k a.(middle) with
-      | 0 -> middle
-      | n when n<0 -> _lookup_rec ~cmp k a i (middle-1)
-      | _ -> _lookup_rec ~cmp k a (middle+1) j
+    | 0 -> middle
+    | n when n<0 -> _lookup_rec ~cmp k a i (middle-1)
+    | _ -> _lookup_rec ~cmp k a (middle+1) j
 
 let _lookup_exn ~cmp k a i j =
   if i>j then raise Not_found;
   match cmp k a.(i) with
-    | 0 -> i
-    | n when n<0 -> raise Not_found (* too low *)
-    | _ when i=j -> raise Not_found (* too high *)
-    | _ ->
-      match cmp k a.(j) with
-        | 0 -> j
-        | n when n<0 -> _lookup_rec ~cmp k a (i+1) (j-1)
-        | _ -> raise Not_found  (* too high *)
+  | 0 -> i
+  | n when n<0 -> raise Not_found (* too low *)
+  | _ when i=j -> raise Not_found (* too high *)
+  | _ ->
+    match cmp k a.(j) with
+    | 0 -> j
+    | n when n<0 -> _lookup_rec ~cmp k a (i+1) (j-1)
+    | _ -> raise Not_found  (* too high *)
 
 let lookup_exn ?(cmp=Pervasives.compare) k a =
   _lookup_exn ~cmp k a 0 (Array.length a-1)
@@ -275,9 +275,9 @@ let bsearch ?(cmp=Pervasives.compare) k a =
     else
       let middle = i + (j - i) / 2 in (* avoid overflow *)
       match cmp k a.(middle) with
-        | 0 -> `At middle
-        | n when n<0 -> aux i (middle - 1)
-        | _ -> aux (middle + 1) j
+      | 0 -> `At middle
+      | n when n<0 -> aux i (middle - 1)
+      | _ -> aux (middle + 1) j
   in
   let n = Array.length a in
   if n=0 then `Empty

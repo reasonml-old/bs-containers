@@ -39,9 +39,9 @@ let hash s = Hashtbl.hash s
 let init = String.init
 
 
-  (*let init n f =
-    let buf = Bytes.init n f in
-    Bytes.unsafe_to_string buf*)
+(*let init n f =
+  let buf = Bytes.init n f in
+  Bytes.unsafe_to_string buf*)
 
 let length = String.length
 
@@ -93,34 +93,34 @@ module Find = struct
       let len = length str in
       let get = get_ ~dir in (* how to read elements of the string *)
       match len with
-        | 0 -> {failure=[| |]; str;}
-        | 1 -> {failure=[| -1 |]; str;}
-        | _ ->
-          (* at least 2 elements, the algorithm can work *)
-          let failure = Array.make len 0 in
-          failure.(0) <- -1;
-          (* i: current index in str *)
-          let i = ref 2 in
-          (* j: index of candidate substring *)
-          let j = ref 0 in
-          while !i < len do
-            match !j with
-              | _ when get str (!i-1) = get str !j ->
-                (* substring starting at !j continues matching current char *)
-                incr j;
-                failure.(!i) <- !j;
-                incr i;
-              | 0 ->
-                (* back to the beginning *)
-                failure.(!i) <- 0;
-                incr i;
-              | _ ->
-                (* fallback for the prefix string *)
-                assert (!j > 0);
-                j := failure.(!j)
-          done;
-          (* Format.printf "{@[failure:%a, str:%s@]}@." CCFormat.(array int) failure str; *)
-          { failure; str; }
+      | 0 -> {failure=[| |]; str;}
+      | 1 -> {failure=[| -1 |]; str;}
+      | _ ->
+        (* at least 2 elements, the algorithm can work *)
+        let failure = Array.make len 0 in
+        failure.(0) <- -1;
+        (* i: current index in str *)
+        let i = ref 2 in
+        (* j: index of candidate substring *)
+        let j = ref 0 in
+        while !i < len do
+          match !j with
+          | _ when get str (!i-1) = get str !j ->
+            (* substring starting at !j continues matching current char *)
+            incr j;
+            failure.(!i) <- !j;
+            incr i;
+          | 0 ->
+            (* back to the beginning *)
+            failure.(!i) <- 0;
+            incr i;
+          | _ ->
+            (* fallback for the prefix string *)
+            assert (!j > 0);
+            j := failure.(!j)
+        done;
+        (* Format.printf "{@[failure:%a, str:%s@]}@." CCFormat.(array int) failure str; *)
+        { failure; str; }
 
   let kmp_compile s = kmp_compile_ ~dir:Direct s
   let kmp_rcompile s = kmp_compile_ ~dir:Reverse s
@@ -228,9 +228,9 @@ module Find = struct
       | None -> String.length s - 1
     in
     match pattern with
-      | P_char c ->
-        (try String.rindex_from s start c with Not_found -> -1)
-      | P_KMP pattern -> kmp_rfind ~pattern s start
+    | P_char c ->
+      (try String.rindex_from s start c with Not_found -> -1)
+    | P_KMP pattern -> kmp_rfind ~pattern s start
 end
 
 let find ?(start=0) ~sub =
@@ -273,31 +273,31 @@ let replace_at_ ~pos ~len ~by s =
 let replace ?(which=`All) ~sub ~by s =
   if sub="" then invalid_arg "CCString.replace";
   match which with
-    | `Left ->
-      let i = find ~sub s ~start:0 in
-      if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
-    | `Right ->
-      let i = rfind ~sub s in
-      if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
-    | `All ->
-      (* compile search pattern only once *)
-      let pattern = Find.compile sub in
-      let b = Buffer.create (String.length s) in
-      let start = ref 0 in
-      while !start < String.length s do
-        let i = Find.find ~pattern s ~start:!start in
-        if i>=0 then (
-          (* between last and cur occurrences *)
-          Buffer.add_substring b s !start (i- !start);
-          Buffer.add_string b by;
-          start := i + String.length sub
-        ) else (
-          (* add remainder *)
-          Buffer.add_substring b s !start (String.length s - !start);
-          start := String.length s (* stop *)
-        )
-      done;
-      Buffer.contents b
+  | `Left ->
+    let i = find ~sub s ~start:0 in
+    if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
+  | `Right ->
+    let i = rfind ~sub s in
+    if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
+  | `All ->
+    (* compile search pattern only once *)
+    let pattern = Find.compile sub in
+    let b = Buffer.create (String.length s) in
+    let start = ref 0 in
+    while !start < String.length s do
+      let i = Find.find ~pattern s ~start:!start in
+      if i>=0 then (
+        (* between last and cur occurrences *)
+        Buffer.add_substring b s !start (i- !start);
+        Buffer.add_string b by;
+        start := i + String.length sub
+      ) else (
+        (* add remainder *)
+        Buffer.add_substring b s !start (String.length s - !start);
+        start := String.length s (* stop *)
+      )
+    done;
+    Buffer.contents b
 
 module Split = struct
   type split_state =
@@ -320,10 +320,10 @@ module Split = struct
     let by = Find.compile by in
     fun () ->
       match _split ~by s !state with
-        | None -> None
-        | Some (state', i, len) ->
-          state := state';
-          Some (k s i len)
+      | None -> None
+      | Some (state', i, len) ->
+        state := state';
+        Some (k s i len)
 
   let gen ~by s = _mkgen ~by s _tuple3
 
@@ -391,14 +391,14 @@ let compare_versions a b =
     | None, Some _ -> -1
     | Some x, Some y ->
       match of_int x, of_int y with
-        | None, None ->
-          let c = String.compare x y in
-          if c<>0 then c else cmp_rec a b
-        | Some _, None -> 1
-        | None, Some _ -> -1
-        | Some x, Some y ->
-          let c = Pervasives.compare x y in
-          if c<>0 then c else cmp_rec a b
+      | None, None ->
+        let c = String.compare x y in
+        if c<>0 then c else cmp_rec a b
+      | Some _, None -> 1
+      | None, Some _ -> -1
+      | Some x, Some y ->
+        let c = Pervasives.compare x y in
+        if c<>0 then c else cmp_rec a b
   in
   cmp_rec (Split.gen_cpy ~by:"." a) (Split.gen_cpy ~by:"." b)
 
@@ -491,8 +491,8 @@ let pad ?(side=`Left) ?(c=' ') n s =
   else
     let pad_len = n - len_s in
     match side with
-      | `Left -> init n (fun i -> if i < pad_len then c else s.[i-pad_len])
-      | `Right -> init n (fun i -> if i < len_s then s.[i] else c)
+    | `Left -> init n (fun i -> if i < pad_len then c else s.[i-pad_len])
+    | `Right -> init n (fun i -> if i < len_s then s.[i] else c)
 
 let _to_gen s i0 len =
   let i = ref i0 in
@@ -651,7 +651,7 @@ let exists2 p s1 s2 =
   try iter2 (fun c1 c2 -> if p c1 c2 then raise MyExit) s1 s2; false
   with MyExit -> true
 
-    (** {2 Ascii functions} *)
+(** {2 Ascii functions} *)
 
 let capitalize_ascii s =
   mapi

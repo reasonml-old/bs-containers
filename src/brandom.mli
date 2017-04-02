@@ -30,9 +30,9 @@ val delay : (unit -> 'a t) -> 'a t
       let gensym = let r = ref 0 in fun () -> incr r; !r ;;
 
       delay (fun () ->
-        let name = gensym() in
-        small_int >>= fun i -> return (name,i)
-      )
+          let name = gensym() in
+          small_int >>= fun i -> return (name,i)
+        )
     ]}
     @since 0.4 *)
 
