@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/bint64.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">src</a> bint64.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.74% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>63/93</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">8.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">67.74% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>63/93</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Generated by BUCKLESCRIPT VERSION 1.6.0, PLEASE EDIT WITH CARE
+'use strict';
+&nbsp;
+var Int64                   = require("bs-platform/lib/js/int64");
+var Caml_int64              = require("bs-platform/lib/js/caml_int64");
+var Pervasives              = require("bs-platform/lib/js/pervasives");
+var Caml_format             = require("bs-platform/lib/js/caml_format");
+var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions");
+&nbsp;
+var $plus = Caml_int64.add;
+&nbsp;
+var $neg = Caml_int64.sub;
+&nbsp;
+var $tilde$neg = Caml_int64.neg;
+&nbsp;
+var $star = Caml_int64.mul;
+&nbsp;
+var $slash = Caml_int64.div;
+&nbsp;
+var mod = Caml_int64.mod_;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >land(</span>prim, prim$1) {
+<span class="cstat-no" title="statement not covered" >  return /* int64 */[</span>
+          /* hi */prim[0] &amp; prim$1[0],
+          /* lo */((prim[1] &amp; prim$1[1]) &gt;&gt;&gt; 0)
+        ];
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >lor(</span>prim, prim$1) {
+<span class="cstat-no" title="statement not covered" >  return /* int64 */[</span>
+          /* hi */prim[0] | prim$1[0],
+          /* lo */((prim[1] | prim$1[1]) &gt;&gt;&gt; 0)
+        ];
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >lxor(</span>prim, prim$1) {
+<span class="cstat-no" title="statement not covered" >  return /* int64 */[</span>
+          /* hi */prim[0] ^ prim$1[0],
+          /* lo */((prim[1] ^ prim$1[1]) &gt;&gt;&gt; 0)
+        ];
+}
+&nbsp;
+var lsl = Caml_int64.lsl_;
+&nbsp;
+var lsr = Caml_int64.lsr_;
+&nbsp;
+var asr = Caml_int64.asr_;
+&nbsp;
+var equal = Caml_int64.eq;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >hash(</span>x) {
+<span class="cstat-no" title="statement not covered" >  return Pervasives.abs(x[1] | 0);</span>
+}
+&nbsp;
+var of_int_exn = Caml_int64.of_int32;
+&nbsp;
+function of_int(x) {
+  try {
+    return /* Some */[Caml_int64.of_int32(x)];
+  }
+  catch (exn){
+<span class="cstat-no" title="statement not covered" >    if (exn[0] === Caml_builtin_exceptions.failure) {</span>
+<span class="cstat-no" title="statement not covered" >      return /* None */0;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw exn;</span>
+    }
+  }
+}
+&nbsp;
+var of_nativeint_exn = Caml_int64.of_int32;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >of_nativeint(</span>x) {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    return /* Some */[Caml_int64.of_int32(x)];</span>
+  }
+  catch (exn){
+<span class="cstat-no" title="statement not covered" >    if (exn[0] === Caml_builtin_exceptions.failure) {</span>
+<span class="cstat-no" title="statement not covered" >      return /* None */0;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw exn;</span>
+    }
+  }
+}
+&nbsp;
+var of_int32_exn = Caml_int64.of_int32;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >of_int32(</span>x) {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    return /* Some */[Caml_int64.of_int32(x)];</span>
+  }
+  catch (exn){
+<span class="cstat-no" title="statement not covered" >    if (exn[0] === Caml_builtin_exceptions.failure) {</span>
+<span class="cstat-no" title="statement not covered" >      return /* None */0;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw exn;</span>
+    }
+  }
+}
+&nbsp;
+var of_float_exn = Caml_int64.of_float;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >of_float(</span>x) {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    return /* Some */[Caml_int64.of_float(x)];</span>
+  }
+  catch (exn){
+<span class="cstat-no" title="statement not covered" >    if (exn[0] === Caml_builtin_exceptions.failure) {</span>
+<span class="cstat-no" title="statement not covered" >      return /* None */0;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw exn;</span>
+    }
+  }
+}
+&nbsp;
+var of_string_exn = Caml_format.caml_int64_of_string;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >of_string(</span>x) {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    return /* Some */[Caml_format.caml_int64_of_string(x)];</span>
+  }
+  catch (exn){
+<span class="cstat-no" title="statement not covered" >    if (exn[0] === Caml_builtin_exceptions.failure) {</span>
+<span class="cstat-no" title="statement not covered" >      return /* None */0;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw exn;</span>
+    }
+  }
+}
+&nbsp;
+var abs = Int64.abs;
+&nbsp;
+var max_int = Int64.max_int;
+&nbsp;
+var min_int = Int64.min_int;
+&nbsp;
+var lnot = Int64.lognot;
+&nbsp;
+var compare = Int64.compare;
+&nbsp;
+function <span class="fstat-no" title="function not covered" >to_int(</span>prim) {
+<span class="cstat-no" title="statement not covered" >  return prim[1] | 0;</span>
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >to_int32(</span>prim) {
+<span class="cstat-no" title="statement not covered" >  return prim[1] | 0;</span>
+}
+&nbsp;
+function <span class="fstat-no" title="function not covered" >to_nativeint(</span>prim) {
+<span class="cstat-no" title="statement not covered" >  return prim[1] | 0;</span>
+}
+&nbsp;
+var to_float = Caml_int64.to_float;
+&nbsp;
+var to_string = Int64.to_string;
+&nbsp;
+exports.$plus            = $plus;
+exports.$neg             = $neg;
+exports.$tilde$neg       = $tilde$neg;
+exports.$star            = $star;
+exports.$slash           = $slash;
+exports.mod              = mod;
+exports.abs              = abs;
+exports.max_int          = max_int;
+exports.min_int          = min_int;
+exports.land             = land;
+exports.lor              = lor;
+exports.lxor             = lxor;
+exports.lnot             = lnot;
+exports.lsl              = lsl;
+exports.lsr              = lsr;
+exports.asr              = asr;
+exports.equal            = equal;
+exports.compare          = compare;
+exports.hash             = hash;
+exports.to_int           = to_int;
+exports.of_int           = of_int;
+exports.of_int_exn       = of_int_exn;
+exports.to_int32         = to_int32;
+exports.of_int32         = of_int32;
+exports.of_int32_exn     = of_int32_exn;
+exports.to_nativeint     = to_nativeint;
+exports.of_nativeint     = of_nativeint;
+exports.of_nativeint_exn = of_nativeint_exn;
+exports.to_float         = to_float;
+exports.of_float         = of_float;
+exports.of_float_exn     = of_float_exn;
+exports.to_string        = to_string;
+exports.of_string        = of_string;
+exports.of_string_exn    = of_string_exn;
+/* No side effect */
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Apr 02 2017 10:46:57 GMT+0100 (BST)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
