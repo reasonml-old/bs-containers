@@ -100,11 +100,11 @@ let () = test "toSeq_0" (fun t ->
   )
 
 let () = test "keys" (fun t ->
-    let k = IntMap.keys map0 
+    let k = IntMap.keysList map0 
     in deepEqual t k [(to_int64 1)]
   )
 
 let () = test "values" (fun t ->
-    let v = IntMap.values map0 
+    let v = IntMap.valuesList map0 
     in deepEqual t v ["one"]
   )

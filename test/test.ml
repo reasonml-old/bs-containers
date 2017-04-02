@@ -16,3 +16,7 @@ let () = test "dummy" (fun t ->
   pass t
 )
 
+let () = test_ (fun t ->
+  pass t
+)
+

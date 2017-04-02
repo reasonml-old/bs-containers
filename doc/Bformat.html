@@ -38,58 +38,7 @@
 <link title="Bset" rel="Chapter" href="Bset.html">
 <link title="Bstring" rel="Chapter" href="Bstring.html">
 <link title="Bvector" rel="Chapter" href="Bvector.html">
-<link title="Sequence" rel="Chapter" href="Sequence.html">
-<link title="Arg" rel="Chapter" href="Arg.html">
-<link title="Array" rel="Chapter" href="Array.html">
-<link title="ArrayLabels" rel="Chapter" href="ArrayLabels.html">
-<link title="Bigarray" rel="Chapter" href="Bigarray.html">
-<link title="Buffer" rel="Chapter" href="Buffer.html">
-<link title="Bytes" rel="Chapter" href="Bytes.html">
-<link title="BytesLabels" rel="Chapter" href="BytesLabels.html">
-<link title="Callback" rel="Chapter" href="Callback.html">
-<link title="CamlinternalFormat" rel="Chapter" href="CamlinternalFormat.html">
-<link title="CamlinternalFormatBasics" rel="Chapter" href="CamlinternalFormatBasics.html">
-<link title="CamlinternalLazy" rel="Chapter" href="CamlinternalLazy.html">
-<link title="CamlinternalMod" rel="Chapter" href="CamlinternalMod.html">
-<link title="CamlinternalOO" rel="Chapter" href="CamlinternalOO.html">
-<link title="Char" rel="Chapter" href="Char.html">
-<link title="Complex" rel="Chapter" href="Complex.html">
-<link title="Digest" rel="Chapter" href="Digest.html">
-<link title="Filename" rel="Chapter" href="Filename.html">
-<link title="Format" rel="Chapter" href="Format.html">
-<link title="Gc" rel="Chapter" href="Gc.html">
-<link title="Genlex" rel="Chapter" href="Genlex.html">
-<link title="Hashtbl" rel="Chapter" href="Hashtbl.html">
-<link title="Int32" rel="Chapter" href="Int32.html">
-<link title="Int64" rel="Chapter" href="Int64.html">
-<link title="Lazy" rel="Chapter" href="Lazy.html">
-<link title="Lexing" rel="Chapter" href="Lexing.html">
-<link title="List" rel="Chapter" href="List.html">
-<link title="ListLabels" rel="Chapter" href="ListLabels.html">
-<link title="Map" rel="Chapter" href="Map.html">
-<link title="Marshal" rel="Chapter" href="Marshal.html">
-<link title="MoreLabels" rel="Chapter" href="MoreLabels.html">
-<link title="Nativeint" rel="Chapter" href="Nativeint.html">
-<link title="Obj" rel="Chapter" href="Obj.html">
-<link title="Oo" rel="Chapter" href="Oo.html">
-<link title="Parsing" rel="Chapter" href="Parsing.html">
-<link title="Pervasives" rel="Chapter" href="Pervasives.html">
-<link title="Printexc" rel="Chapter" href="Printexc.html">
-<link title="Printf" rel="Chapter" href="Printf.html">
-<link title="Queue" rel="Chapter" href="Queue.html">
-<link title="Random" rel="Chapter" href="Random.html">
-<link title="Scanf" rel="Chapter" href="Scanf.html">
-<link title="Set" rel="Chapter" href="Set.html">
-<link title="Sort" rel="Chapter" href="Sort.html">
-<link title="Stack" rel="Chapter" href="Stack.html">
-<link title="StdLabels" rel="Chapter" href="StdLabels.html">
-<link title="Stream" rel="Chapter" href="Stream.html">
-<link title="String" rel="Chapter" href="String.html">
-<link title="StringLabels" rel="Chapter" href="StringLabels.html">
-<link title="Sys" rel="Chapter" href="Sys.html">
-<link title="Unix" rel="Chapter" href="Unix.html">
-<link title="UnixLabels" rel="Chapter" href="UnixLabels.html">
-<link title="Weak" rel="Chapter" href="Weak.html"><title>Bformat</title>
+<link title="Sequence" rel="Chapter" href="Sequence.html"><title>Bformat</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Bfloat.html" title="Bfloat">Previous</a>
@@ -107,7 +56,7 @@
 <pre><span id="TYPEsequence"><span class="keyword">type</span> <code class="type">'a</code> sequence</span> = <code class="type">('a -> unit) -> unit</code> </pre>
 
 
-<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type"><a href="Format.html#TYPEformatter">Format.formatter</a></code> </pre>
+<pre><span id="TYPEt"><span class="keyword">type</span> <code class="type"></code>t</span> = <code class="type">Format.formatter</code> </pre>
 
 
 <pre><span id="TYPEprinter"><span class="keyword">type</span> <code class="type">'a</code> printer</span> = <code class="type"><a href="Bformat.html#TYPEt">t</a> -> 'a -> unit</code> </pre>
@@ -190,7 +139,7 @@ Wrap the printer in an horizontal box<br>
 <b>Since</b> 0.16<br>
 </div>
 
-<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">('a, 'b, 'c, 'a) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> unit <a href="Bformat.html#TYPEprinter">printer</a></code></pre><div class="info ">
+<pre><span id="VALreturn"><span class="keyword">val</span> return</span> : <code class="type">('a, 'b, 'c, 'a) Pervasives.format4 -> unit <a href="Bformat.html#TYPEprinter">printer</a></code></pre><div class="info ">
 <code class="code">return "some_format_string"</code> takes a argument-less format string
     and returns a printer actionable by <code class="code">()</code>.
     Examples:<ul>
@@ -240,14 +189,14 @@ adds functions to support color tags to the given formatter.<br>
 <b>Since</b> 0.16<br>
 </div>
 
-<pre><span id="VALwith_colorf"><span class="keyword">val</span> with_colorf</span> : <code class="type">string -> <a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, unit) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
-<code class="code">with_colorf "Blue" out "%s %d" "yolo" 42</code> will behave like <a href="Format.html#VALfprintf"><code class="code">Format.fprintf</code></a>,
+<pre><span id="VALwith_colorf"><span class="keyword">val</span> with_colorf</span> : <code class="type">string -> <a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, unit) Pervasives.format4 -> 'a</code></pre><div class="info ">
+<code class="code">with_colorf "Blue" out "%s %d" "yolo" 42</code> will behave like <code class="code">Format.fprintf</code>,
     but wrapping the content with the given style
     <b>status: experimental</b><br>
 <b>Since</b> 0.16<br>
 </div>
 
-<pre><span id="VALwith_color_sf"><span class="keyword">val</span> with_color_sf</span> : <code class="type">string -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALwith_color_sf"><span class="keyword">val</span> with_color_sf</span> : <code class="type">string -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
 <code class="code">with_color_sf "Blue" out "%s %d" "yolo" 42</code> will behave like
     <a href="Bformat.html#VALsprintf"><code class="code">Bformat.sprintf</code></a>, but wrapping the content with the given style
     Example:
@@ -266,17 +215,17 @@ adds functions to support color tags to the given formatter.<br>
 <b>Since</b> 1.0<br>
 </div>
 
-<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALsprintf"><span class="keyword">val</span> sprintf</span> : <code class="type">('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
 Print into a string any format string that would usually be compatible
-    with <a href="Bformat.html#VALfprintf"><code class="code">Bformat.fprintf</code></a>. Similar to <a href="Format.html#VALasprintf"><code class="code">Format.asprintf</code></a>.<br>
+    with <a href="Bformat.html#VALfprintf"><code class="code">Bformat.fprintf</code></a>. Similar to <code class="code">Format.asprintf</code>.<br>
 </div>
 
-<pre><span id="VALsprintf_no_color"><span class="keyword">val</span> sprintf_no_color</span> : <code class="type">('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALsprintf_no_color"><span class="keyword">val</span> sprintf_no_color</span> : <code class="type">('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
 Similar to <a href="Bformat.html#VALsprintf"><code class="code">Bformat.sprintf</code></a> but never prints colors<br>
 <b>Since</b> 0.16<br>
 </div>
 
-<pre><span id="VALsprintf_dyn_color"><span class="keyword">val</span> sprintf_dyn_color</span> : <code class="type">colors:bool -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALsprintf_dyn_color"><span class="keyword">val</span> sprintf_dyn_color</span> : <code class="type">colors:bool -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, string) Pervasives.format4 -> 'a</code></pre><div class="info ">
 Similar to <a href="Bformat.html#VALsprintf"><code class="code">Bformat.sprintf</code></a> but enable/disable colors depending on <code class="code">colors</code>.
     Example:
     <pre class="codepre"><code class="code">      (* with colors *)
@@ -290,23 +239,23 @@ Similar to <a href="Bformat.html#VALsprintf"><code class="code">Bformat.sprintf<
 <b>Since</b> 0.21<br>
 </div>
 
-<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type"><a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit) <a href="Pervasives.html#TYPEformat">Pervasives.format</a> -> 'a</code></pre><div class="info ">
-Alias to <a href="Format.html#VALfprintf"><code class="code">Format.fprintf</code></a><br>
+<pre><span id="VALfprintf"><span class="keyword">val</span> fprintf</span> : <code class="type"><a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
+Alias to <code class="code">Format.fprintf</code><br>
 <b>Since</b> 0.14<br>
 </div>
 
-<pre><span id="VALfprintf_dyn_color"><span class="keyword">val</span> fprintf_dyn_color</span> : <code class="type">colors:bool -> <a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit) <a href="Pervasives.html#TYPEformat">Pervasives.format</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALfprintf_dyn_color"><span class="keyword">val</span> fprintf_dyn_color</span> : <code class="type">colors:bool -> <a href="Bformat.html#TYPEt">t</a> -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit) Pervasives.format -> 'a</code></pre><div class="info ">
 Similar to <a href="Bformat.html#VALfprintf"><code class="code">Bformat.fprintf</code></a> but enable/disable colors depending on <code class="code">colors</code><br>
 <b>Since</b> 0.21<br>
 </div>
 
-<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">f:(string -> 'b) -> ('a, <a href="Format.html#TYPEformatter">Format.formatter</a>, unit, 'b) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALksprintf"><span class="keyword">val</span> ksprintf</span> : <code class="type">f:(string -> 'b) -> ('a, Format.formatter, unit, 'b) Pervasives.format4 -> 'a</code></pre><div class="info ">
 <code class="code">ksprintf fmt ~f</code> formats using <code class="code">fmt</code>, in a way similar to <a href="Bformat.html#VALsprintf"><code class="code">Bformat.sprintf</code></a>,
     and then calls <code class="code">f</code> on the resulting string.<br>
 <b>Since</b> 0.14<br>
 </div>
 
-<pre><span id="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">string -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, unit) <a href="Pervasives.html#TYPEformat4">Pervasives.format4</a> -> 'a</code></pre><div class="info ">
+<pre><span id="VALto_file"><span class="keyword">val</span> to_file</span> : <code class="type">string -> ('a, <a href="Bformat.html#TYPEt">t</a>, unit, unit) Pervasives.format4 -> 'a</code></pre><div class="info ">
 Print to the given file<br>
 </div>
 

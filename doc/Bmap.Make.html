@@ -36,66 +36,15 @@
 <link title="Bset" rel="Chapter" href="Bset.html">
 <link title="Bstring" rel="Chapter" href="Bstring.html">
 <link title="Bvector" rel="Chapter" href="Bvector.html">
-<link title="Sequence" rel="Chapter" href="Sequence.html">
-<link title="Arg" rel="Chapter" href="Arg.html">
-<link title="Array" rel="Chapter" href="Array.html">
-<link title="ArrayLabels" rel="Chapter" href="ArrayLabels.html">
-<link title="Bigarray" rel="Chapter" href="Bigarray.html">
-<link title="Buffer" rel="Chapter" href="Buffer.html">
-<link title="Bytes" rel="Chapter" href="Bytes.html">
-<link title="BytesLabels" rel="Chapter" href="BytesLabels.html">
-<link title="Callback" rel="Chapter" href="Callback.html">
-<link title="CamlinternalFormat" rel="Chapter" href="CamlinternalFormat.html">
-<link title="CamlinternalFormatBasics" rel="Chapter" href="CamlinternalFormatBasics.html">
-<link title="CamlinternalLazy" rel="Chapter" href="CamlinternalLazy.html">
-<link title="CamlinternalMod" rel="Chapter" href="CamlinternalMod.html">
-<link title="CamlinternalOO" rel="Chapter" href="CamlinternalOO.html">
-<link title="Char" rel="Chapter" href="Char.html">
-<link title="Complex" rel="Chapter" href="Complex.html">
-<link title="Digest" rel="Chapter" href="Digest.html">
-<link title="Filename" rel="Chapter" href="Filename.html">
-<link title="Format" rel="Chapter" href="Format.html">
-<link title="Gc" rel="Chapter" href="Gc.html">
-<link title="Genlex" rel="Chapter" href="Genlex.html">
-<link title="Hashtbl" rel="Chapter" href="Hashtbl.html">
-<link title="Int32" rel="Chapter" href="Int32.html">
-<link title="Int64" rel="Chapter" href="Int64.html">
-<link title="Lazy" rel="Chapter" href="Lazy.html">
-<link title="Lexing" rel="Chapter" href="Lexing.html">
-<link title="List" rel="Chapter" href="List.html">
-<link title="ListLabels" rel="Chapter" href="ListLabels.html">
-<link title="Map" rel="Chapter" href="Map.html">
-<link title="Marshal" rel="Chapter" href="Marshal.html">
-<link title="MoreLabels" rel="Chapter" href="MoreLabels.html">
-<link title="Nativeint" rel="Chapter" href="Nativeint.html">
-<link title="Obj" rel="Chapter" href="Obj.html">
-<link title="Oo" rel="Chapter" href="Oo.html">
-<link title="Parsing" rel="Chapter" href="Parsing.html">
-<link title="Pervasives" rel="Chapter" href="Pervasives.html">
-<link title="Printexc" rel="Chapter" href="Printexc.html">
-<link title="Printf" rel="Chapter" href="Printf.html">
-<link title="Queue" rel="Chapter" href="Queue.html">
-<link title="Random" rel="Chapter" href="Random.html">
-<link title="Scanf" rel="Chapter" href="Scanf.html">
-<link title="Set" rel="Chapter" href="Set.html">
-<link title="Sort" rel="Chapter" href="Sort.html">
-<link title="Stack" rel="Chapter" href="Stack.html">
-<link title="StdLabels" rel="Chapter" href="StdLabels.html">
-<link title="Stream" rel="Chapter" href="Stream.html">
-<link title="String" rel="Chapter" href="String.html">
-<link title="StringLabels" rel="Chapter" href="StringLabels.html">
-<link title="Sys" rel="Chapter" href="Sys.html">
-<link title="Unix" rel="Chapter" href="Unix.html">
-<link title="UnixLabels" rel="Chapter" href="UnixLabels.html">
-<link title="Weak" rel="Chapter" href="Weak.html"><title>Bmap.Make</title>
+<link title="Sequence" rel="Chapter" href="Sequence.html"><title>Bmap.Make</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="Bmap.html" title="Bmap">Up</a>
 &nbsp;</div>
 <h1>Functor <a href="type_Bmap.Make.html">Bmap.Make</a></h1>
 
-<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code">functor (</code><code class="code">O</code><code class="code"> : </code><code class="type"><a href="Map.OrderedType.html">Map.OrderedType</a></code><code class="code">) -&gt; </code><code class="type"><a href="Bmap.S.html">S</a></code><code class="type"> 
-  with type 'a t = 'a <a href="Map.Make.html">Map.Make</a>(O).t
+<pre><span class="keyword">module</span> Make: <div class="sig_block"><code class="code">functor (</code><code class="code">O</code><code class="code"> : </code><code class="type">Map.OrderedType</code><code class="code">) -&gt; </code><code class="type"><a href="Bmap.S.html">S</a></code><code class="type"> 
+  with type 'a t = 'a Map.Make(O).t
    and type key = O.t</code></div></pre><table border="0" cellpadding="3" width="100%">
 <tr>
 <td align="left" valign="top" width="1%%"><b>Parameters: </b></td>
@@ -105,7 +54,7 @@
 <td align="center" valign="top" width="15%">
 <code>O</code></td>
 <td align="center" valign="top">:</td>
-<td><code class="type"><a href="Map.OrderedType.html">Map.OrderedType</a></code>
+<td><code class="type">Map.OrderedType</code>
 </table>
 </td>
 </tr>
@@ -146,7 +95,6 @@ Test whether a map is empty or not.<br>
 <pre><span id="VALsingleton"><span class="keyword">val</span> singleton</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">singleton x y</code> returns the one-element map that contains a binding <code class="code">y</code>
       for <code class="code">x</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALremove"><span class="keyword">val</span> remove</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
@@ -158,7 +106,6 @@ Test whether a map is empty or not.<br>
 <code class="code">merge f m1 m2</code> computes a map whose keys is a subset of keys of <code class="code">m1</code>
       and of <code class="code">m2</code>. The presence of each such binding, and the corresponding
       value, is determined with the function <code class="code">f</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALcompare"><span class="keyword">val</span> compare</span> : <code class="type">('a -> 'a -> int) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> int</code></pre><div class="info ">
@@ -186,22 +133,14 @@ Total ordering between maps.  The first argument is a total ordering
       (in increasing order), and <code class="code">d1 ... dN</code> are the associated data.<br>
 </div>
 
-<pre><span id="VALfor_all"><span class="keyword">val</span> for_all</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
-<code class="code">for_all p m</code> checks if all the bindings of the map
-      satisfy the predicate <code class="code">p</code>.<br>
-<b>Since</b> 3.12.0<br>
-</div>
-
 <pre><span id="VALexists"><span class="keyword">val</span> exists</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> bool</code></pre><div class="info ">
 <code class="code">exists p m</code> checks if at least one binding of the map
       satisfy the predicate <code class="code">p</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALfilter"><span class="keyword">val</span> filter</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
 <code class="code">filter p m</code> returns the map with all the bindings in <code class="code">m</code>
       that satisfy predicate <code class="code">p</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALpartition"><span class="keyword">val</span> partition</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> bool) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> * 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
@@ -209,40 +148,23 @@ Total ordering between maps.  The first argument is a total ordering
       <code class="code">m1</code> contains all the bindings of <code class="code">s</code> that satisfy the
       predicate <code class="code">p</code>, and <code class="code">m2</code> is the map with all the bindings of
       <code class="code">s</code> that do not satisfy <code class="code">p</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALcardinal"><span class="keyword">val</span> cardinal</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> int</code></pre><div class="info ">
 Return the number of bindings of a map.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALbindings"><span class="keyword">val</span> bindings</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list</code></pre><div class="info ">
 Return the list of all bindings of the given map.
       The returned list is sorted in increasing order with respect
       to the ordering <code class="code">Ord.compare</code>, where <code class="code">Ord</code> is the argument
-      given to <a href="Map.Make.html"><code class="code">Map.Make</code></a>.<br>
-<b>Since</b> 3.12.0<br>
-</div>
-
-<pre><span id="VALmin_binding"><span class="keyword">val</span> min_binding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
-Return the smallest binding of the given map
-      (with respect to the <code class="code">Ord.compare</code> ordering), or raise
-      <code class="code">Not_found</code> if the map is empty.<br>
-<b>Since</b> 3.12.0<br>
-</div>
-
-<pre><span id="VALmax_binding"><span class="keyword">val</span> max_binding</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
-Same as <a href="Map.S.html#VALmin_binding"><code class="code">Map.S.min_binding</code></a>, but returns the largest binding
-      of the given map.<br>
-<b>Since</b> 3.12.0<br>
+      given to <code class="code">Map.Make</code>.<br>
 </div>
 
 <pre><span id="VALchoose"><span class="keyword">val</span> choose</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> * 'a</code></pre><div class="info ">
 Return one binding of the given map, or raise <code class="code">Not_found</code> if
       the map is empty. Which binding is chosen is unspecified,
       but equal bindings will be chosen for equal maps.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> * 'a option * 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
@@ -253,7 +175,6 @@ Return one binding of the given map, or raise <code class="code">Not_found</code
       is strictly greater than <code class="code">x</code>;
         <code class="code">data</code> is <code class="code">None</code> if <code class="code">m</code> contains no binding for <code class="code">x</code>,
         or <code class="code">Some v</code> if <code class="code">m</code> binds <code class="code">v</code> to <code class="code">x</code>.<br>
-<b>Since</b> 3.12.0<br>
 </div>
 
 <pre><span id="VALfind"><span class="keyword">val</span> find</span> : <code class="type"><a href="Bmap.S.html#TYPEkey">key</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a</code></pre><div class="info ">
@@ -270,7 +191,7 @@ Return one binding of the given map, or raise <code class="code">Not_found</code
 </div>
 
 <pre><span id="VALmapi"><span class="keyword">val</span> mapi</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> -> 'a -> 'b) -> 'a <a href="Bmap.S.html#TYPEt">t</a> -> 'b <a href="Bmap.S.html#TYPEt">t</a></code></pre><div class="info ">
-Same as <a href="Map.S.html#VALmap"><code class="code">Map.S.map</code></a>, but the function receives as arguments both the
+Same as <code class="code">BMap.S.map</code>, but the function receives as arguments both the
       key and the associated value for each binding of the map.<br>
 </div>
 
@@ -310,11 +231,11 @@ Build a map from the given list of bindings <code class="code">k_i -&gt; v_i</co
 <pre><span id="VALtoList"><span class="keyword">val</span> toList</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) list</code></pre>
 <pre><span id="VALfromSeq"><span class="keyword">val</span> fromSeq</span> : <code class="type">(<a href="Bmap.S.html#TYPEkey">key</a> * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a> -> 'a <a href="Bmap.S.html#TYPEt">t</a></code></pre>
 <pre><span id="VALtoSeq"><span class="keyword">val</span> toSeq</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> (<a href="Bmap.S.html#TYPEkey">key</a> * 'a) <a href="Sequence.html#TYPEt">Sequence.t</a></code></pre>
-<pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
-Iterate on keys only<br>
+<pre><span id="VALkeysList"><span class="keyword">val</span> keysList</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> <a href="Bmap.S.html#TYPEkey">key</a> list</code></pre><div class="info ">
+List of keys<br>
 </div>
 
-<pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
-Iterate on values only<br>
+<pre><span id="VALvaluesList"><span class="keyword">val</span> valuesList</span> : <code class="type">'a <a href="Bmap.S.html#TYPEt">t</a> -> 'a list</code></pre><div class="info ">
+List of values<br>
 </div>
 </body></html>
