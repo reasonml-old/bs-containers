@@ -1,5 +1,5 @@
 open Test
-open Bopt
+open! Bopt
 
 let _ =
   test "make" (fun t ->
