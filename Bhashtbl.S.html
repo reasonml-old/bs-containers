@@ -36,58 +36,7 @@
 <link title="Bset" rel="Chapter" href="Bset.html">
 <link title="Bstring" rel="Chapter" href="Bstring.html">
 <link title="Bvector" rel="Chapter" href="Bvector.html">
-<link title="Sequence" rel="Chapter" href="Sequence.html">
-<link title="Arg" rel="Chapter" href="Arg.html">
-<link title="Array" rel="Chapter" href="Array.html">
-<link title="ArrayLabels" rel="Chapter" href="ArrayLabels.html">
-<link title="Bigarray" rel="Chapter" href="Bigarray.html">
-<link title="Buffer" rel="Chapter" href="Buffer.html">
-<link title="Bytes" rel="Chapter" href="Bytes.html">
-<link title="BytesLabels" rel="Chapter" href="BytesLabels.html">
-<link title="Callback" rel="Chapter" href="Callback.html">
-<link title="CamlinternalFormat" rel="Chapter" href="CamlinternalFormat.html">
-<link title="CamlinternalFormatBasics" rel="Chapter" href="CamlinternalFormatBasics.html">
-<link title="CamlinternalLazy" rel="Chapter" href="CamlinternalLazy.html">
-<link title="CamlinternalMod" rel="Chapter" href="CamlinternalMod.html">
-<link title="CamlinternalOO" rel="Chapter" href="CamlinternalOO.html">
-<link title="Char" rel="Chapter" href="Char.html">
-<link title="Complex" rel="Chapter" href="Complex.html">
-<link title="Digest" rel="Chapter" href="Digest.html">
-<link title="Filename" rel="Chapter" href="Filename.html">
-<link title="Format" rel="Chapter" href="Format.html">
-<link title="Gc" rel="Chapter" href="Gc.html">
-<link title="Genlex" rel="Chapter" href="Genlex.html">
-<link title="Hashtbl" rel="Chapter" href="Hashtbl.html">
-<link title="Int32" rel="Chapter" href="Int32.html">
-<link title="Int64" rel="Chapter" href="Int64.html">
-<link title="Lazy" rel="Chapter" href="Lazy.html">
-<link title="Lexing" rel="Chapter" href="Lexing.html">
-<link title="List" rel="Chapter" href="List.html">
-<link title="ListLabels" rel="Chapter" href="ListLabels.html">
-<link title="Map" rel="Chapter" href="Map.html">
-<link title="Marshal" rel="Chapter" href="Marshal.html">
-<link title="MoreLabels" rel="Chapter" href="MoreLabels.html">
-<link title="Nativeint" rel="Chapter" href="Nativeint.html">
-<link title="Obj" rel="Chapter" href="Obj.html">
-<link title="Oo" rel="Chapter" href="Oo.html">
-<link title="Parsing" rel="Chapter" href="Parsing.html">
-<link title="Pervasives" rel="Chapter" href="Pervasives.html">
-<link title="Printexc" rel="Chapter" href="Printexc.html">
-<link title="Printf" rel="Chapter" href="Printf.html">
-<link title="Queue" rel="Chapter" href="Queue.html">
-<link title="Random" rel="Chapter" href="Random.html">
-<link title="Scanf" rel="Chapter" href="Scanf.html">
-<link title="Set" rel="Chapter" href="Set.html">
-<link title="Sort" rel="Chapter" href="Sort.html">
-<link title="Stack" rel="Chapter" href="Stack.html">
-<link title="StdLabels" rel="Chapter" href="StdLabels.html">
-<link title="Stream" rel="Chapter" href="Stream.html">
-<link title="String" rel="Chapter" href="String.html">
-<link title="StringLabels" rel="Chapter" href="StringLabels.html">
-<link title="Sys" rel="Chapter" href="Sys.html">
-<link title="Unix" rel="Chapter" href="Unix.html">
-<link title="UnixLabels" rel="Chapter" href="UnixLabels.html">
-<link title="Weak" rel="Chapter" href="Weak.html"><title>Bhashtbl.S</title>
+<link title="Sequence" rel="Chapter" href="Sequence.html"><title>Bhashtbl.S</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="Bhashtbl.html" title="Bhashtbl">Up</a>
@@ -96,10 +45,10 @@
 
 <pre><span class="keyword">module type</span> S = <code class="code">sig</code> <a href="Bhashtbl.S.html">..</a> <code class="code">end</code></pre><hr width="100%">
 
-<pre><span class="keyword">include</span> <a href="Hashtbl.S.html">Hashtbl.S</a></pre>
+<pre><span class="keyword">include</span> Hashtbl.S</pre>
 
 <pre><span id="VALget"><span class="keyword">val</span> get</span> : <code class="type">'a t -> key -> 'a option</code></pre><div class="info ">
-Safe version of <a href="Hashtbl.html#VALfind"><code class="code">Hashtbl.find</code></a><br>
+Safe version of <code class="code">Hashtbl.find</code><br>
 </div>
 
 <pre><span id="VALget_or"><span class="keyword">val</span> get_or</span> : <code class="type">'a t -> key -> default:'a -> 'a</code></pre><div class="info ">
@@ -130,7 +79,7 @@ Same as <a href="Bhashtbl.S.html#VALincr"><code class="code">Bhashtbl.S.incr</co
 </div>
 
 <pre><span id="VALkeys"><span class="keyword">val</span> keys</span> : <code class="type">'a t -> key <a href="Bhashtbl.html#TYPEsequence">Bhashtbl.sequence</a></code></pre><div class="info ">
-Iterate on keys (similar order as <a href="Hashtbl.html#VALiter"><code class="code">Hashtbl.iter</code></a>)<br>
+Iterate on keys (similar order as <code class="code">Hashtbl.iter</code>)<br>
 </div>
 
 <pre><span id="VALvalues"><span class="keyword">val</span> values</span> : <code class="type">'a t -> 'a <a href="Bhashtbl.html#TYPEsequence">Bhashtbl.sequence</a></code></pre><div class="info ">
@@ -160,7 +109,7 @@ From the given bindings, added in order<br>
 </div>
 
 <pre><span id="VALadd_seq"><span class="keyword">val</span> add_seq</span> : <code class="type">'a t -> (key * 'a) <a href="Bhashtbl.html#TYPEsequence">Bhashtbl.sequence</a> -> unit</code></pre><div class="info ">
-Add the corresponding pairs to the table, using <a href="Hashtbl.html#VALadd"><code class="code">Hashtbl.add</code></a>.<br>
+Add the corresponding pairs to the table, using <code class="code">Hashtbl.add</code>.<br>
 <b>Since</b> 0.16<br>
 </div>
 
@@ -192,7 +141,7 @@ Build a table from the given list of bindings <code class="code">k_i -&gt; v_i</
       <code class="code">k</code> was mapped to <code class="code">v</code>, or <code class="code">f k None</code> otherwise; if the call
       returns <code class="code">None</code> then <code class="code">k</code> is removed/stays removed, if the call
       returns <code class="code">Some v'</code> then the binding <code class="code">k -&gt; v'</code> is inserted
-      using <a href="Hashtbl.html#VALreplace"><code class="code">Hashtbl.replace</code></a><br>
+      using <code class="code">Hashtbl.replace</code><br>
 <b>Since</b> 0.14<br>
 </div>
 

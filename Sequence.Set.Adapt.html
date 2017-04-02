@@ -37,58 +37,7 @@
 <link title="Bset" rel="Chapter" href="Bset.html">
 <link title="Bstring" rel="Chapter" href="Bstring.html">
 <link title="Bvector" rel="Chapter" href="Bvector.html">
-<link title="Sequence" rel="Chapter" href="Sequence.html">
-<link title="Arg" rel="Chapter" href="Arg.html">
-<link title="Array" rel="Chapter" href="Array.html">
-<link title="ArrayLabels" rel="Chapter" href="ArrayLabels.html">
-<link title="Bigarray" rel="Chapter" href="Bigarray.html">
-<link title="Buffer" rel="Chapter" href="Buffer.html">
-<link title="Bytes" rel="Chapter" href="Bytes.html">
-<link title="BytesLabels" rel="Chapter" href="BytesLabels.html">
-<link title="Callback" rel="Chapter" href="Callback.html">
-<link title="CamlinternalFormat" rel="Chapter" href="CamlinternalFormat.html">
-<link title="CamlinternalFormatBasics" rel="Chapter" href="CamlinternalFormatBasics.html">
-<link title="CamlinternalLazy" rel="Chapter" href="CamlinternalLazy.html">
-<link title="CamlinternalMod" rel="Chapter" href="CamlinternalMod.html">
-<link title="CamlinternalOO" rel="Chapter" href="CamlinternalOO.html">
-<link title="Char" rel="Chapter" href="Char.html">
-<link title="Complex" rel="Chapter" href="Complex.html">
-<link title="Digest" rel="Chapter" href="Digest.html">
-<link title="Filename" rel="Chapter" href="Filename.html">
-<link title="Format" rel="Chapter" href="Format.html">
-<link title="Gc" rel="Chapter" href="Gc.html">
-<link title="Genlex" rel="Chapter" href="Genlex.html">
-<link title="Hashtbl" rel="Chapter" href="Hashtbl.html">
-<link title="Int32" rel="Chapter" href="Int32.html">
-<link title="Int64" rel="Chapter" href="Int64.html">
-<link title="Lazy" rel="Chapter" href="Lazy.html">
-<link title="Lexing" rel="Chapter" href="Lexing.html">
-<link title="List" rel="Chapter" href="List.html">
-<link title="ListLabels" rel="Chapter" href="ListLabels.html">
-<link title="Map" rel="Chapter" href="Map.html">
-<link title="Marshal" rel="Chapter" href="Marshal.html">
-<link title="MoreLabels" rel="Chapter" href="MoreLabels.html">
-<link title="Nativeint" rel="Chapter" href="Nativeint.html">
-<link title="Obj" rel="Chapter" href="Obj.html">
-<link title="Oo" rel="Chapter" href="Oo.html">
-<link title="Parsing" rel="Chapter" href="Parsing.html">
-<link title="Pervasives" rel="Chapter" href="Pervasives.html">
-<link title="Printexc" rel="Chapter" href="Printexc.html">
-<link title="Printf" rel="Chapter" href="Printf.html">
-<link title="Queue" rel="Chapter" href="Queue.html">
-<link title="Random" rel="Chapter" href="Random.html">
-<link title="Scanf" rel="Chapter" href="Scanf.html">
-<link title="Set" rel="Chapter" href="Set.html">
-<link title="Sort" rel="Chapter" href="Sort.html">
-<link title="Stack" rel="Chapter" href="Stack.html">
-<link title="StdLabels" rel="Chapter" href="StdLabels.html">
-<link title="Stream" rel="Chapter" href="Stream.html">
-<link title="String" rel="Chapter" href="String.html">
-<link title="StringLabels" rel="Chapter" href="StringLabels.html">
-<link title="Sys" rel="Chapter" href="Sys.html">
-<link title="Unix" rel="Chapter" href="Unix.html">
-<link title="UnixLabels" rel="Chapter" href="UnixLabels.html">
-<link title="Weak" rel="Chapter" href="Weak.html"><title>Sequence.Set.Adapt</title>
+<link title="Sequence" rel="Chapter" href="Sequence.html"><title>Sequence.Set.Adapt</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="Sequence.Set.html" title="Sequence.Set">Up</a>
@@ -96,7 +45,7 @@
 </div>
 <h1>Functor <a href="type_Sequence.Set.Adapt.html">Sequence.Set.Adapt</a></h1>
 
-<pre><span class="keyword">module</span> Adapt: <div class="sig_block"><code class="code">functor (</code><code class="code">X</code><code class="code"> : </code><code class="type"><a href="Set.S.html">Set.S</a></code><code class="code">) -&gt; </code><code class="type"><a href="Sequence.Set.S.html">S</a></code><code class="type">  with type elt = X.elt and type t = X.t</code></div></pre><div class="info module top">
+<pre><span class="keyword">module</span> Adapt: <div class="sig_block"><code class="code">functor (</code><code class="code">X</code><code class="code"> : </code><code class="type">Set.S</code><code class="code">) -&gt; </code><code class="type"><a href="Sequence.Set.S.html">S</a></code><code class="type">  with type elt = X.elt and type t = X.t</code></div></pre><div class="info module top">
 Create an enriched Set module from the given one<br>
 </div>
 <table border="0" cellpadding="3" width="100%">
@@ -108,14 +57,14 @@ Create an enriched Set module from the given one<br>
 <td align="center" valign="top" width="15%">
 <code>X</code></td>
 <td align="center" valign="top">:</td>
-<td><code class="type"><a href="Set.S.html">Set.S</a></code>
+<td><code class="type">Set.S</code>
 </table>
 </td>
 </tr>
 </table>
 <hr width="100%">
 
-<pre><span class="keyword">include</span> <a href="Set.S.html">Set.S</a></pre>
+<pre><span class="keyword">include</span> Set.S</pre>
 
 <pre><span id="VALof_seq"><span class="keyword">val</span> of_seq</span> : <code class="type">elt <a href="Sequence.html#TYPEsequence">Sequence.sequence</a> -> <a href="Sequence.html#TYPEt">Sequence.t</a></code></pre>
 <pre><span id="VALto_seq"><span class="keyword">val</span> to_seq</span> : <code class="type"><a href="Sequence.html#TYPEt">Sequence.t</a> -> elt <a href="Sequence.html#TYPEsequence">Sequence.sequence</a></code></pre>

@@ -37,58 +37,7 @@
 <link title="Bset" rel="Chapter" href="Bset.html">
 <link title="Bstring" rel="Chapter" href="Bstring.html">
 <link title="Bvector" rel="Chapter" href="Bvector.html">
-<link title="Sequence" rel="Chapter" href="Sequence.html">
-<link title="Arg" rel="Chapter" href="Arg.html">
-<link title="Array" rel="Chapter" href="Array.html">
-<link title="ArrayLabels" rel="Chapter" href="ArrayLabels.html">
-<link title="Bigarray" rel="Chapter" href="Bigarray.html">
-<link title="Buffer" rel="Chapter" href="Buffer.html">
-<link title="Bytes" rel="Chapter" href="Bytes.html">
-<link title="BytesLabels" rel="Chapter" href="BytesLabels.html">
-<link title="Callback" rel="Chapter" href="Callback.html">
-<link title="CamlinternalFormat" rel="Chapter" href="CamlinternalFormat.html">
-<link title="CamlinternalFormatBasics" rel="Chapter" href="CamlinternalFormatBasics.html">
-<link title="CamlinternalLazy" rel="Chapter" href="CamlinternalLazy.html">
-<link title="CamlinternalMod" rel="Chapter" href="CamlinternalMod.html">
-<link title="CamlinternalOO" rel="Chapter" href="CamlinternalOO.html">
-<link title="Char" rel="Chapter" href="Char.html">
-<link title="Complex" rel="Chapter" href="Complex.html">
-<link title="Digest" rel="Chapter" href="Digest.html">
-<link title="Filename" rel="Chapter" href="Filename.html">
-<link title="Format" rel="Chapter" href="Format.html">
-<link title="Gc" rel="Chapter" href="Gc.html">
-<link title="Genlex" rel="Chapter" href="Genlex.html">
-<link title="Hashtbl" rel="Chapter" href="Hashtbl.html">
-<link title="Int32" rel="Chapter" href="Int32.html">
-<link title="Int64" rel="Chapter" href="Int64.html">
-<link title="Lazy" rel="Chapter" href="Lazy.html">
-<link title="Lexing" rel="Chapter" href="Lexing.html">
-<link title="List" rel="Chapter" href="List.html">
-<link title="ListLabels" rel="Chapter" href="ListLabels.html">
-<link title="Map" rel="Chapter" href="Map.html">
-<link title="Marshal" rel="Chapter" href="Marshal.html">
-<link title="MoreLabels" rel="Chapter" href="MoreLabels.html">
-<link title="Nativeint" rel="Chapter" href="Nativeint.html">
-<link title="Obj" rel="Chapter" href="Obj.html">
-<link title="Oo" rel="Chapter" href="Oo.html">
-<link title="Parsing" rel="Chapter" href="Parsing.html">
-<link title="Pervasives" rel="Chapter" href="Pervasives.html">
-<link title="Printexc" rel="Chapter" href="Printexc.html">
-<link title="Printf" rel="Chapter" href="Printf.html">
-<link title="Queue" rel="Chapter" href="Queue.html">
-<link title="Random" rel="Chapter" href="Random.html">
-<link title="Scanf" rel="Chapter" href="Scanf.html">
-<link title="Set" rel="Chapter" href="Set.html">
-<link title="Sort" rel="Chapter" href="Sort.html">
-<link title="Stack" rel="Chapter" href="Stack.html">
-<link title="StdLabels" rel="Chapter" href="StdLabels.html">
-<link title="Stream" rel="Chapter" href="Stream.html">
-<link title="String" rel="Chapter" href="String.html">
-<link title="StringLabels" rel="Chapter" href="StringLabels.html">
-<link title="Sys" rel="Chapter" href="Sys.html">
-<link title="Unix" rel="Chapter" href="Unix.html">
-<link title="UnixLabels" rel="Chapter" href="UnixLabels.html">
-<link title="Weak" rel="Chapter" href="Weak.html"><title>Barray</title>
+<link title="Sequence" rel="Chapter" href="Sequence.html"><title>Barray</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -116,10 +65,10 @@
 <pre><span id="TYPEord"><span class="keyword">type</span> <code class="type">'a</code> ord</span> = <code class="type">'a -> 'a -> int</code> </pre>
 
 
-<pre><span id="TYPErandom_gen"><span class="keyword">type</span> <code class="type">'a</code> random_gen</span> = <code class="type"><a href="Random.State.html#TYPEt">Random.State.t</a> -> 'a</code> </pre>
+<pre><span id="TYPErandom_gen"><span class="keyword">type</span> <code class="type">'a</code> random_gen</span> = <code class="type">Random.State.t -> 'a</code> </pre>
 
 
-<pre><span id="TYPEprinter"><span class="keyword">type</span> <code class="type">'a</code> printer</span> = <code class="type"><a href="Format.html#TYPEformatter">Format.formatter</a> -> 'a -> unit</code> </pre>
+<pre><span id="TYPEprinter"><span class="keyword">type</span> <code class="type">'a</code> printer</span> = <code class="type">Format.formatter -> 'a -> unit</code> </pre>
 
 
 <pre><span id="TYPEt"><span class="keyword">type</span> <code class="type">'a</code> t</span> = <code class="type">'a array</code> </pre>
@@ -151,7 +100,7 @@ Fold left on array until a stop condition via <code class="code">('a, `Stop)</co
 <pre><span id="VALiteri"><span class="keyword">val</span> iteri</span> : <code class="type">(int -> 'a -> unit) -> 'a <a href="Barray.html#TYPEt">t</a> -> unit</code></pre>
 <pre><span id="VALblit"><span class="keyword">val</span> blit</span> : <code class="type">'a <a href="Barray.html#TYPEt">t</a> -> int -> 'a <a href="Barray.html#TYPEt">t</a> -> int -> int -> unit</code></pre><div class="info ">
 <code class="code">blit from i into j len</code> copies <code class="code">len</code> elements from the first array
-    to the second. See <a href="Array.html#VALblit"><code class="code">Array.blit</code></a>.<br>
+    to the second. See <code class="code">Array.blit</code>.<br>
 </div>
 
 <pre><span id="VALreverse_in_place"><span class="keyword">val</span> reverse_in_place</span> : <code class="type">'a <a href="Barray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
@@ -264,7 +213,7 @@ Iterate on two arrays stepwise.<br>
 Shuffle randomly the array, in place<br>
 </div>
 
-<pre><span id="VALshuffle_with"><span class="keyword">val</span> shuffle_with</span> : <code class="type"><a href="Random.State.html#TYPEt">Random.State.t</a> -> 'a <a href="Barray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
+<pre><span id="VALshuffle_with"><span class="keyword">val</span> shuffle_with</span> : <code class="type">Random.State.t -> 'a <a href="Barray.html#TYPEt">t</a> -> unit</code></pre><div class="info ">
 Like shuffle but using a specialized random state<br>
 </div>
 
@@ -342,7 +291,7 @@ Range array, excluding right bound<br>
 <pre><span class="keyword">module type</span> <a href="Barray.MONO_ARRAY.html">MONO_ARRAY</a> = <code class="code">sig</code> <a href="Barray.MONO_ARRAY.html">..</a> <code class="code">end</code></pre>
 <pre><span id="VALsort_generic"><span class="keyword">val</span> sort_generic</span> : <code class="type">(module Barray.MONO_ARRAY with type elt = 'elt and type t = 'arr) -><br>       ?cmp:('elt -> 'elt -> int) -> 'arr -> unit</code></pre><div class="info ">
 Sort the array, without allocating (eats stack space though). Performance
-    might be lower than <a href="Array.html#VALsort"><code class="code">Array.sort</code></a>.<br>
+    might be lower than <code class="code">Array.sort</code>.<br>
 <b>Since</b> 0.14<br>
 </div>
 </body></html>
