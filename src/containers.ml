@@ -39,10 +39,10 @@ module Int64 = Bint64
 (** @since 0.14 *)
 module Hashtbl = struct
   include (Hashtbl : module type of Hashtbl
-    with type statistics = Hashtbl.statistics
-     and module Make = Hashtbl.Make
-     and type ('a,'b) t = ('a,'b) Hashtbl.t
-  )
+           with type statistics = Hashtbl.statistics
+            and module Make = Hashtbl.Make
+            and type ('a,'b) t = ('a,'b) Hashtbl.t
+          )
   include Bhashtbl.Poly
   module type S' = Bhashtbl.S
   module Make' = Bhashtbl.Make

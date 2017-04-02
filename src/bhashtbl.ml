@@ -88,10 +88,10 @@ module Poly = struct
   let update tbl ~f ~k =
     let v = get tbl k in
     match v, f k v with
-      | None, None -> ()
-      | None, Some v' -> Hashtbl.add tbl k v'
-      | Some _, Some v' -> Hashtbl.replace tbl k v'
-      | Some _, None -> Hashtbl.remove tbl k
+    | None, None -> ()
+    | None, Some v' -> Hashtbl.add tbl k v'
+    | Some _, Some v' -> Hashtbl.replace tbl k v'
+    | Some _, None -> Hashtbl.remove tbl k
 
   (*$R
     let tbl = Hashtbl.create 32 in
@@ -306,10 +306,10 @@ module Make(X : Hashtbl.HashedType)
   let update tbl ~f ~k =
     let v = get tbl k in
     match v, f k v with
-      | None, None -> ()
-      | None, Some v' -> add tbl k v'
-      | Some _, Some v' -> replace tbl k v'
-      | Some _, None -> remove tbl k
+    | None, None -> ()
+    | None, Some v' -> add tbl k v'
+    | Some _, Some v' -> replace tbl k v'
+    | Some _, None -> remove tbl k
 
   let get_or_add tbl ~f ~k =
     try find tbl k

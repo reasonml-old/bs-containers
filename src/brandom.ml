@@ -131,9 +131,9 @@ let split_list i ~len st =
 let retry ?(max=10) g st =
   let rec aux n =
     match g st with
-      | None when n=0 -> None
-      | None -> aux (n-1)  (* retry *)
-      | Some _ as res -> res
+    | None when n=0 -> None
+    | None -> aux (n-1)  (* retry *)
+    | Some _ as res -> res
   in
   aux max
 
@@ -168,16 +168,16 @@ let fix ?(sub1=[]) ?(sub2=[]) ?(subn=[]) ~base fuel st =
          ;  _choose_array_call sub2
              (fun f ->
                 match split fuel st with
-                  | None -> raise Backtrack
-                  | Some (i,j) -> f (make i) (make j) st
+                | None -> raise Backtrack
+                | Some (i,j) -> f (make i) (make j) st
              )
          ; _choose_array_call subn
              (fun (len,f) ->
                 let len = len st in
                 match split_list fuel ~len st with
-                  | None -> raise Backtrack
-                  | Some l' ->
-                    f (fun st -> List.map (fun x -> make x st) l') st
+                | None -> raise Backtrack
+                | Some l' ->
+                  f (fun st -> List.map (fun x -> make x st) l') st
              )
          ; base (* base case then *)
         |]

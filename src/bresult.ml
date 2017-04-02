@@ -157,8 +157,8 @@ let map_l f l =
     | [] -> Ok (List.rev acc)
     | x::l' ->
       match f x with
-        | Error s -> Error s
-        | Ok y -> map (y::acc) l'
+      | Error s -> Error s
+      | Ok y -> map (y::acc) l'
   in map [] l
 
 exception LocalExit
@@ -195,8 +195,8 @@ let retry n f =
     | 0 -> fail (List.rev acc)
     | _ ->
       match f () with
-        | Ok _ as res -> res
-        | Error e -> retry (n-1) (e::acc)
+      | Ok _ as res -> res
+      | Error e -> retry (n-1) (e::acc)
   in retry n []
 
 (** {2 Infix} *)

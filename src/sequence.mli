@@ -128,9 +128,9 @@ val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** Map objects, along with their index in the sequence *)
 
 val map_by_2 : ('a -> 'a -> 'a) -> 'a t -> 'a t
-  (** Map objects two by two. lazily.
-      The last element is kept in the sequence if the count is odd.
-      @since 0.7 *)
+(** Map objects two by two. lazily.
+    The last element is kept in the sequence if the count is odd.
+    @since 0.7 *)
 
 val for_all : ('a -> bool) -> 'a t -> bool
 (** Do all elements satisfy the predicate? *)
@@ -683,11 +683,11 @@ val shuffle_buffer : int -> 'a t -> 'a t
 (** {2 Sampling} *)
 
 val sample : int -> 'a t -> 'a array
-  (** [sample n seq] returns k samples of [seq], with uniform probability.
-      It will consume the sequence and use O(n) memory.
+(** [sample n seq] returns k samples of [seq], with uniform probability.
+    It will consume the sequence and use O(n) memory.
 
-      It returns an array of size [min (length seq) n].
-      @since 0.7 *)
+    It returns an array of size [min (length seq) n].
+    @since 0.7 *)
 
 (** {2 Infix functions} *)
 

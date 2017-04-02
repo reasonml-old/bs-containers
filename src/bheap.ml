@@ -193,12 +193,12 @@ module Make(E : PARTIAL_ORD) : S with type elt = E.t = struct
 
   let rec merge t1 t2 =
     match t1, t2 with
-      | t, E -> t
-      | E, t -> t
-      | N (_, x, a1, b1), N (_, y, a2, b2) ->
-        if E.leq x y
-        then _make_node x a1 (merge b1 t2)
-        else _make_node y a2 (merge t1 b2)
+    | t, E -> t
+    | E, t -> t
+    | N (_, x, a1, b1), N (_, y, a2, b2) ->
+      if E.leq x y
+      then _make_node x a1 (merge b1 t2)
+      else _make_node y a2 (merge t1 b2)
 
   let insert x h =
     merge (N(1,x,E,E)) h

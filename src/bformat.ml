@@ -262,8 +262,8 @@ let set_color_tag_handling ppf =
   let functions = pp_get_formatter_tag_functions ppf () in
   let st = Stack.create () in (* stack of styles *)
   let functions' = {functions with
-                      mark_open_tag=(mark_open_tag st ~or_else:functions.mark_open_tag);
-                      mark_close_tag=(mark_close_tag st ~or_else:functions.mark_close_tag);
+                    mark_open_tag=(mark_open_tag st ~or_else:functions.mark_open_tag);
+                    mark_close_tag=(mark_close_tag st ~or_else:functions.mark_close_tag);
                    } in
   pp_set_mark_tags ppf true; (* enable tags *)
   pp_set_formatter_tag_functions ppf functions'
