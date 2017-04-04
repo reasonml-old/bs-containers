@@ -50,9 +50,9 @@ val hash : t -> int
 
 val toInt : t -> int
 
-val ofInt : int -> t option
+val fromInt : int -> t option
 
-val ofIntExn : int -> t
+val fromIntOrRaise : int -> t
 
 val toInt32 : t -> int32
 
@@ -62,18 +62,18 @@ val ofInt32Exn : int32 -> t
 
 val toNativeint : t -> nativeint
 
-val ofNativeint : nativeint -> t option
+val fromNativeint : nativeint -> t option
 
-val ofNativeintExn : nativeint -> t
+val fromNativeintOrRaise : nativeint -> t
 
 val toFloat : t -> float
 
-val ofFloat : float -> t option
+val fromFloat : float -> t option
 
-val ofFloatExn : float -> t
+val fromFloatOrRaise : float -> t
 
 val toString : t -> string
 
-val ofString : string -> t option
+val fromString : string -> t option
 
-val ofStringExn : string -> t
+val fromStringOrRaise : string -> t

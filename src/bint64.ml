@@ -40,15 +40,15 @@ let abs = Int64.abs
 
 (** {2 Conversion} *)
 
-let ofIntExn = Int64.of_int
+let fromIntOrRaise = Int64.of_int
 
-let ofInt x = try Some (ofIntExn x) with Failure _ -> None
+let fromInt x = try Some (fromIntOrRaise x) with Failure _ -> None
 
 let toInt = Int64.to_int
 
-let ofNativeintExn = Int64.of_nativeint
+let fromNativeintOrRaise = Int64.of_nativeint
 
-let ofNativeint x = try Some (ofNativeintExn x) with Failure _ -> None
+let fromNativeint x = try Some (fromNativeintOrRaise x) with Failure _ -> None
 
 let toNativeint = Int64.to_nativeint
 
@@ -58,15 +58,15 @@ let ofInt32 x = try Some (ofInt32Exn x) with Failure _ -> None
 
 let toInt32 = Int64.to_int32
 
-let ofFloatExn = Int64.of_float
+let fromFloatOrRaise = Int64.of_float
 
-let ofFloat x = try Some (ofFloatExn x) with Failure _ -> None
+let fromFloat x = try Some (fromFloatOrRaise x) with Failure _ -> None
 
 let toFloat = Int64.to_float
 
-let ofStringExn = Int64.of_string
+let fromStringOrRaise = Int64.of_string
 
-let ofString x = try Some (ofStringExn x) with Failure _ -> None
+let fromString x = try Some (fromStringOrRaise x) with Failure _ -> None
 
 let toString = Int64.to_string
 

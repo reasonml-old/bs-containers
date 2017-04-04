@@ -8,7 +8,7 @@ module C = Containers
 (* Map module tests *)
 module IntMap = C.Map.Make(C.Int64)
 
-let to_int64 i = match C.Int64.ofInt i  with
+let to_int64 i = match C.Int64.fromInt i  with
   | Some x -> x
   | None -> raise (Failure "Corrupted implementation of Int64.of_int")
 
