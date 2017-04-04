@@ -5,11 +5,10 @@ module C = Containers
 
 (* Intentionally not tested as Int64 module is just a wrapper around stdlib, this should be part of BS testing *)
 
-
 (* Map module tests *)
-module IntMap = C.Map.Make(Int64)
+module IntMap = C.Map.Make(C.Int64)
 
-let to_int64 i = match C.Int64.of_int i  with
+let to_int64 i = match C.Int64.fromInt i  with
   | Some x -> x
   | None -> raise (Failure "Corrupted implementation of Int64.of_int")
 

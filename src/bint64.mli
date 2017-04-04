@@ -22,9 +22,9 @@ val (mod) : t -> t -> t
 
 val abs : t -> t
 
-val max_int : t
+val maxInt : t
 
-val min_int : t
+val minInt : t
 
 val (land) : t -> t -> t
 
@@ -48,32 +48,32 @@ val hash : t -> int
 
 (** {2 Conversion} *)
 
-val to_int : t -> int
+val toInt : t -> int
 
-val of_int : int -> t option
+val fromInt : int -> t option
 
-val of_int_exn : int -> t
+val fromIntOrRaise : int -> t
 
-val to_int32 : t -> int32
+val toInt32 : t -> int32
 
-val of_int32 : int32 -> t option
+val ofInt32 : int32 -> t option
 
-val of_int32_exn : int32 -> t
+val ofInt32Exn : int32 -> t
 
-val to_nativeint : t -> nativeint
+val toNativeint : t -> nativeint
 
-val of_nativeint : nativeint -> t option
+val fromNativeint : nativeint -> t option
 
-val of_nativeint_exn : nativeint -> t
+val fromNativeintOrRaise : nativeint -> t
 
-val to_float : t -> float
+val toFloat : t -> float
 
-val of_float : float -> t option
+val fromFloat : float -> t option
 
-val of_float_exn : float -> t
+val fromFloatOrRaise : float -> t
 
-val to_string : t -> string
+val toString : t -> string
 
-val of_string : string -> t option
+val fromString : string -> t option
 
-val of_string_exn : string -> t
+val fromStringOrRaise : string -> t
