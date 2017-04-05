@@ -35,6 +35,7 @@ let fromException e =
   let msg = Printexc.to_string e in
   Error msg
 
+(* TODO: Doesn't seem to work properly in bs *)
 let fromExceptionTrace e =
   let res = (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ()) in
   Error res
@@ -125,7 +126,12 @@ let mapError f = function
 
 let maybe f default = mapOr ~default f
 
-let map2 f g = function
+let map2 f a b = match a, b with
+  | Error e, _
+  | _, Error e -> Error e
+  | Ok x, Ok y -> Ok (f x y)
+
+let mapEither f g = function
   | Ok x -> Ok (f x)
   | Error e -> Error (g e)
 

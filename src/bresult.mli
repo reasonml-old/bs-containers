@@ -105,7 +105,11 @@ val maybe : ('a -> 'b) -> 'b -> ('a, _) t -> 'b
 val mapError : ('err1 -> 'err2) -> ('a, 'err1) t -> ('a, 'err2) t
 (** Map on the error variant *)
 
-val map2 : ('a -> 'b) -> ('err1 -> 'err2) -> ('a, 'err1) t -> ('b, 'err2) t
+(* new *)
+val map2 : ('a -> 'b -> 'c) -> ('a, 'err) t -> ('b, 'err) t -> ('c, 'err) t
+
+(* was map2, TODO: remove? *)
+val mapEither : ('a -> 'b) -> ('err1 -> 'err2) -> ('a, 'err1) t -> ('b, 'err2) t
 (** Same as {!map}, but also with a function that can transform
     the error message in case of failure *)
 
