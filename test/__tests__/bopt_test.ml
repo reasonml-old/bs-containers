@@ -102,7 +102,8 @@ let _ =
         ignore @@ getOrRaise None;
         fail t
       with
-      | _ -> pass t);
+      | Invalid_argument _ -> pass t
+      | _ -> fail t);
 
   test "getLazy - Some _" (fun t ->
       deepEqual t (getLazy  (fun () -> "b") (Some "a")) "a");

@@ -1,194 +1,233 @@
 
 (* This file is free software, part of containers. See file "license" for more details. *)
 
+(*
+
+- [x] Use `camelCase` instead of `snake_case`
+- [x] Get rid of scary monadic and math-y terminology
+- [x] Follow the conventions used in the `Js.*` modules
+- [x] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
+- [x] Remove operators and aliases, e.g. `pure` as an alias for `return`
+- [ ] Remove the use of exceptions for internal logic (maybe? seems very sketchy to me but perhaps there's a really really good reason, see [this example](https://github.com/BuckleTypes/bs-containers/blob/master/src/bopt.ml#L163))
+- [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
+- [/] Document everything properly, with examples
+- [x] Add tests for everything
+
+*)
+
 (** {1 Error Monad} *)
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
-type 'a ord = 'a -> 'a -> int
-type 'a printer = Format.formatter -> 'a -> unit
+type 'a ord = 'a -> 'a -> Comparison.comparison
 
-(** {2 Basics} *)
 
 type (+'good, +'bad) t = ('good, 'bad) Result.result =
   | Ok of 'good
   | Error of 'bad
 
-let return x = Ok x
+
+let make x = Ok x
 
 let fail s = Error s
 
-let fail_printf format =
-  let buf = Buffer.create 64 in
-  Printf.kbprintf
-    (fun buf -> fail (Buffer.contents buf))
-    buf format
-
-let fail_fprintf format =
-  let buf = Buffer.create 64 in
-  let out = Format.formatter_of_buffer buf in
-  Format.kfprintf
-    (fun out -> Format.pp_print_flush out (); fail (Buffer.contents buf))
-    out format
-
-let of_exn e =
+let fromException e =
   let msg = Printexc.to_string e in
   Error msg
 
-let of_exn_trace e =
-  let res = Printf.sprintf "%s\n%s"
-      (Printexc.to_string e) (Printexc.get_backtrace ())
-  in
+(* TODO: Not sure this actually works in bs *)
+let fromExceptionTrace e =
+  let res = (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ()) in
   Error res
-
-let map f e = match e with
-  | Ok x -> Ok (f x)
-  | Error s -> Error s
-
-let map_err f e = match e with
-  | Ok _ as res -> res
-  | Error y -> Error (f y)
-
-let map2 f g e = match e with
-  | Ok x -> Ok (f x)
-  | Error s -> Error (g s)
-
-let iter f e = match e with
-  | Ok x -> f x
-  | Error _ -> ()
-
-exception Get_error
-
-let get_exn = function
-  | Ok x -> x
-  | Error _ -> raise Get_error
-
-let get_or e ~default = match e with
-  | Ok x -> x
-  | Error _ -> default
-
-let map_or f e ~default = match e with
-  | Ok x -> f x
-  | Error _ -> default
-
-let catch e ~ok ~err = match e with
-  | Ok x -> ok x
-  | Error y -> err y
-
-let flat_map f e = match e with
-  | Ok x -> f x
-  | Error s -> Error s
-
-let (>|=) e f = map f e
-
-let (>>=) e f = flat_map f e
-
-let equal ?(err=Pervasives.(=)) eq a b = match a, b with
-  | Ok x, Ok y -> eq x y
-  | Error s, Error s' -> err s s'
-  | _ -> false
-
-let compare ?(err=Pervasives.compare) cmp a b = match a, b with
-  | Ok x, Ok y -> cmp x y
-  | Ok _, _  -> 1
-  | _, Ok _ -> -1
-  | Error s, Error s' -> err s s'
-
-let fold ~ok ~error x = match x with
-  | Ok x -> ok x
-  | Error s -> error s
-
-let is_ok = function
-  | Ok _ -> true
-  | Error _ -> false
-
-let is_error = function
-  | Ok _ -> false
-  | Error _ -> true
-
-(** {2 Wrappers} *)
 
 let guard f =
   try Ok (f ())
   with e -> Error e
 
-let guard_str f =
+let guardToString f =
   try Ok (f())
-  with e -> of_exn e
+  with e -> fromException e
 
-let guard_str_trace f =
+let guardToStringTrace f =
   try Ok (f())
-  with e -> of_exn_trace e
+  with e -> fromExceptionTrace e
 
-let wrap1 f x =
-  try return (f x)
+let wrap f x =
+  try make (f x)
   with e -> Error e
 
 let wrap2 f x y =
-  try return (f x y)
+  try make (f x y)
   with e -> Error e
 
 let wrap3 f x y z =
-  try return (f x y z)
+  try make (f x y z)
   with e -> Error e
 
-(** {2 Applicative} *)
 
-let pure = return
+let isOk = function
+  | Ok _ -> true
+  | Error _ -> false
 
-let (<*>) f x = match f with
-  | Error s -> fail s
-  | Ok f -> map f x
+let isError = function
+  | Ok _ -> false
+  | Error _ -> true
 
-let join t = match t with
-  | Ok (Ok o) -> Ok o
+let equal ?(err=Pervasives.(=)) eq a b = match a, b with
+  | Ok x, Ok y -> eq x y
+  | Error e, Error e' -> err e e'
+  | _ -> false
+
+let compare ?(err=Comparison.compare) cmp a b = match a, b with
+  | Ok x, Ok y -> cmp x y
+  | Ok _, _  -> Comparison.Greater
+  | _, Ok _ -> Comparison.Less
+  | Error e, Error e' -> err e e'
+
+
+exception GetError
+
+let get default = function
+  | Ok x -> x
+  | Error _ -> default
+
+let getOrRaise = function
+  | Ok x -> x
+  | Error _ -> raise GetError
+
+let getOr ~default = function
+  | Ok x -> x
+  | Error _ -> default
+
+let getLazy defaultFn = function
+  | Ok x -> x
+  | Error _ -> defaultFn ()
+
+
+let forEach f e = match e with
+  | Ok x -> f x
+  | Error _ -> ()
+
+let map f = function
+  | Ok x -> Ok (f x)
+  | Error e -> Error e
+
+let mapOr ~default f = function
+  | Ok x -> f x
+  | Error _ -> default
+
+let mapOrLazy ~default f = function
+  | Ok x -> f x
+  | Error _ -> default ()
+
+let mapError f = function
+  | Ok _ as res -> res
+  | Error e -> Error (f e)
+
+let maybe f default = mapOr ~default f
+
+let map2 f a b = match a, b with
+  | Error e, _
+  | _, Error e -> Error e
+  | Ok x, Ok y -> Ok (f x y)
+
+let mapEither f g = function
+  | Ok x -> Ok (f x)
+  | Error e -> Error (g e)
+
+let catch ~ok ~err = function
+  | Ok x -> ok x
+  | Error e -> err e
+
+let flatMap f = function
+  | Ok x -> f x
+  | Error e -> Error e
+
+let reduce f acc = function
+  | Error _ -> acc
+  | Ok x -> f acc x
+
+let filter p = function
+  | Ok x when p x -> Ok x
+  | _ -> Error ()
+
+
+let apply f a = match f with
+  | Error e -> fail e
+  | Ok f -> map f a
+
+
+let and_ b = function
+  | Ok _ -> b
+  | Error e -> Error e
+
+let or_ ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_
+
+let orLazy ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_ ()
+
+let flatten = function
+  | Ok (Ok x) -> Ok x
   | Ok (Error e) -> Error e
   | (Error _) as e -> e
 
-let both x y = match x,y with
-  | Ok o, Ok o' -> Ok (o, o')
+let zip a b = match a, b with
+  | Ok x, Ok y -> Ok (x, y)
   | Ok _, Error e -> Error e
   | Error e, _  -> Error e
 
-(** {2 Collections} *)
+let any l =
+  let rec find_ = function
+    | [] -> raise Not_found
+    | ((Ok _) as res) :: _ -> res
+    | (Error _) :: rest -> find_ rest
+  in
+  try find_ l
+  with Not_found ->
+    Error (List.map (function Error e -> e | Ok _ -> assert false) l)
 
-let map_l f l =
-  let rec map acc l = match l with
+
+let exists p = function
+  | Error _ -> false
+  | Ok x -> p x
+
+let forAll p = function
+  | Error _ -> true
+  | Ok x -> p x
+
+
+let mapList f l =
+  let rec map acc = function
     | [] -> Ok (List.rev acc)
-    | x::l' ->
-      match f x with
-      | Error s -> Error s
-      | Ok y -> map (y::acc) l'
+    | a::rest ->
+      match f a with
+        | Error e -> Error e
+        | Ok x -> map (x::acc) rest
   in map [] l
 
 exception LocalExit
 
-let fold_seq f acc seq =
+let reduceSeq f acc seq =
   let err = ref None in
   try
     let acc = ref acc in
     seq
-      (fun x -> match f !acc x with
-         | Error s -> err := Some s; raise LocalExit
-         | Ok y -> acc := y);
+      (fun a -> match f !acc a with
+         | Error e ->
+          err := Some e;
+          raise LocalExit
+         | Ok x -> acc := x);
     Ok !acc
   with LocalExit ->
-  match !err with None -> assert false | Some s -> Error s
+    match !err with
+      | None -> assert false
+      | Some e -> Error e
 
-let fold_l f acc l = fold_seq f acc (fun k -> List.iter k l)
+let reduceList f acc l = reduceSeq f acc (fun k -> List.iter k l)
 
-(** {2 Misc} *)
-
-let choose l =
-  let rec find_ = function
-    | [] -> raise Not_found
-    | ((Ok _) as res) :: _ -> res
-    | (Error _) :: l' -> find_ l'
-  in
-  try find_ l
-  with Not_found ->
-    let l' = List.map (function Error s -> s | Ok _ -> assert false) l in
-    Error l'
 
 let retry n f =
   let rec retry n acc = match n with
@@ -199,75 +238,19 @@ let retry n f =
       | Error e -> retry (n-1) (e::acc)
   in retry n []
 
-(** {2 Infix} *)
 
-module Infix = struct
-  let (>>=) = (>>=)
-  let (>|=) = (>|=)
-  let (<*>) = (<*>)
-end
-
-(** {2 Monadic Operations} *)
-
-module type MONAD = sig
-  type 'a t
-  val return : 'a -> 'a t
-  val (>>=) : 'a t -> ('a -> 'b t) -> 'b t
-end
-
-module Traverse(M : MONAD) = struct
-  let (>>=) = M.(>>=)
-
-  let map_m f e = match e with
-    | Error s -> M.return (Error s)
-    | Ok x -> f x >>= fun y -> M.return (Ok y)
-
-  let sequence_m m = map_m (fun x->x) m
-
-  let fold_m f acc e = match e with
-    | Error _ -> M.return acc
-    | Ok x -> f acc x >>= fun y -> M.return y
-
-  let retry_m n f =
-    let rec retry n acc = match n with
-      | 0 -> M.return (fail (List.rev acc))
-      | _ ->
-        f () >>= function
-        | Ok x -> M.return (Ok x)
-        | Error e -> retry (n-1) (e::acc)
-    in retry n []
-end
-
-(** {2 Conversions} *)
-
-let to_opt = function
+let toOption = function
   | Ok x -> Some x
   | Error _ -> None
 
-let of_opt = function
-  | None -> Error "of_opt"
+let fromOption = function
+  | None -> Error ()
   | Some x -> Ok x
 
-let to_seq e k = match e with
+let toList = function
+  | Error _ -> []
+  | Ok x -> [x]
+
+let toSeq e k = match e with
   | Ok x -> k x
   | Error _ -> ()
-
-type ('a, 'b) error = [`Ok of 'a | `Error of 'b]
-
-let of_err = function
-  | `Ok x -> Ok x
-  | `Error y -> Error y
-
-let to_err = function
-  | Ok x -> `Ok x
-  | Error y -> `Error y
-
-(** {2 IO} *)
-
-let pp pp_x fmt e = match e with
-  | Ok x -> Format.fprintf fmt "@[ok(@,%a)@]" pp_x x
-  | Error s -> Format.fprintf fmt "@[error(@,%s)@]" s
-
-let pp' pp_x pp_e fmt e = match e with
-  | Ok x -> Format.fprintf fmt "@[ok(@,%a)@]" pp_x x
-  | Error s -> Format.fprintf fmt "@[error(@,%a)@]" pp_e s
