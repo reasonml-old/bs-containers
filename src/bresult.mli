@@ -56,10 +56,10 @@ val wrap3 : ('a -> 'b -> 'c -> 'd) -> 'a -> 'b -> 'c -> ('d, exn) t
 
 (** {2 Comparsion} *)
 
-val isOk : ('a, 'err) t -> bool
+val isOk : ('a, _) t -> bool
 (** Return true if Ok *)
 
-val isError : ('a, 'err) t -> bool
+val isError : ('a, _) t -> bool
 (** Return true if Error *)
 
 val equal : ?err:'err equal -> 'a equal -> ('a, 'err) t equal
@@ -93,11 +93,11 @@ val forEach : ('a -> unit) -> ('a, _) t -> unit
 val map : ('a -> 'b) -> ('a, 'err) t -> ('b, 'err) t
 (** Map on success *)
 
-val mapOr : default:'b -> ('a -> 'b) ->  ('a, 'c) t -> 'b
+val mapOr : default:'b -> ('a -> 'b) ->  ('a, _) t -> 'b
 (** [map_or f e ~default] returns [f x] if [e = Ok x], [default] otherwise *)
 
 (* new *)
-val mapOrLazy : default:(unit -> 'b) -> ('a -> 'b) ->  ('a, 'c) t -> 'b
+val mapOrLazy : default:(unit -> 'b) -> ('a -> 'b) ->  ('a, _) t -> 'b
 
 (* new *)
 val maybe : ('a -> 'b) -> 'b -> ('a, _) t -> 'b
@@ -120,15 +120,15 @@ val catch : ('a, 'err) t -> ok:('a -> 'b) -> err:('err -> 'b) -> 'b
 val flatMap : ('a -> ('b, 'err) t) -> ('a, 'err) t -> ('b, 'err) t
 
 (* new-ish *)
-val reduce : ('b -> 'a -> 'b) -> 'b -> ('a, 'err) t -> 'b
+val reduce : ('b -> 'a -> 'b) -> 'b -> ('a, _) t -> 'b
 
 (* new, TODO: remove? *)
-val filter : ('a -> bool) -> ('a, 'e) t -> ('a, unit) t
+val filter : ('a -> bool) -> ('a, _) t -> ('a, unit) t
 
 (** {2 Composition} *)
 
 (* new *)
-val and_ : ('b, 'e) t -> ('a, 'e) t -> ('b, 'e) t
+val and_ : ('b, 'err) t -> ('a, 'err) t -> ('b, 'err) t
 
 val flatten : (('a, 'err) t, 'err) t -> ('a, 'err) t
 (** [flatten t], in case of success, returns [Ok o] from [Ok (Ok o)]. Otherwise,
@@ -161,6 +161,17 @@ val apply : ('a -> 'b, 'err) t -> ('a, 'err) t -> ('b, 'err) t
     [Ok (a b)]. Otherwise, it fails, and the error of [a] is chosen
     over the error of [b] if both fail. *)
 
+(** {2 Quantification} *)
+(** TODO: too mathy? *)
+
+(* new *)
+val exists : ('a -> bool) -> ('a, _) t -> bool
+(** [exists f a] is [f x] if [a] is [Some x], [false] otherwise *)
+
+(* new *)
+val forAll : ('a -> bool) -> ('a, _) t -> bool
+(** [forAll f a] is [f x] if [a] is [Some x], [true] otherwise *)
+
 (** {2 Collections} *)
 
 val mapList : ('a -> ('b, 'err) t) -> 'a list -> ('b list, 'err) t
@@ -180,6 +191,9 @@ val retry : int -> (unit -> ('a, 'err) t) -> ('a, 'err list) t
 
 val toOption : ('a, _) t -> 'a option
 
-val fromOption : 'a option -> ('a, string) t
+val fromOption : 'a option -> ('a, unit) t
+
+val toList : ('a, _) t -> 'a list
+(** [toList a] is [\[x\]] if [a] is [Some x], [\[\]] otherwise *)
 
 val toSeq : ('a, _) t -> 'a sequence

@@ -190,6 +190,15 @@ let any l =
     Error (List.map (function Error e -> e | Ok _ -> assert false) l)
 
 
+let exists p = function
+  | Error _ -> false
+  | Ok x -> p x
+
+let forAll p = function
+  | Error _ -> true
+  | Ok x -> p x
+
+
 let mapList f l =
   let rec map acc = function
     | [] -> Ok (List.rev acc)
@@ -235,8 +244,12 @@ let toOption = function
   | Error _ -> None
 
 let fromOption = function
-  | None -> Error "of_opt"
+  | None -> Error ()
   | Some x -> Ok x
+
+let toList = function
+  | Error _ -> []
+  | Ok x -> [x]
 
 let toSeq e k = match e with
   | Ok x -> k x
