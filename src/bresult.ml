@@ -147,10 +147,9 @@ let reduce f acc = function
   | Error _ -> acc
   | Ok x -> f acc x
 
-let filter p e a = match a with
-  | Ok x when p x -> a
-  | Error _ -> a
-  | _ -> Error e
+let filter p = function
+  | Ok x when p x -> Ok x
+  | _ -> Error ()
 
 let and_ b = function
   | Ok _ -> b

@@ -122,8 +122,8 @@ val flatMap : ('a -> ('b, 'err) t) -> ('a, 'err) t -> ('b, 'err) t
 (* new-ish *)
 val reduce : ('b -> 'a -> 'b) -> 'b -> ('a, 'err) t -> 'b
 
-(* new *)
-val filter : ('a -> bool) -> 'e -> ('a, 'e) t -> ('a, 'e) t
+(* new, TODO: remove? *)
+val filter : ('a -> bool) -> ('a, 'e) t -> ('a, unit) t
 
 (** {2 Composition} *)
 
