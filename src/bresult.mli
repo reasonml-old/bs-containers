@@ -7,12 +7,12 @@
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
-type 'a ord = 'a -> 'a -> Comparison.comparison
+type 'a ord = 'a -> 'a -> Ordering.t
 
 type (+'good, +'bad) t = ('good, 'bad) Result.result =
   | Ok of 'good
   | Error of 'bad
-(** alias of the standard or polyfilled [result] type *)
+  (** alias of the standard or polyfilled [result] type *)
 
 (** {2 Construction} *)
 
@@ -70,7 +70,7 @@ val isError : ('a, _) t -> bool
 val equal : ?err:'err equal -> 'a equal -> ('a, 'err) t equal
 (** [equal ~err p a b] is [err e1 e2] if both are [Error _], [f x y] if both are
     [Ok _], [false] otherwise
-    
+
     @param err is the equality function used when both [a] and [b] are
                [Error _]. It default to [Pervasives.(=)]. *)
 
@@ -78,7 +78,7 @@ val compare : ?err:'err ord -> 'a ord -> ('a, 'err) t ord
 (** [compare ~err f a b] is [err e1 e2] if both are [Error _], [f x y] if both
     are [Ok _], [Greater] if [a] is [Ok _] and [b] is [Error _], [Less] if vice
     versa.
-    
+
     @param err is the comparison function used when both [a] and [b] are
                [Error _]. It default to [Comparison.compare]. *)
 

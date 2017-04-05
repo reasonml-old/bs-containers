@@ -56,9 +56,9 @@ let equal f a b = match a, b with
   | Some x, Some y -> f x y
 
 let compare f a b = match a, b with
-  | None, None -> Comparison.Equal
-  | Some _, None -> Comparison.Greater
-  | None, Some _ -> Comparison.Less
+  | None, None -> Ordering.Equal
+  | Some _, None -> Ordering.Greater
+  | None, Some _ -> Ordering.Less
   | Some x, Some y -> f x y
 
 

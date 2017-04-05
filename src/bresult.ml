@@ -19,7 +19,7 @@
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a equal = 'a -> 'a -> bool
-type 'a ord = 'a -> 'a -> Comparison.comparison
+type 'a ord = 'a -> 'a -> Ordering.t
 
 
 type (+'good, +'bad) t = ('good, 'bad) Result.result =
@@ -78,10 +78,10 @@ let equal ?(err=Pervasives.(=)) eq a b = match a, b with
   | Error e, Error e' -> err e e'
   | _ -> false
 
-let compare ?(err=Comparison.compare) cmp a b = match a, b with
+let compare ?(err=Comparator.makeDefault) cmp a b = match a, b with
   | Ok x, Ok y -> cmp x y
-  | Ok _, _  -> Comparison.Greater
-  | _, Ok _ -> Comparison.Less
+  | Ok _, _  -> Ordering.Greater
+  | _, Ok _ -> Ordering.Less
   | Error e, Error e' -> err e e'
 
 
@@ -204,8 +204,8 @@ let mapList f l =
     | [] -> Ok (List.rev acc)
     | a::rest ->
       match f a with
-        | Error e -> Error e
-        | Ok x -> map (x::acc) rest
+      | Error e -> Error e
+      | Ok x -> map (x::acc) rest
   in map [] l
 
 exception LocalExit
@@ -217,14 +217,14 @@ let reduceSeq f acc seq =
     seq
       (fun a -> match f !acc a with
          | Error e ->
-          err := Some e;
-          raise LocalExit
+           err := Some e;
+           raise LocalExit
          | Ok x -> acc := x);
     Ok !acc
   with LocalExit ->
-    match !err with
-      | None -> assert false
-      | Some e -> Error e
+  match !err with
+  | None -> assert false
+  | Some e -> Error e
 
 let reduceList f acc l = reduceSeq f acc (fun k -> List.iter k l)
 

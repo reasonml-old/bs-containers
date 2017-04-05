@@ -47,7 +47,7 @@ val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 (** [equal p a b] is [true] if both are [None], [p x y] if both are [Some _],
     [false] otherwise *)
 
-val compare : ('a -> 'a -> Comparison.comparison) -> 'a t -> 'a t -> Comparison.comparison
+val compare : ('a -> 'a -> Ordering.t) -> 'a t -> 'a t -> Ordering.t
 (** [compare f a b] is [Equal] if both are [None], [f x y] if both are [Some _],
     [Greater] if [a] is [Some _] and [b] is [None], [Less] if vice versa. *)
 
