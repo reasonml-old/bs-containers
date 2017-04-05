@@ -11,7 +11,7 @@
 - [ ] Remove the use of exceptions for internal logic (maybe? seems very sketchy to me but perhaps there's a really really good reason, see [this example](https://github.com/BuckleTypes/bs-containers/blob/master/src/bopt.ml#L163))
 - [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
 - [ ] Document everything properly, with examples
-- [ ] Add tests for everything
+- [x] Add tests for everything
 
 *)
 
