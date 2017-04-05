@@ -44,7 +44,7 @@ val isNone : _ t -> bool
 (** [isNone a] is [true] if [a] is [None], [false] otherwise *)
 
 val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
-(** [equal f a b] is [true] if both are [None], [f x y] if both are [Some _],
+(** [equal p a b] is [true] if both are [None], [p x y] if both are [Some _],
     [false] otherwise *)
 
 val compare : ('a -> 'a -> Comparison.comparison) -> 'a t -> 'a t -> Comparison.comparison
@@ -62,7 +62,7 @@ val getOr : default:'a -> 'a t -> 'a
 val getOrRaise : 'a t -> 'a
 (** [getOrRaise a] is [x] if [a] is [Some x], raises [Invalid_argument] otherwise
 
-    @raise Invaliud_argument if given option is None    
+    @raise Invalid_argument if given option is None    
 *)
 
 val getLazy : (unit -> 'a) -> 'a t -> 'a
@@ -132,7 +132,7 @@ val zip : 'a t -> 'b t -> ('a * 'b) t
 
 (* was choice *)
 val any : 'a t list -> 'a t
-(** [choice l] returns the first non-[None] element of the list if it exists,
+(** [any l] returns the first non-[None] element of the list if it exists,
     [None] otherwise *)
 
 (** {2 Quantification} *)

@@ -12,6 +12,7 @@ let _ =
       deepEqual t (fromException Out_of_memory) (Error "Out of memory"));
 
   test "fromExceptionTrace" (fun t ->
+      Printexc.record_backtrace true;
       deepEqual t (fromExceptionTrace Out_of_memory) (Error "Out of memory\n"));
 
   test "guard - raise" (fun t ->
@@ -25,6 +26,7 @@ let _ =
       deepEqual t (guardToString (fun () -> 42)) (Ok 42));
 
   test "guardToStringTrace - raise" (fun t ->
+      Printexc.record_backtrace true;
       deepEqual t (guardToStringTrace (fun () -> raise Out_of_memory)) (Error "Out of memory\n"));
   test "guardToStringTrace - no raise" (fun t ->
       deepEqual t (guardToStringTrace (fun () -> 42)) (Ok 42));
@@ -93,7 +95,8 @@ let _ =
         ignore @@ getOrRaise (Error "foo");
         Test.fail t
       with
-      | _ -> pass t);
+      | GetError -> pass t
+      | _ -> Test.fail t);
 
   test "getLazy - Ok _" (fun t ->
       deepEqual t (getLazy  (fun () -> "b") (Ok "a")) "a");

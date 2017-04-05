@@ -10,7 +10,7 @@
 - [x] Remove operators and aliases, e.g. `pure` as an alias for `return`
 - [ ] Remove the use of exceptions for internal logic (maybe? seems very sketchy to me but perhaps there's a really really good reason, see [this example](https://github.com/BuckleTypes/bs-containers/blob/master/src/bopt.ml#L163))
 - [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
-- [ ] Document everything properly, with examples
+- [/] Document everything properly, with examples
 - [x] Add tests for everything
 
 *)
@@ -35,7 +35,7 @@ let fromException e =
   let msg = Printexc.to_string e in
   Error msg
 
-(* TODO: Doesn't seem to work properly in bs *)
+(* TODO: Not sure this actually works in bs *)
 let fromExceptionTrace e =
   let res = (Printexc.to_string e) ^ "\n" ^ (Printexc.get_backtrace ()) in
   Error res
@@ -135,11 +135,11 @@ let mapEither f g = function
   | Ok x -> Ok (f x)
   | Error e -> Error (g e)
 
-let catch e ~ok ~err = match e with
+let catch ~ok ~err = function
   | Ok x -> ok x
   | Error e -> err e
 
-let flatMap f e = match e with
+let flatMap f = function
   | Ok x -> f x
   | Error e -> Error e
 
@@ -151,9 +151,23 @@ let filter p = function
   | Ok x when p x -> Ok x
   | _ -> Error ()
 
+
+let apply f a = match f with
+  | Error e -> fail e
+  | Ok f -> map f a
+
+
 let and_ b = function
   | Ok _ -> b
   | Error e -> Error e
+
+let or_ ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_
+
+let orLazy ~else_ a = match a with
+  | Ok _ -> a
+  | Error _ -> else_ ()
 
 let flatten = function
   | Ok (Ok x) -> Ok x
@@ -164,20 +178,6 @@ let zip a b = match a, b with
   | Ok x, Ok y -> Ok (x, y)
   | Ok _, Error e -> Error e
   | Error e, _  -> Error e
-
-
-let apply f a = match f with
-  | Error e -> fail e
-  | Ok f -> map f a
-
-
-let or_ ~else_ a = match a with
-  | Ok _ -> a
-  | Error _ -> else_
-
-let orLazy ~else_ a = match a with
-  | Ok _ -> a
-  | Error _ -> else_ ()
 
 let any l =
   let rec find_ = function

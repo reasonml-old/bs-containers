@@ -115,10 +115,9 @@ let filter p a = match a with
   | _ -> None
 
 
-let apply f a = match f, a with
-  | None, _
-  | _, None -> None
-  | Some f, Some x -> Some (f x)
+let apply f a = match f with
+  | None -> None
+  | Some f -> map f a
 
 
 let and_ b = function
