@@ -95,7 +95,7 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 val flatMap : ('a -> 'b t) -> 'a t -> 'b t
 (** [flatMap f a] is [f x] is [a] is [Some x], [None] otherwise *)
 
-val reduce : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+val reduce : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
 (** [reduce f initial a] is [f inital x] if [a] is [Some x], [initial] otherwise *)
 
 val filter : ('a -> bool) -> 'a t -> 'a t

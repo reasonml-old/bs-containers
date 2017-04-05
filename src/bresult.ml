@@ -143,9 +143,9 @@ let flatMap f e = match e with
   | Ok x -> f x
   | Error e -> Error e
 
-let reduce ~ok ~error a = match a with
-  | Ok x -> ok x
-  | Error e -> error e
+let reduce f acc = function
+  | Error _ -> acc
+  | Ok x -> f acc x
 
 let filter p e a = match a with
   | Ok x when p x -> a

@@ -119,9 +119,8 @@ val catch : ('a, 'err) t -> ok:('a -> 'b) -> err:('err -> 'b) -> 'b
 
 val flatMap : ('a -> ('b, 'err) t) -> ('a, 'err) t -> ('b, 'err) t
 
-val reduce : ok:('a -> 'b) -> error:('err -> 'b) -> ('a, 'err) t -> 'b
-(** [fold ~ok ~error e] opens [e] and, if [e = Ok x], returns
-    [ok x], otherwise [e = Error s] and it returns [error s]. *)
+(* new-ish *)
+val reduce : ('b -> 'a -> 'b) -> 'b -> ('a, 'err) t -> 'b
 
 (* new *)
 val filter : ('a -> bool) -> 'e -> ('a, 'e) t -> ('a, 'e) t
