@@ -3,6 +3,8 @@
 
 (** {1 Helpers for Format} *)
 
+include Format
+
 type 'a sequence = ('a -> unit) -> unit
 
 type t = Format.formatter

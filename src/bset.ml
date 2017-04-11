@@ -3,6 +3,8 @@
 
 (** {1 Wrapper around Set} *)
 
+module type OrderedType = Set.OrderedType
+
 type 'a sequence = ('a -> unit) -> unit
 type 'a printer = Format.formatter -> 'a -> unit
 

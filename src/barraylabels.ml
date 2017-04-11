@@ -3,6 +3,8 @@
 
 (** {1 Array utils} *)
 
+include ArrayLabels
+
 type 'a sequence = ('a -> unit) -> unit
 type 'a klist = unit -> [`Nil | `Cons of 'a * 'a klist]
 type 'a gen = unit -> 'a option

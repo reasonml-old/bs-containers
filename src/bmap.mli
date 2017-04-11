@@ -4,6 +4,8 @@
     Provide a balanced tree as map container
 *)
 
+module type OrderedType = Map.OrderedType
+
 module type S = sig
 
   type key

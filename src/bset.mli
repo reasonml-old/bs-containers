@@ -1,9 +1,9 @@
 
 (* This file is free software, part of containers. See file "license" for more details. *)
 
-(** {1 Wrapper around Set}
+(** {1 Wrapper around Set} *)
 
-    @since 0.9 *)
+module type OrderedType = Set.OrderedType
 
 type 'a sequence = ('a -> unit) -> unit
 type 'a printer = Format.formatter -> 'a -> unit

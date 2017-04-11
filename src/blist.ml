@@ -7,6 +7,8 @@
   let lsort l = List.sort Pervasives.compare l
 *)
 
+include List
+
 type 'a t = 'a list
 
 let empty = []

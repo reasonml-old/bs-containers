@@ -1,5 +1,7 @@
 (* This file is free software, part of containers. See file "license" for more details. *)
 
+module type OrderedType = Map.OrderedType
+
 module type S = sig
 
   type key
