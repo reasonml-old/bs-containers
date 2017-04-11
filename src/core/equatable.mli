@@ -1,3 +1,4 @@
+(** Represents modules have equality *)
 
 module type S  = sig 
   type t 

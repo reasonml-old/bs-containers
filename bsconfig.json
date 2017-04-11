@@ -1,12 +1,23 @@
 {
     "name": "bs-containers",
-    "package-specs" : ["amdjs", "es6", "commonjs"],
-    "sources": [{
-        "dir": "src"
-    }, {
-        "dir": "test",
-        "subdirs": ["__tests__"],
-        "type": "dev"
-    }]
+    "package-specs": [
+        "amdjs",
+        "es6",
+        "commonjs"
+    ],
+    "sources": [
+        {
+            "dir": "src",
+            "subdirs": [
+                "core"
+            ]
+        },
+        {
+            "dir": "test",
+            "subdirs": [
+                "__tests__"
+            ],
+            "type": "dev"
+        }
+    ]
 }
-

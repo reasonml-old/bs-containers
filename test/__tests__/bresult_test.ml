@@ -68,15 +68,15 @@ let _ =
       deepEqual t (equal (<>) (Error "foo") (Error "foo")) true);
 
   test "compare - Ok _ = Ok _" (fun t ->
-      deepEqual t (compare Comparator.makeDefault (Ok 2) (Ok 2)) Equal);
+      deepEqual t (compare Comparator.int (Ok 2) (Ok 2)) Equal);
   test "compare - Ok _ < Ok _" (fun t ->
-      deepEqual t (compare Comparator.makeDefault (Ok 2) (Ok 3)) Less);
+      deepEqual t (compare Comparator.int (Ok 2) (Ok 3)) Less);
   test "compare - Ok _ > Error _" (fun t ->
-      deepEqual t (compare Comparator.makeDefault (Ok 2) (Error "foo")) Greater);
+      deepEqual t (compare Comparator.int (Ok 2) (Error "foo")) Greater);
   test "comapre - Error _ < Ok _" (fun t ->
-      deepEqual t (compare Comparator.makeDefault (Error "foo") (Ok 2)) Less);
+      deepEqual t (compare Comparator.int (Error "foo") (Ok 2)) Less);
   test "compare - Error _ = Error _" (fun t ->
-      deepEqual t (compare Comparator.makeDefault (Error "foo") (Error "foo")) Equal);
+      deepEqual t (compare Comparator.int (Error "foo") (Error "foo")) Equal);
 
   test "get - Ok _" (fun t ->
       deepEqual t (get "b" (Ok "a")) "a");

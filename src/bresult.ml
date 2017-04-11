@@ -78,7 +78,7 @@ let equal ?(err=Pervasives.(=)) eq a b = match a, b with
   | Error e, Error e' -> err e e'
   | _ -> false
 
-let compare ?(err=Comparator.makeDefault) cmp a b = match a, b with
+let compare ?(err=(Comparator.make Pervasives.compare)) cmp a b = match a, b with
   | Ok x, Ok y -> cmp x y
   | Ok _, _  -> Ordering.Greater
   | _, Ok _ -> Ordering.Less

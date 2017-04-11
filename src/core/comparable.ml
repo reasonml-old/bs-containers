@@ -1,4 +1,3 @@
-
 module type S = sig
   type t
 
@@ -6,5 +5,3 @@ module type S = sig
 
   val compare:t Comparator.t
 end
-
-module Default (T: sig type t end) : S with type t = T.t
