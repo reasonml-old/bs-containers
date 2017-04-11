@@ -4,7 +4,7 @@
 
     @since 0.14 *)
 
-type t = char
+include Char
 
 let equal (a:char) b = a=b
 let compare = Char.compare
