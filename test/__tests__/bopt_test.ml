@@ -75,15 +75,15 @@ let _ =
       deepEqual t (equal (<>) None None) true);
 
   test "compare - Some _ = Some _" (fun t ->
-      deepEqual t (compare Comparison.compare (Some 2) (Some 2)) Equal);
+      deepEqual t (compare Comparator.int (Some 2) (Some 2)) Equal);
   test "compare - Some _ < Some _" (fun t ->
-      deepEqual t (compare Comparison.compare (Some 2) (Some 3)) Less);
+      deepEqual t (compare Comparator.int (Some 2) (Some 3)) Less);
   test "compare - Some _ > None" (fun t ->
-      deepEqual t (compare Comparison.compare (Some 2) None) Greater);
+      deepEqual t (compare Comparator.int (Some 2) None) Greater);
   test "comapre - None < Some _" (fun t ->
-      deepEqual t (compare Comparison.compare None (Some 2)) Less);
+      deepEqual t (compare Comparator.int None (Some 2)) Less);
   test "compare - None = None" (fun t ->
-      deepEqual t (compare Comparison.compare None None) Equal);
+      deepEqual t (compare Comparator.int None None) Equal);
 
   test "get - Some _" (fun t ->
       deepEqual t (get "b" (Some "a")) "a");
