@@ -9,7 +9,17 @@
         {
             "dir": "src",
             "subdirs": [
-                "core"
+                {
+                    "dir": "core",
+                    "public": "none"
+                },
+                {
+                    "dir": "types",
+                    "public": "none"
+                }
+            ],
+            "public": [
+                "Containers"
             ]
         },
         {
