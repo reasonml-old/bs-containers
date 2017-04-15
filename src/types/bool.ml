@@ -13,3 +13,6 @@ let compare (a:bool) b = match a,b with
   | false, true -> Ordering.Less
   | _, _ -> Ordering.Equal
 
+let show = function 
+| true -> "true"
+| false -> "false"

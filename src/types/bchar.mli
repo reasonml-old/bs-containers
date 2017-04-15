@@ -76,3 +76,5 @@ val minValue : t
 
 (** Return 255 *)
 val maxValue : t
+
+include Show.S with type t:=t
