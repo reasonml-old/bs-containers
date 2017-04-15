@@ -28,6 +28,10 @@
                 "__tests__"
             ],
             "type": "dev"
+        },
+        {
+            "dir": "perf",
+            "type": "dev"
         }
     ]
 }
