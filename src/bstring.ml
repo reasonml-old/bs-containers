@@ -657,17 +657,17 @@ let exists2 p s1 s2 =
 
 let capitalize_ascii s =
   mapi
-    (fun i c -> if i=0 then Bchar.uppercase_ascii c else c)
+    (fun i c -> if i=0 then Bchar.upperCaseIfAscii c else c)
     s
 
 let uncapitalize_ascii s =
   mapi
-    (fun i c -> if i=0 then Bchar.lowercase_ascii c else c)
+    (fun i c -> if i=0 then Bchar.lowerCaseIfAscii c else c)
     s
 
-let uppercase_ascii = map Bchar.uppercase_ascii
+let uppercase_ascii = map Bchar.upperCaseIfAscii
 
-let lowercase_ascii = map Bchar.lowercase_ascii
+let lowercase_ascii = map Bchar.lowerCaseIfAscii
 
 
 

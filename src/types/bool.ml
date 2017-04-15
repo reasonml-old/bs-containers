@@ -9,7 +9,7 @@ let negate (x:t) : t = not x;;
 let equals = fun a b -> a == b
 
 let compare (a:bool) b = match a,b with
-| true, false -> Ordering.Greater
-| false, true -> Ordering.Less
-| _, _ -> Ordering.Equal
+  | true, false -> Ordering.Greater
+  | false, true -> Ordering.Less
+  | _, _ -> Ordering.Equal
 
