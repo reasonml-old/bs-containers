@@ -74,4 +74,4 @@ let getDigit t = if isDigit t then Some (getDigitUnsafe t) else None
 let minValue = chr 0
 let maxValue = chr 255
 
-let show c = String.make 1 c
+let toString c = String.make 1 c

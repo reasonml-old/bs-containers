@@ -71,10 +71,5 @@ val getDigit : t -> int option
 (** Return [i] if [is_digit c].  Raises [Failure] otherwise. *)
 val getDigitOrRaise : t -> int
 
-(** Return 0 *)
-val minValue : t
-
-(** Return 255 *)
-val maxValue : t
-
-include Show.S with type t:=t
+include Stringifiable.S with type t:=t
+include Bounded.S with type t:=t

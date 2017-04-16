@@ -58,7 +58,7 @@ let poly x = Hashtbl.hash x
 
 let array_comm f a =
   let arr = Array.init (Array.length a) (fun i -> f a.(i)) in
-  Array.sort Bint.compare arr; (* sort the hashes, so their order does not matter *)
+  Barray.sort Int.compare arr; (* sort the hashes, so their order does not matter *)
   array (fun h->h) arr
 
 let list_comm f l =
