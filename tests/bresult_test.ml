@@ -49,25 +49,25 @@ let suite =
       wrap3 (fun n m o -> n * m - o) 21 2 1 |> Expect.toEqual (Ok 41));
 
     test "isOk - Ok _" (fun () ->
-      isOk (Ok 2) |> Expect.toEqual true);
+      isOk (Ok 2) |> Expect.toBeTrue);
     test "isOk - Error" (fun () ->
-      isOk (Error "foo") |> Expect.toEqual false);
+      isOk (Error "foo") |> Expect.toBeFalse);
 
     test "isError - Ok _" (fun () ->
-      isError (Ok 2) |> Expect.toEqual false);
+      isError (Ok 2) |> Expect.toBeFalse);
     test "isError - Error" (fun () ->
-      isError (Error "foo") |> Expect.toEqual true);
+      isError (Error "foo") |> Expect.toBeTrue);
 
     test "equal - =, Ok _ = Ok _" (fun () ->
-      equal (=) (Ok 2) (Ok 2) |> Expect.toEqual true);
+      equal (=) (Ok 2) (Ok 2) |> Expect.toBeTrue);
     test "equal - <>, Ok _ <> Ok _" (fun () ->
-      equal (<>) (Ok 2) (Ok 2) |> Expect.toEqual false);
+      equal (<>) (Ok 2) (Ok 2) |> Expect.toBeFalse);
     test "equal - <>, Ok _ <> Error _" (fun () ->
-      equal (<>) (Ok 2) (Error "foo") |> Expect.toEqual false);
+      equal (<>) (Ok 2) (Error "foo") |> Expect.toBeFalse);
     test "equal - <>, Error _ <> Ok _" (fun () ->
-      equal (<>) (Error "foo") (Ok 2) |> Expect.toEqual false);
+      equal (<>) (Error "foo") (Ok 2) |> Expect.toBeFalse);
     test "equal - <>, Error _ = Error _" (fun () ->
-      equal (<>) (Error "foo") (Error "foo") |> Expect.toEqual true);
+      equal (<>) (Error "foo") (Error "foo") |> Expect.toBeTrue);
 
     test "compare - Ok _ = Ok _" (fun () ->
       Bresult.compare Comparator.int (Ok 2) (Ok 2) |> Expect.toEqual Ordering.Equal);
@@ -229,18 +229,18 @@ let suite =
       any [Ok 1;Ok 2] |> Expect.toEqual (Ok 1));
 
     test "exists - Ok x, f x = true" (fun () ->
-      exists ((=) 3) (Ok 3) |> Expect.toEqual true);
+      exists ((=) 3) (Ok 3) |> Expect.toBeTrue);
     test "filter - Ok x, f x = false" (fun () ->
-      exists (fun _ -> false) (Ok 3) |> Expect.toEqual false);
+      exists (fun _ -> false) (Ok 3) |> Expect.toBeFalse);
     test "filter - Error _" (fun () ->
-      exists (fun _ -> true) (Error "foo") |> Expect.toEqual false);
+      exists (fun _ -> true) (Error "foo") |> Expect.toBeFalse);
 
     test "forAll - Ok x, f x = true" (fun () ->
-      forAll ((=) 3) (Ok 3) |> Expect.toEqual true);
+      forAll ((=) 3) (Ok 3) |> Expect.toBeTrue);
     test "forAll - Ok x, f x = false" (fun () ->
-      forAll (fun _ -> false) (Ok 3) |> Expect.toEqual false);
+      forAll (fun _ -> false) (Ok 3) |> Expect.toBeFalse);
     test "forAll - Error _" (fun () ->
-      forAll (fun _ -> true) (Error "foo") |> Expect.toEqual true);
+      forAll (fun _ -> true) (Error "foo") |> Expect.toBeTrue);
 
     test "mapList - Ok _" (fun () ->
       mapList (fun a -> Ok (a + 3)) [1;2;3] |> Expect.toEqual (Ok [4;5;6]));

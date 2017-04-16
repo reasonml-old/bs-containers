@@ -213,18 +213,18 @@ let suite =
       any [Some 1;Some 2] |> Expect.toEqual (Some 1));
 
     test "exists - Some x, f x = true" (fun () ->
-      exists ((=) 3) (Some 3) |> Expect.toEqual true);
+      exists ((=) 3) (Some 3) |> Expect.toBeTrue);
     test "filter - Some x, f x = false" (fun () ->
-      exists (fun _ -> false) (Some 3) |> Expect.toEqual false);
+      exists (fun _ -> false) (Some 3) |> Expect.toBeFalse);
     test "filter - None" (fun () ->
-      exists (fun _ -> true) None |> Expect.toEqual false);
+      exists (fun _ -> true) None |> Expect.toBeFalse);
 
     test "forAll - Some x, f x = true" (fun () ->
-      forAll ((=) 3) (Some 3) |> Expect.toEqual true);
+      forAll ((=) 3) (Some 3) |> Expect.toBeTrue);
     test "forAll - Some x, f x = false" (fun () ->
-      forAll (fun _ -> false) (Some 3) |> Expect.toEqual false);
+      forAll (fun _ -> false) (Some 3) |> Expect.toBeFalse);
     test "forAll - None" (fun () ->
-      forAll (fun _ -> true) None |> Expect.toEqual true);
+      forAll (fun _ -> true) None |> Expect.toBeTrue);
 
     test "okOr - Some _" (fun () ->
       okOr 2 (Some "a") |> Expect.toEqual (Ok "a"));
