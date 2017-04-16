@@ -23,15 +23,13 @@
             ]
         },
         {
-            "dir": "test",
-            "subdirs": [
-                "__tests__"
-            ],
+            "dir": "tests",
             "type": "dev"
         },
         {
             "dir": "perf",
             "type": "dev"
         }
-    ]
+    ],
+    "bs-dev-dependencies": ["infinite-jest"]
 }

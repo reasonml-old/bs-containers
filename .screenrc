@@ -1,5 +1,6 @@
 sessionname "bs-containers test console"
+defscrollback 10000
 screen -t "bsb -- `C-a \` to quit" 0 npm run watch:bsb
 split
 focus down
-screen -t "ava -- `C-a \` to quit - `C-a Esc` to scroll" 1 npm run watch:ava
+screen -t "jest -- `C-a \` to quit - `C-a Esc` to scroll" 1 npm run watch:jest
