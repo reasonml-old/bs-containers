@@ -6,24 +6,24 @@
   "scripts": {
     "start": "bsb -w",
     "doc": "ocamldoc -html -I lib/bs/src -I doc/stdlib-cmi -d doc src/*.mli",
-    "build": "bsb",
+    "build": "bsb -make-world",
     "clean": "rm -rf lib",
     "coverage": "npm run build && nyc ava && nyc report --reporter=html",
-    "test": "npm run build && ava",
+    "test": "npm run build && jest",
     "watch:bsb": "bsb -make-world -w",
-    "watch:ava": "ava -w",
+    "watch:jest": "jest --watchAll",
     "watch:screen": "screen -c .screenrc"
   },
   "keywords": [],
   "author": "Bob Fang",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "bs-platform": "^1.5.1"
+    "bs-platform": "bloomberg/bucklescript"
   },
   "devDependencies": {
-    "ava": "^0.18.2",
     "nyc": "^10.1.2",
-    "tap-nyan": "^1.1.0"
+    "tap-nyan": "^1.1.0",
+    "infinite-jest": "glennsl/infinite-jest"
   },
   "repository": {
     "type": "git",
@@ -33,13 +33,8 @@
     "url": "https://github.com/dorafmon/bscontainers/issues"
   },
   "homepage": "https://github.com/dorafmon/bscontainers#readme",
-  "ava": {
-    "files": [
-      "**/*_test.js",
-      "!**/amdjs/**",
-      "!**/es6/**",
-      "!**/commonjs/**"
-    ]
+  "jest": {
+    "testRegex": "lib/js/tests/test.js"
   },
   "nyc": {
     "report-dir": "./doc/coverage"
