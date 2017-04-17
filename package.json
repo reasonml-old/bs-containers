@@ -7,7 +7,7 @@
     "start": "bsb -w",
     "doc": "ocamldoc -html -I lib/bs/src -I doc/stdlib-cmi -d doc src/*.mli",
     "build": "bsb -make-world",
-    "clean": "rm -rf lib",
+    "clean": "bsb -clean-world && rm -rf lib",
     "coverage": "npm run build && nyc ava && nyc report --reporter=html",
     "test": "npm run build && jest",
     "watch:bsb": "bsb -make-world -w",

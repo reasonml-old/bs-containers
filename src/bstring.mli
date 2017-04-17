@@ -9,9 +9,6 @@
 
 (*-- Start stdlib string, from https://github.com/ocaml/ocaml/blob/4.02.3/stdlib/string.mli --*)
 
-external length : string -> int = "%string_length"
-(** Return the length (number of characters) of the given string. *)
-
 external get : string -> int -> char = "%string_safe_get"
 (** [String.get s n] returns the character at index [n] in string [s].
     You can also write [s.[n]] instead of [String.get s n].
@@ -22,14 +19,6 @@ val make : int -> char -> string
     filled with the character [c].
     Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}. *)
 
-val init : int -> (int -> char) -> string
-(** [String.init n f] returns a string of length [n], with character
-    [i] initialized to the result of [f i] (called in increasing
-    index order).
-    Raise [Invalid_argument] if [n < 0] or [n > ]{!Sys.max_string_length}.
-    @since 4.02.0
-*)
-
 val sub : string -> int -> int -> string
 (** [String.sub s start len] returns a fresh string of length [len],
     containing the substring of [s] that starts at position [start] and
@@ -37,37 +26,11 @@ val sub : string -> int -> int -> string
     Raise [Invalid_argument] if [start] and [len] do not
     designate a valid substring of [s]. *)
 
-val blit : string -> int -> bytes -> int -> int -> unit
-(** Same as {!Bytes.blit_string}. *)
-
 val concat : string -> string list -> string
 (** [String.concat sep sl] concatenates the list of strings [sl],
     inserting the separator string [sep] between each.
     Raise [Invalid_argument] if the result is longer than
     {!Sys.max_string_length} bytes. *)
-
-val iter : (char -> unit) -> string -> unit
-(** [String.iter f s] applies function [f] in turn to all
-    the characters of [s].  It is equivalent to
-    [f s.[0]; f s.[1]; ...; f s.[String.length s - 1]; ()]. *)
-
-val iteri : (int -> char -> unit) -> string -> unit
-(** Same as {!String.iter}, but the
-    function is applied to the index of the element as first argument
-    (counting from 0), and the character itself as second argument.
-    @since 4.00.0 *)
-
-val map : (char -> char) -> string -> string
-(** [String.map f s] applies function [f] in turn to all the
-    characters of [s] (in increasing index order) and stores the
-    results in a new string that is returned.
-    @since 4.00.0 *)
-
-val mapi : (int -> char -> char) -> string -> string
-(** [String.mapi f s] calls [f] with each character of [s] and its
-    index (in increasing index order) and stores the results in a new
-    string that is returned.
-    @since 4.02.0 *)
 
 val trim : string -> string
 (** Return a copy of the argument, without leading and trailing
@@ -146,12 +109,6 @@ val uncapitalize : string -> string
 
 type t = string
 (** An alias for the type of strings. *)
-
-val compare: t -> t -> int
-(** The comparison function for strings, with the same specification as
-    {!Pervasives.compare}.  Along with the type [t], this function [compare]
-    allows the module [String] to be passed as argument to the functors
-    {!Set.Make} and {!Map.Make}. *)
 
 (**/**)
 

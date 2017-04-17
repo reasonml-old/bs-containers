@@ -26,11 +26,6 @@ val nth : 'a list -> int -> 'a
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
-val append : 'a list -> 'a list -> 'a list
-(** Catenate two lists.  Same function as the infix operator [@].
-    Not tail-recursive (length of the first argument).  The [@]
-    operator is not tail-recursive either. *)
-
 val rev_append : 'a list -> 'a list -> 'a list
 (** [ListLabels.rev_append l1 l2] reverses [l1] and concatenates it to [l2].
     This is equivalent to {!ListLabels.rev}[ l1 @ l2], but [rev_append] is
@@ -42,10 +37,6 @@ val concat : 'a list list -> 'a list
     Not tail-recursive
     (length of the argument + length of the longest sub-list). *)
 
-val flatten : 'a list list -> 'a list
-(** Same as [concat].  Not tail-recursive
-    (length of the argument + length of the longest sub-list). *)
-
 
 (** {6 Iterators} *)
 
@@ -55,25 +46,6 @@ val iter : f:('a -> unit) -> 'a list -> unit
     [a1; ...; an]. It is equivalent to
     [begin f a1; f a2; ...; f an; () end]. *)
 
-val iteri : f:(int -> 'a -> unit) -> 'a list -> unit
-(** Same as {!ListLabels.iter}, but the function is applied to the index of
-    the element as first argument (counting from 0), and the element
-    itself as second argument.
-    @since 4.00.0
-*)
-
-val map : f:('a -> 'b) -> 'a list -> 'b list
-(** [ListLabels.map f [a1; ...; an]] applies function [f] to [a1, ..., an],
-    and builds the list [[f a1; ...; f an]]
-    with the results returned by [f].  Not tail-recursive. *)
-
-val mapi : f:(int -> 'a -> 'b) -> 'a list -> 'b list
-(** Same as {!ListLabels.map}, but the function is applied to the index of
-    the element as first argument (counting from 0), and the element
-    itself as second argument.
-    @since 4.00.0
-*)
-
 val rev_map : f:('a -> 'b) -> 'a list -> 'b list
 (** [ListLabels.rev_map f l] gives the same result as
     {!ListLabels.rev}[ (]{!ListLabels.map}[ f l)], but is tail-recursive and
@@ -82,10 +54,6 @@ val rev_map : f:('a -> 'b) -> 'a list -> 'b list
 val fold_left : f:('a -> 'b -> 'a) -> init:'a -> 'b list -> 'a
 (** [ListLabels.fold_left f a [b1; ...; bn]] is
     [f (... (f (f a b1) b2) ...) bn]. *)
-
-val fold_right : f:('a -> 'b -> 'b) -> 'a list -> init:'b -> 'b
-(** [ListLabels.fold_right f [a1; ...; an] b] is
-    [f a1 (f a2 (... (f an b) ...))].  Not tail-recursive. *)
 
 
 (** {6 Iterators on two lists} *)
@@ -146,10 +114,6 @@ val exists2 : f:('a -> 'b -> bool) -> 'a list -> 'b list -> bool
     Raise [Invalid_argument] if the two lists have
     different lengths. *)
 
-val mem : 'a -> set:'a list -> bool
-(** [mem a l] is true if and only if [a] is equal
-    to an element of [l]. *)
-
 val memq : 'a -> set:'a list -> bool
 (** Same as {!ListLabels.mem}, but uses physical equality instead of structural
     equality to compare list elements. *)
@@ -163,11 +127,6 @@ val find : f:('a -> bool) -> 'a list -> 'a
     that satisfies the predicate [p].
     Raise [Not_found] if there is no value that satisfies [p] in the
     list [l]. *)
-
-val filter : f:('a -> bool) -> 'a list -> 'a list
-(** [filter p l] returns all the elements of the list [l]
-    that satisfy the predicate [p].  The order of the elements
-    in the input list is preserved.  *)
 
 val find_all : f:('a -> bool) -> 'a list -> 'a list
 (** [find_all] is another name for {!ListLabels.filter}. *)

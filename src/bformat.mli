@@ -507,89 +507,11 @@ val pp_print_text : formatter -> string -> unit
 
 (** {6 [printf] like functions for pretty-printing.} *)
 
-val fprintf : formatter -> ('a, formatter, unit) format -> 'a
-
-(** [fprintf ff fmt arg1 ... argN] formats the arguments [arg1] to [argN]
-    according to the format string [fmt], and outputs the resulting string on
-    the formatter [ff].
-    The format [fmt] is a character string which contains three types of
-    objects: plain characters and conversion specifications as specified in
-    the [Printf] module, and pretty-printing indications specific to the
-    [Format] module.
-    The pretty-printing indication characters are introduced by
-    a [@] character, and their meanings are:
-    - [@\[]: open a pretty-printing box. The type and offset of the
-     box may be optionally specified with the following syntax:
-     the [<] character, followed by an optional box type indication,
-     then an optional integer offset, and the closing [>] character.
-     Box type is one of [h], [v], [hv], [b], or [hov],
-     which stand respectively for an horizontal box, a vertical box,
-     an 'horizontal-vertical' box, or an 'horizontal or
-     vertical' box ([b] standing for an 'horizontal or
-     vertical' box demonstrating indentation and [hov] standing
-     for a regular'horizontal or vertical' box).
-     For instance, [@\[<hov 2>] opens an 'horizontal or vertical'
-     box with indentation 2 as obtained with [open_hovbox 2].
-     For more details about boxes, see the various box opening
-     functions [open_*box].
-    - [@\]]: close the most recently opened pretty-printing box.
-    - [@,]: output a good break hint, as with [print_cut ()].
-    - [@ ]: output a good break space, as with [print_space ()].
-    - [@;]: output a fully specified good break as with [print_break]. The
-     [nspaces] and [offset] parameters of the break may be
-     optionally specified with the following syntax:
-     the [<] character, followed by an integer [nspaces] value,
-     then an integer [offset], and a closing [>] character.
-     If no parameters are provided, the good break defaults to a
-     good break space.
-    - [@.]: flush the pretty printer and output a new line, as with
-     [print_newline ()].
-    - [@<n>]: print the following item as if it were of length [n].
-     Hence, [printf "@<0>%s" arg] prints [arg] as a zero length string.
-     If [@<n>] is not followed by a conversion specification,
-     then the following character of the format is printed as if
-     it were of length [n].
-    - [@\{]: open a tag. The name of the tag may be optionally
-     specified with the following syntax:
-     the [<] character, followed by an optional string
-     specification, and the closing [>] character. The string
-     specification is any character string that does not contain the
-     closing character ['>']. If omitted, the tag name defaults to the
-     empty string.
-     For more details about tags, see the functions [open_tag] and
-     [close_tag].
-    - [@\}]: close the most recently opened tag.
-    - [@?]: flush the pretty printer as with [print_flush ()].
-     This is equivalent to the conversion [%!].
-    - [@\n]: force a newline, as with [force_newline ()].
-    - [@@]: print a single [@] character.
-    Example: [printf "@[%s@ %d@]@." "x =" 1] is equivalent to
-    [open_box (); print_string "x ="; print_space ();
-    print_int 1; close_box (); print_newline ()].
-    It prints [x = 1] within a pretty-printing box.
-    Note: If you need to prevent the interpretation of a [@] character as a
-    pretty-printing indication, you can also escape it with a [%] character.
-*)
-
 val printf : ('a, formatter, unit) format -> 'a
 (** Same as [fprintf] above, but output on [std_formatter]. *)
 
 val eprintf : ('a, formatter, unit) format -> 'a
 (** Same as [fprintf] above, but output on [err_formatter]. *)
-
-val sprintf : ('a, unit, string) format -> 'a
-(** Same as [printf] above, but instead of printing on a formatter,
-    returns a string containing the result of formatting the arguments.
-    Note that the pretty-printer queue is flushed at the end of {e each
-    call} to [sprintf].
-    In case of multiple and related calls to [sprintf] to output
-    material on a single string, you should consider using [fprintf]
-    with the predefined formatter [str_formatter] and call
-    [flush_str_formatter ()] to get the final result.
-    Alternatively, you can use [Format.fprintf] with a formatter writing to a
-    buffer of your own: flushing the formatter and the buffer at the end of
-    pretty-printing returns the desired string.
-*)
 
 val asprintf : ('a, formatter, unit, string) format4 -> 'a
 (** Same as [printf] above, but instead of printing on a formatter,
@@ -618,10 +540,6 @@ val ikfprintf : (formatter -> 'a) -> formatter ->
     Useful to ignore some material when conditionally printing.
     @since 3.12.0
 *)
-
-val ksprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-(** Same as [sprintf] above, but instead of returning the string,
-    passes it to the first argument. *)
 
 (*-- End stdlib format --*)
 
