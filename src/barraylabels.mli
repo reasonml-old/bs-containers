@@ -6,24 +6,6 @@
 
 (*-- Start stdlib arrayLabels, from https://github.com/ocaml/ocaml/blob/4.02.3/stdlib/arrayLabels.mli --*)
 
-external length : 'a array -> int = "%array_length"
-(** Return the length (number of elements) of the given array. *)
-
-external get : 'a array -> int -> 'a = "%array_safe_get"
-(** [ArrayLabels.get a n] returns the element number [n] of array [a].
-    The first element has number 0.
-    The last element has number [ArrayLabels.length a - 1].
-    You can also write [a.(n)] instead of [ArrayLabels.get a n].
-    Raise [Invalid_argument "index out of bounds"]
-    if [n] is outside the range 0 to [(ArrayLabels.length a - 1)]. *)
-
-external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
-(** [ArrayLabels.set a n x] modifies array [a] in place, replacing
-    element number [n] with [x].
-    You can also write [a.(n) <- x] instead of [ArrayLabels.set a n x].
-    Raise [Invalid_argument "index out of bounds"]
-    if [n] is outside the range 0 to [ArrayLabels.length a - 1]. *)
-
 external make : int -> 'a -> 'a array = "caml_make_vect"
 (** [ArrayLabels.make n x] returns a fresh array of length [n],
     initialized with [x].
@@ -35,10 +17,6 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
     Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].
     If the value of [x] is a floating-point number, then the maximum
     size is only [Sys.max_array_length / 2].*)
-
-external create : int -> 'a -> 'a array = "caml_make_vect"
-[@@ocaml.deprecated "Use ArrayLabels.make instead."]
-(** @deprecated [ArrayLabels.create] is an alias for {!ArrayLabels.make}. *)
 
 val init : int -> f:(int -> 'a) -> 'a array
 (** [ArrayLabels.init n f] returns a fresh array of length [n],
@@ -60,11 +38,6 @@ val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
     greater than [Sys.max_array_length].
     If the value of [e] is a floating-point number, then the maximum
     size is only [Sys.max_array_length / 2]. *)
-
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-[@@ocaml.deprecated "Use ArrayLabels.make_matrix instead."]
-(** @deprecated [ArrayLabels.create_matrix] is an alias for
-    {!ArrayLabels.make_matrix}. *)
 
 val append : 'a array -> 'a array -> 'a array
 (** [ArrayLabels.append v1 v2] returns a fresh array containing the
@@ -91,39 +64,12 @@ val fill : 'a array -> pos:int -> len:int -> 'a -> unit
     Raise [Invalid_argument "Array.fill"] if [ofs] and [len] do not
     designate a valid subarray of [a]. *)
 
-val blit :
-  src:'a array -> src_pos:int -> dst:'a array -> dst_pos:int -> len:int ->
-  unit
-(** [ArrayLabels.blit v1 o1 v2 o2 len] copies [len] elements
-    from array [v1], starting at element number [o1], to array [v2],
-    starting at element number [o2]. It works correctly even if
-    [v1] and [v2] are the same array, and the source and
-    destination chunks overlap.
-    Raise [Invalid_argument "Array.blit"] if [o1] and [len] do not
-    designate a valid subarray of [v1], or if [o2] and [len] do not
-    designate a valid subarray of [v2]. *)
-
 val to_list : 'a array -> 'a list
 (** [ArrayLabels.to_list a] returns the list of all the elements of [a]. *)
 
 val of_list : 'a list -> 'a array
 (** [ArrayLabels.of_list l] returns a fresh array containing the elements
     of [l]. *)
-
-val iter : f:('a -> unit) -> 'a array -> unit
-(** [ArrayLabels.iter f a] applies function [f] in turn to all
-    the elements of [a].  It is equivalent to
-    [f a.(0); f a.(1); ...; f a.(ArrayLabels.length a - 1); ()]. *)
-
-val map : f:('a -> 'b) -> 'a array -> 'b array
-(** [ArrayLabels.map f a] applies function [f] to all the elements of [a],
-    and builds an array with the results returned by [f]:
-    [[| f a.(0); f a.(1); ...; f a.(ArrayLabels.length a - 1) |]]. *)
-
-val iteri : f:(int -> 'a -> unit) -> 'a array -> unit
-(** Same as {!ArrayLabels.iter}, but the
-    function is applied to the index of the element as first argument,
-    and the element itself as second argument. *)
 
 val mapi : f:(int -> 'a -> 'b) -> 'a array -> 'b array
 (** Same as {!ArrayLabels.map}, but the

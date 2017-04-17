@@ -161,8 +161,3 @@ val kbprintf : (Buffer.t -> 'a) -> Buffer.t ->
    passes the buffer to its first argument at the end of printing.
    @since 3.10.0
 *)
-
-(** Deprecated *)
-
-val kprintf : (string -> 'a) -> ('b, unit, string, 'a) format4 -> 'b
-(** A deprecated synonym for [ksprintf]. *)

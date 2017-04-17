@@ -46,10 +46,6 @@ external make : int -> 'a -> 'a array = "caml_make_vect"
    If the value of [x] is a floating-point number, then the maximum
    size is only [Sys.max_array_length / 2].*)
 
-external create : int -> 'a -> 'a array = "caml_make_vect"
-  [@@ocaml.deprecated "Use ArrayLabels.make instead."]
-(** @deprecated [ArrayLabels.create] is an alias for {!ArrayLabels.make}. *)
-
 val init : int -> f:(int -> 'a) -> 'a array
 (** [ArrayLabels.init n f] returns a fresh array of length [n],
    with element number [i] initialized to the result of [f i].
@@ -72,11 +68,6 @@ val make_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
    greater than [Sys.max_array_length].
    If the value of [e] is a floating-point number, then the maximum
    size is only [Sys.max_array_length / 2]. *)
-
-val create_matrix : dimx:int -> dimy:int -> 'a -> 'a array array
-  [@@ocaml.deprecated "Use ArrayLabels.make_matrix instead."]
-(** @deprecated [ArrayLabels.create_matrix] is an alias for
-   {!ArrayLabels.make_matrix}. *)
 
 val append : 'a array -> 'a array -> 'a array
 (** [ArrayLabels.append v1 v2] returns a fresh array containing the

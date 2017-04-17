@@ -260,7 +260,6 @@ let mark_close_tag st ~or_else s =
 
 (* add color handling to formatter [ppf] *)
 let set_color_tag_handling ppf =
-  let open Format in
   let functions = pp_get_formatter_tag_functions ppf () in
   let st = Stack.create () in (* stack of styles *)
   let functions' = {functions with

@@ -192,11 +192,6 @@ val name_of_input : in_channel -> string
     @since 3.09.0
 *)
 
-val stdib : in_channel
-(** A deprecated alias for [Scanning.stdin], the scanning buffer reading from
-    [Pervasives.stdin].
-*)
-
 end
 
 (** {6 Type of formatted input functions} *)

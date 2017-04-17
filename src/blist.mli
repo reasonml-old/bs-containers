@@ -26,11 +26,6 @@ val nth : 'a list -> int -> 'a
 val rev : 'a list -> 'a list
 (** List reversal. *)
 
-val append : 'a list -> 'a list -> 'a list
-(** Catenate two lists.  Same function as the infix operator [@].
-    Not tail-recursive (length of the first argument).  The [@]
-    operator is not tail-recursive either. *)
-
 val rev_append : 'a list -> 'a list -> 'a list
 (** [List.rev_append l1 l2] reverses [l1] and concatenates it to [l2].
     This is equivalent to {!List.rev}[ l1 @ l2], but [rev_append] is
@@ -42,10 +37,6 @@ val concat : 'a list list -> 'a list
     Not tail-recursive
     (length of the argument + length of the longest sub-list). *)
 
-val flatten : 'a list list -> 'a list
-(** Same as [concat].  Not tail-recursive
-    (length of the argument + length of the longest sub-list). *)
-
 
 (** {6 Iterators} *)
 
@@ -55,25 +46,6 @@ val iter : ('a -> unit) -> 'a list -> unit
     [a1; ...; an]. It is equivalent to
     [begin f a1; f a2; ...; f an; () end]. *)
 
-val iteri : (int -> 'a -> unit) -> 'a list -> unit
-(** Same as {!List.iter}, but the function is applied to the index of
-    the element as first argument (counting from 0), and the element
-    itself as second argument.
-    @since 4.00.0
-*)
-
-val map : ('a -> 'b) -> 'a list -> 'b list
-(** [List.map f [a1; ...; an]] applies function [f] to [a1, ..., an],
-    and builds the list [[f a1; ...; f an]]
-    with the results returned by [f].  Not tail-recursive. *)
-
-val mapi : (int -> 'a -> 'b) -> 'a list -> 'b list
-(** Same as {!List.map}, but the function is applied to the index of
-    the element as first argument (counting from 0), and the element
-    itself as second argument.  Not tail-recursive.
-    @since 4.00.0
-*)
-
 val rev_map : ('a -> 'b) -> 'a list -> 'b list
 (** [List.rev_map f l] gives the same result as
     {!List.rev}[ (]{!List.map}[ f l)], but is tail-recursive and
@@ -82,10 +54,6 @@ val rev_map : ('a -> 'b) -> 'a list -> 'b list
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
 (** [List.fold_left f a [b1; ...; bn]] is
     [f (... (f (f a b1) b2) ...) bn]. *)
-
-val fold_right : ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
-(** [List.fold_right f [a1; ...; an] b] is
-    [f a1 (f a2 (... (f an b) ...))].  Not tail-recursive. *)
 
 
 (** {6 Iterators on two lists} *)
@@ -144,10 +112,6 @@ val exists2 : ('a -> 'b -> bool) -> 'a list -> 'b list -> bool
     Raise [Invalid_argument] if the two lists have
     different lengths. *)
 
-val mem : 'a -> 'a list -> bool
-(** [mem a l] is true if and only if [a] is equal
-    to an element of [l]. *)
-
 val memq : 'a -> 'a list -> bool
 (** Same as {!List.mem}, but uses physical equality instead of structural
     equality to compare list elements. *)
@@ -161,11 +125,6 @@ val find : ('a -> bool) -> 'a list -> 'a
     that satisfies the predicate [p].
     Raise [Not_found] if there is no value that satisfies [p] in the
     list [l]. *)
-
-val filter : ('a -> bool) -> 'a list -> 'a list
-(** [filter p l] returns all the elements of the list [l]
-    that satisfy the predicate [p].  The order of the elements
-    in the input list is preserved.  *)
 
 val find_all : ('a -> bool) -> 'a list -> 'a list
 (** [find_all] is another name for {!List.filter}. *)
@@ -257,10 +216,6 @@ val stable_sort : ('a -> 'a -> int) -> 'a list -> 'a list
 val fast_sort : ('a -> 'a -> int) -> 'a list -> 'a list
 (** Same as {!List.sort} or {!List.stable_sort}, whichever is faster
     on typical input. *)
-
-val sort_uniq : ('a -> 'a -> int) -> 'a list -> 'a list
-(** Same as {!List.sort}, but also remove duplicates.
-    @since 4.02.0 *)
 
 val merge : ('a -> 'a -> int) -> 'a list -> 'a list -> 'a list
 (** Merge two lists:
