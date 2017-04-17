@@ -5,74 +5,107 @@ open Bchar
 let suite = 
   describe "Bchar" (fun () -> [
     test "lowerCaseIfAscii - 'A'" (fun () ->
-      lowerCaseIfAscii 'A' |> Expect.toEqual 'a');
+      'A' |> lowerCaseIfAscii
+          |> Expect.toEqual 'a');
     test "lowerCaseIfAscii - '0'" (fun () ->
-      lowerCaseIfAscii '0' |> Expect.toEqual '0');
+      '0' |> lowerCaseIfAscii
+          |> Expect.toEqual '0');
 
     test "fromInt - 48" (fun () ->
-      fromInt 48 |> Expect.toEqual (Some '0'));
+      48 |> fromInt
+         |> Expect.toEqual (Some '0'));
     test "fromInt - 256" (fun () ->
-      fromInt 256 |> Expect.toEqual None);
+      256 |> fromInt
+          |> Expect.toEqual None);
 
     test "fromIntOrRaise - 48" (fun () ->
-      fromIntOrRaise 48 |> Expect.toEqual '0');
+      48 |> fromIntOrRaise
+         |> Expect.toEqual '0');
     test "fromIntOrRaise - 256" (fun () ->
-      (fun () -> fromIntOrRaise 256) |> Expect.toRaise);
+      (fun () ->
+        256 |> fromIntOrRaise)
+            |> Expect.toRaise);
     test "fromIntOrRaise - (~-1)" (fun () ->
-      (fun () -> fromIntOrRaise (~-1)) |> Expect.toRaise);
+      (fun () ->
+        (~-1) |> fromIntOrRaise)
+              |> Expect.toRaise);
 
     test "toInt" (fun () ->
-      toInt 'a' |> Expect.toEqual 97);
+      'a' |> toInt
+          |> Expect.toEqual 97);
 
     test "isDigit - '0'" (fun () ->
-      isDigit '0' |> Expect.toBeTrue);
+      '0' |> isDigit
+          |> Expect.toBeTrue);
     test "isDigit - 'a'" (fun () ->
-      isDigit 'a' |> Expect.toBeFalse);
+      'a' |> isDigit
+          |> Expect.toBeFalse);
 
     test "isUpperCase - '0'" (fun () ->
-      isUpperCase '0' |> Expect.toBeFalse);
+      '0' |> isUpperCase
+          |> Expect.toBeFalse);
     test "isUpperCase - 'a'" (fun () ->
-      isUpperCase 'a' |> Expect.toBeFalse);
+      'a' |> isUpperCase
+          |> Expect.toBeFalse);
     test "isUpperCase - 'A'" (fun () ->
-      isUpperCase 'A' |> Expect.toBeTrue);
+      'A' |> isUpperCase
+          |> Expect.toBeTrue);
 
     test "isLowerCase - '0'" (fun () ->
-      isLowerCase '0' |> Expect.toBeFalse);
+      '0' |> isLowerCase
+          |> Expect.toBeFalse);
     test "isLowerCase - 'a'" (fun () ->
-      isLowerCase 'a' |> Expect.toBeTrue);
+      'a' |> isLowerCase
+          |> Expect.toBeTrue);
     test "isLowerCase - 'A'" (fun () ->
-      isLowerCase 'A' |> Expect.toBeFalse);
+      'A' |> isLowerCase
+          |> Expect.toBeFalse);
 
     test "isLetter - '0'" (fun () ->
-      isLetter '0' |> Expect.toBeFalse);
+      '0' |> isLetter
+          |> Expect.toBeFalse);
     test "isLetter - 'a'" (fun () ->
-      isLetter 'a' |> Expect.toBeTrue);
+      'a' |> isLetter
+          |> Expect.toBeTrue);
     test "isLetter - 'A'" (fun () ->
-      isLetter 'A' |> Expect.toBeTrue);
+      'A' |> isLetter
+          |> Expect.toBeTrue);
 
     test "isLetterOrDigit - '\\000'" (fun () ->
-      isLetterOrDigit '\000' |> Expect.toBeFalse);
+      '\000' |> isLetterOrDigit
+             |> Expect.toBeFalse);
     test "isLetterOrDigit - '0'" (fun () ->
-      isLetterOrDigit '0' |> Expect.toBeTrue);
+      '0' |> isLetterOrDigit
+          |> Expect.toBeTrue);
     test "isLetterOrDigit - 'a'" (fun () ->
-      isLetterOrDigit 'a' |> Expect.toBeTrue);
+      'a' |> isLetterOrDigit
+          |> Expect.toBeTrue);
     test "isLetterOrDigit - 'A'" (fun () ->
-      isLetterOrDigit 'A' |> Expect.toBeTrue);
+      'A' |> isLetterOrDigit
+          |> Expect.toBeTrue);
 
     test "isWhitespace - '\\008'" (fun () ->
-      isWhitespace '\008' |> Expect.toBeFalse);
+      '\008' |> isWhitespace
+             |> Expect.toBeFalse);
     test "isWhitespace - '\\009'" (fun () ->
-      isWhitespace '\009' |> Expect.toBeTrue);
+      '\009' |> isWhitespace
+             |> Expect.toBeTrue);
     test "isWhitespace - '\\010'" (fun () ->
-      isWhitespace '\010' |> Expect.toBeTrue);
+      '\010' |> isWhitespace
+             |> Expect.toBeTrue);
     test "isWhitespace - '\\011'" (fun () ->
-      isWhitespace '\011' |> Expect.toBeTrue);
+      '\011' |> isWhitespace
+             |> Expect.toBeTrue);
     test "isWhitespace - '\\012'" (fun () ->
-      isWhitespace '\012' |> Expect.toBeTrue);
+      '\012' |> isWhitespace
+             |> Expect.toBeTrue);
     test "isWhitespace - '\\013'" (fun () ->
-      isWhitespace '\013' |> Expect.toBeTrue);
+      '\013' |> isWhitespace
+             |> Expect.toBeTrue);
     test "isWhitespace - '\\014'" (fun () ->
-      isWhitespace '\014' |> Expect.toBeFalse);
+      '\014' |> isWhitespace
+             |> Expect.toBeFalse);
     test "isWhitespace - '\\032'" (fun () ->
-      isWhitespace '\032' |> Expect.toBeTrue);
+      '\032' |> isWhitespace
+             |> Expect.toBeTrue);
   ])
