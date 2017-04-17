@@ -25,16 +25,6 @@ val print: ('a -> 'b) -> 'a -> 'b
    The typical use is to catch and report exceptions that
    escape a function application. *)
 
-val catch: ('a -> 'b) -> 'a -> 'b
-(** [Printexc.catch fn x] is similar to {!Printexc.print}, but
-   aborts the program with exit code 2 after printing the
-   uncaught exception.  This function is deprecated: the runtime
-   system is now able to print uncaught exceptions as precisely
-   as [Printexc.catch] does.  Moreover, calling [Printexc.catch]
-   makes it harder to track the location of the exception
-   using the debugger or the stack backtrace facility.
-   So, do not use [Printexc.catch] in new code.  *)
-
 val print_backtrace: out_channel -> unit
 (** [Printexc.print_backtrace oc] prints an exception backtrace
     on the output channel [oc].  The backtrace lists the program

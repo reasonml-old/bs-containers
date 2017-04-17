@@ -154,9 +154,3 @@ val compare: t -> t -> int
     {!Set.Make} and {!Map.Make}. *)
 
 (**/**)
-
-(** {6 Deprecated functions} *)
-
-external format : string -> int32 -> string = "caml_int32_format"
-(** Do not use this deprecated function.  Instead,
-   used {!Printf.sprintf} with a [%l...] format. *)
