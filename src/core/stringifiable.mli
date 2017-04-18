@@ -1,5 +1,5 @@
 
 module type S = sig
     type t
-    val show: t -> string
+    val toString: t -> string
 end

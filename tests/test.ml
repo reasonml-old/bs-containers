@@ -6,4 +6,5 @@ let _ =
     Bool_test.suite;
     Bopt_test.suite;
     Bresult_test.suite;
+    Int_test.suite;
   ]
