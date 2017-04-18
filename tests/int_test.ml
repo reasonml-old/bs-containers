@@ -22,8 +22,26 @@ let suite =
                |> Expect.toEqual 0
     );
 
-    test "compare" (fun () ->
-      Int.compare 1 2 |> Expect.toEqual Ordering.Less
+    test "compare - Less" (fun () ->
+      Int.compare 1 2
+        |> Expect.toEqual Ordering.Less
+    );
+    test "compare - Greater" (fun () ->
+      Int.compare 2 1
+        |> Expect.toEqual Ordering.Greater
+    );
+    test "compare - Equal" (fun () ->
+      Int.compare 2 2
+        |> Expect.toEqual Ordering.Equal
+    );
+    
+    test "equals - true" (fun () ->
+      Int.equals 2 2
+        |> Expect.toBeTrue
+    );
+    test "equals - false" (fun () ->
+      Int.equals 2 3
+        |> Expect.toBeFalse
     );
 
     test "neg - (-42)" (fun () ->
@@ -53,7 +71,7 @@ let suite =
     ); 
     test "pow - overflow" (fun () ->
       pow 2 32
-        |> Expect.toEqual (0)
+        |> Expect.toEqual 0
     );
     test "pow - raise" (fun () ->
       (fun () -> pow 0 0) 
@@ -88,28 +106,28 @@ let suite =
     );
     test "fromString - Empty" (fun () ->
       "" |> fromString
-            |> Expect.toEqual (None)
+         |> Expect.toEqual None
     );
     test "fromString - None" (fun () ->
       "23a" |> fromString
-            |> Expect.toEqual (None)
+            |> Expect.toEqual None
     );
     test "fromString - Overflow" (fun () ->
       "2147483648" |> fromString
-                   |> Expect.toEqual (None)
+                   |> Expect.toEqual None
     );
 
     test "toBinaryString - 1" (fun () ->
-      1 |>  toBinaryString 
-        |> Expect.toEqual ("0b1")
+      1 |> toBinaryString 
+        |> Expect.toEqual "0b1"
     );
     test "toBinaryString - 32" (fun () ->
       32 |> toBinaryString 
-         |> Expect.toEqual ("0b100000")
+         |> Expect.toEqual "0b100000"
     );
     test "toBinaryString - (-2)" (fun () -> 
       (~-2) |> toBinaryString
-            |> Expect.toEqual ("-0b10")
+            |> Expect.toEqual "-0b10"
     );
     test "toBinaryString - maxValue" (fun () ->
       maxValue |> toBinaryString 
