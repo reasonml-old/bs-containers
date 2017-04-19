@@ -27,6 +27,5 @@ module Random = Brandom
 module Ref = Bref
 module Result = Bresult
 module Set = Bset
-module Sequence = Sequence
 module String = Bstring
 module Vector = Bvector

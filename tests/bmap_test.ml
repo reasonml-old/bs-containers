@@ -82,15 +82,6 @@ let suite =
       map0 |> toList
            |> Expect.toEqual [key1, "one"]);
 
-    test "fromSeq" (fun () ->
-      let map1 = fromSeq (Sequence.singleton (key1, "hello")) in
-      map1 |> size
-           |> Expect.toEqual 1);
-
-    test "toSeq" (fun () ->
-      map0 |> toSeq |> Sequence.to_list
-           |> Expect.toEqual (map0 |> toList));
-
     test "keysList" (fun () ->
       map0 |> keysList
            |> Expect.toEqual [key1]);

@@ -16,6 +16,10 @@
                 {
                     "dir": "types",
                     "public": "none"
+                },
+                {
+                    "dir": "containers",
+                    "public": "none"
                 }
             ],
             "public": [
