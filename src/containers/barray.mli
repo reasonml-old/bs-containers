@@ -293,6 +293,9 @@ val to_seq : 'a t -> 'a sequence
 val to_gen : 'a t -> 'a gen
 val to_klist : 'a t -> 'a klist
 
+val toIterator: 'a t -> 'a Iterator.t
+val fromIterator: 'a Iterator.t -> 'a t
+
 (** {2 IO} *)
 
 val pp: ?sep:string -> 'a printer -> 'a t printer
