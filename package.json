@@ -17,10 +17,8 @@
   "keywords": [],
   "author": "Bob Fang",
   "license": "BSD-2-Clause",
-  "dependencies": {
-    "bs-platform": "bloomberg/bucklescript"
-  },
   "devDependencies": {
+    "bs-platform": "bloomberg/bucklescript",
     "nyc": "^10.1.2",
     "tap-nyan": "^1.1.0",
     "infinite-jest": "glennsl/infinite-jest"
