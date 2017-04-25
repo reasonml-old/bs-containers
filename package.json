@@ -18,7 +18,7 @@
   "author": "Bob Fang",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "bs-platform": "bloomberg/bucklescript"
+    "bs-platform": "^1.7.1"
   },
   "devDependencies": {
     "nyc": "^10.1.2",
