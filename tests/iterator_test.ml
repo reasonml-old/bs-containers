@@ -2,40 +2,40 @@ open InfiniteJest
 open InfiniteJest.Test
 
 (** 
-  Iterator is a abstract type in the sense that we need to have a concrete 
+  Sequence is a abstract type in the sense that we need to have a concrete 
   container to test out its functionality, here we picked Barray
 *)
 
 let suite =
-  describe "Iterator" (fun () -> [
-    test "Barray.toIterator - fromIterator" (fun () ->
-      [|1 ; 2; 3|] |> Barray.toIterator
-                   |> Barray.fromIterator
+  describe "Sequence" (fun () -> [
+    test "Barray.toSequence - fromSequence" (fun () ->
+      [|1 ; 2; 3|] |> Barray.toSequence
+                   |> Barray.fromSequence
                    |> Expect.toEqual [|1; 2; 3|]
         
     );
-    test "Iterator.iter" (fun () ->
+    test "Sequence.iter" (fun () ->
       let l = ref [] in
-      [|1; 2; 3|] |> Barray.toIterator
-                  |> (fun iter -> Iterator.iter (fun x -> l := !l @ [x]) iter; !l)
+      [|1; 2; 3|] |> Barray.toSequence
+                  |> (fun iter -> Sequence.iter (fun x -> l := !l @ [x]) iter; !l)
                   |> Expect.toEqual [1; 2; 3]
     );
-    test "Iterator.map" (fun () ->
-      [|1; 2; 3|] |> Barray.toIterator
-                  |> Iterator.map (fun x -> x * 2)
-                  |> Barray.fromIterator
+    test "Sequence.map" (fun () ->
+      [|1; 2; 3|] |> Barray.toSequence
+                  |> Sequence.map (fun x -> x * 2)
+                  |> Barray.fromSequence
                   |> Expect.toEqual [| 2; 4; 6 |]
     );
-    test "Iterator.filter" (fun () -> 
-      [|1; 2; 3|] |> Barray.toIterator
-                  |> Iterator.filter (fun x -> x > 2)
-                  |> Barray.fromIterator
+    test "Sequence.filter" (fun () -> 
+      [|1; 2; 3|] |> Barray.toSequence
+                  |> Sequence.filter (fun x -> x > 2)
+                  |> Barray.fromSequence
                   |> Expect.toEqual [| 3 |]
     );
-    test "Iterator.filterMap" (fun () -> 
-      [|'1'; '2'; '3'; 'a'|] |> Barray.toIterator
-                      |> Iterator.filterMap (fun x -> Bchar.getDigit x)                
-                      |> Barray.fromIterator
+    test "Sequence.filterMap" (fun () -> 
+      [|'1'; '2'; '3'; 'a'|] |> Barray.toSequence
+                      |> Sequence.filterMap (fun x -> Bchar.getDigit x)                
+                      |> Barray.fromSequence
                       |> Expect.toEqual [|1; 2; 3|]
     )
   ])

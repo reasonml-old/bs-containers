@@ -10,16 +10,13 @@
             "dir": "src",
             "subdirs": [
                 {
-                    "dir": "core",
-                    "public": "none"
+                    "dir": "core"
                 },
                 {
-                    "dir": "types",
-                    "public": "none"
+                    "dir": "types"
                 },
                 {
-                    "dir": "containers",
-                    "public": "none"
+                    "dir": "containers"
                 }
             ],
             "public": [

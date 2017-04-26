@@ -7,9 +7,3 @@ module type S = sig
 
   val compare: t Comparator.t
 end
-
-module type C = sig
-  type 'a t 
-  include Equatable.C with type 'a t := 'a t
-  val compare: 'a  Comparator.t -> 'a t Comparator.t
-end
