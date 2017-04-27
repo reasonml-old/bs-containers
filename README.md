@@ -1,6 +1,6 @@
 BS-Containers
 =============
-![travids](https://travis-ci.org/BuckleTypes/bs-containers.svg?branch=master)
+[![travids](https://travis-ci.org/BuckleTypes/bs-containers.svg?branch=master)](https://travis-ci.org/BuckleTypes/bs-containers/builds)
 
 This is a port/fork of the [ocaml-containers project](https://github.com/c-cube/ocaml-containers) for use with BuckleScript
 
