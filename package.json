@@ -17,10 +17,8 @@
   "keywords": [],
   "author": "Bob Fang",
   "license": "BSD-2-Clause",
-  "dependencies": {
-    "bs-platform": "^1.7.1"
-  },
   "devDependencies": {
+    "bs-platform": "^1.7.1",
     "nyc": "^10.1.2",
     "tap-nyan": "^1.1.0",
     "infinite-jest": "glennsl/infinite-jest"
