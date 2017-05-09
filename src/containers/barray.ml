@@ -11,10 +11,6 @@ let empty = [||]
 
 let isEmpty a = length a = 0
 
-let makeMatrix = Array.make_matrix
-
-external makeFloat: int -> float array = "caml_make_float_vect"
-
 external unsafe_sub : 'a array -> int -> int -> 'a array = "caml_array_sub"
 
 let length = Array.length
@@ -24,14 +20,14 @@ let get i a =
   then Some (Array.unsafe_get a i)
   else None
 
-let set i arr a =
+let set i a arr =
   if i > 0 && i < Array.length arr
-  then arr.(i) <- a
-  else ()
+  then (arr.(i) <- a; true)
+  else false
 
-let getOrRaise = Array.get
+let getOrRaise i arr = Array.get arr i
 
-let setOrRaise = Array.set
+let setOrRaise i e arr = Array.set arr i e
 
 let equals eq a b =
   let rec aux i =
@@ -54,7 +50,7 @@ let compare cmp a b =
   in
   aux 0
 
-let slice ?start:(s = 0) ?end_:(e = 0) arr =
+let slice s e arr =
   if s < 0 || e < 0 || e > length arr then None
   else Some (unsafe_sub arr s (e - s))
 
@@ -76,8 +72,8 @@ let fromSequence i =
   of_list @@ Sequence.foldLeft (fun acc item -> acc @ [item]) [] i
 
 let map2 f a b =
-  if Array.length a <> Array.length b then invalid_arg "map2";
-  Array.init (Array.length a) (fun i -> f (Array.unsafe_get a i) (Array.unsafe_get b i))
+  if Array.length a <> Array.length b then None else
+  Some (Array.init (Array.length a) (fun i -> f (Array.unsafe_get a i) (Array.unsafe_get b i)))
 
 let reduce = Array.fold_left
 
