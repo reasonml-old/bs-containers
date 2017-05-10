@@ -84,26 +84,26 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t option
       @raise Invalid_argument if they have distinct lengths *)
 
 val reduce : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-(** [Array.reduce f x a] computes
+(** [Barray.reduce f x a] computes
     [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],
     where [n] is the length of the t [a]. *)
 
-val reduceReversed : ('b -> 'a -> 'a) -> 'b t -> 'a -> 'a
-(** [Array.reduceReversed f a x] computes
+val reduceReversed : ('b -> 'a -> 'a) -> 'a -> 'b t -> 'a
+(** [Baray.reduceReversed f a x] computes
     [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],
     where [n] is the length of the t [a]. *)
 
-val reduceWithIndex : f:('a -> int -> 'b -> 'a) -> acc:'a -> 'b t -> 'a
+val reduceWithIndex : ('a -> int -> 'b -> 'a) -> 'a -> 'b t -> 'a
 (** Fold left on t, with index *)
 
 val reduceWhile : ('a -> 'b -> 'a * bool) -> 'a -> 'b t -> 'a
-(** Fold left on t until a stop condition via [('a, `Stop)] is
+(** Fold left on t until a stop condition is
     indicated by the accumulator *)
 
-val forEachWithIndex : (int -> 'a -> unit) -> 'a t -> unit
+val forEachWithIndex : ('a -> int -> unit) -> 'a t -> unit
 
 val blit : 'a t -> int -> 'a t -> int -> int -> unit
-(** [blit from i into j len] copies [len] elements from the first t
+(** [Barray.blit from i into j len] copies [len] elements from the first t
     to the second. See {!Array.blit}. *)
 
 val reverse : 'a t -> 'a t
@@ -114,38 +114,28 @@ val reverseInPlace : 'a t -> unit
 
 val sort : ('a Comparator.t) -> 'a t -> unit
 (** Sort an t in increasing order according to a comparison
-    function.  The comparison function must return 0 if its arguments
-    compare as equal, a positive integer if the first is greater,
-    and a negative integer if the first is smaller (see below for a
-    complete specification).  For example, {!Pervasives.compare} is
-    a suitable comparison function, provided there are no floating-point
-    NaN values in the data.  After calling [Array.sort], the
+    function. After calling [Barray.sort], the
     t is sorted in place in increasing order.
-    [Array.sort] is guaranteed to run in constant heap space
+    [Barray.sort] is guaranteed to run in constant heap space
     and (at most) logarithmic stack space.
     The current implementation uses Heap Sort.  It runs in constant
     stack space.
-    Specification of the comparison function:
-    Let [a] be the t and [cmp] the comparison function.  The following
-    must be true for all x, y, z in a :
-    -   [cmp x y] > 0 if and only if [cmp y x] < 0
-    -   if [cmp x y] >= 0 and [cmp y z] >= 0 then [cmp x z] >= 0
-    When [Array.sort] returns, [a] contains the same elements as before,
+    When [Barray.sort] returns, [a] contains the same elements as before,
     reordered in such a way that for all i and j valid indices of [a] :
-    -   [cmp a.(i) a.(j)] >= 0 if and only if i >= j
+    -   [cmp a.(i) a.(j)] == Ordering.Greater if and only if i >= j
 *)
 
 val stableSort : ('a -> 'a -> int) -> 'a t-> unit
-(** Same as {!Array.sort}, but the sorting algorithm is stable (i.e.
+(** Same as {!Barray.sort}, but the sorting algorithm is stable (i.e.
     elements that compare equal are kept in their original order) and
     not guaranteed to run in constant heap space.
     The current implementation uses Merge Sort. It uses [n/2]
     words of heap space, where [n] is the length of the t.
-    It is usually faster than the current implementation of {!Array.sort}.
+    It is usually faster than the current implementation of {!Barray.sort}.
 *)
 
 val fastSort : ('a -> 'a -> int) -> 'a t -> unit
-(** Same as {!Array.sort} or {!Array.stableSort}, whichever is faster
+(** Same as {!Barray.sort} or {!Barray.stableSort}, whichever is faster
     on typical input.
 *)
 
@@ -165,9 +155,7 @@ val sortRanking : ('a Comparator.t) -> 'a t -> int t
     [a] is not modified.
 
     In other words, [map (fun i -> (sorted cmp a).(i)) (sortRanking cmp a) = a].
-
-    Without duplicates, we also have
-    [lookup_exn a.(i) (sorted a) = (sorted_ranking a).(i)] *)
+*)
 
 val find : ('a -> 'b option) -> 'a t -> 'b option
 
@@ -175,12 +163,12 @@ val findWithIndex : (int -> 'a -> 'b option) -> 'a t -> 'b option
 (** Like {!find}, but also pass the index to the predicate function. *)
 
 val findIndex : ('a -> bool) -> 'a t -> (int * 'a) option
-(** [find_idx p x] returns [Some (i,x)] where [x] is the [i]-th element of [l],
+(** [Barray.findIndex p x] returns [Some (i,x)] where [x] is the [i]-th element of [l],
     and [p x] holds. Otherwise returns [None] *)
 
-val bsearch : ?cmp:('a Comparator.t) -> 'a -> 'a t ->
+val bsearch : 'a Comparator.t -> 'a -> 'a t ->
   [ `All_lower | `All_bigger | `Just_after of int | `Empty | `At of int ]
-(** [bsearch ?cmp x arr] finds the index of the object [x] in the t [arr],
+(** [Barray.bsearch cmp x arr] finds the index of the object [x] in the t [arr],
     provided [arr] is {b sorted} using [cmp]. If the t is not sorted,
     the result is not specified (may raise Invalid_argument).
 
@@ -192,31 +180,15 @@ val bsearch : ?cmp:('a Comparator.t) -> 'a -> 'a t ->
     - [`All_lower] if all elements of [arr] are lower than [x]
     - [`All_bigger] if all elements of [arr] are bigger than [x]
     - [`Just_after i] if [arr.(i) < x < arr.(i+1)]
-    - [`Empty] if the t is empty
-
-    @raise Invalid_argument if the t is found to be unsorted w.r.t [cmp] *)
+    - [`Empty] if the t is empty *)
 
 val forAll: ('a -> bool) -> 'a t -> bool
 
-val forAll2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
-(** Forall on pairs of arrays.
-    @raise Invalid_argument if they have distinct lengths
-    allow different types *)
-
 val exists: ('a -> bool) -> 'a t -> bool
-
-val exists2 : ('a -> 'b -> bool) -> 'a t -> 'b t -> bool
-(** Exists on pairs of arrays.
-    @raise Invalid_argument if they have distinct lengths
-    allow different types *)
 
 val count: ('a -> bool) -> 'a t -> int
 
 val iter : ('a -> unit) -> 'a t -> unit
-
-val iter2 : ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
-(** Iterate on two arrays stepwise.
-    @raise Invalid_argument if they have distinct lengths *)
 
 val shuffle : 'a t -> unit
 (** Shuffle randomly the t, in place *)
@@ -233,9 +205,6 @@ val filterMap : ('a -> 'b option) -> 'a t -> 'b t
 
 val flatMap : ('a -> 'b t) -> 'a t -> 'b t
 (** Transform each element into an t, then flatten *)
-
-val exceptIndex : 'a t -> int -> 'a list
-(** Remove given index, obtaining the list of the other elements *)
 
 val (--) : int -> int -> int t
 (** Range t *)

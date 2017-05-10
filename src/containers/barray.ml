@@ -77,9 +77,9 @@ let map2 f a b =
 
 let reduce = Array.fold_left
 
-let reduceReversed = Array.fold_right
+let reduceReversed f acc arr = Array.fold_right f arr acc
 
-let reduceWithIndex ~f ~acc a =
+let reduceWithIndex f acc a =
   let rec aux acc i =
     if i = Array.length a then acc else aux (f acc i a.(i)) (i+1)
   in
@@ -95,7 +95,7 @@ let reduceWhile f acc a =
     else acc
   in fold_while_i f acc 0
 
-let forEachWithIndex = Array.iteri
+let forEachWithIndex f = Array.iteri (fun i x -> f x i)
 
 let blit = Array.blit
 
@@ -201,7 +201,7 @@ let findWithIndex f a =
 let findIndex p a =
   find_aux (fun i x -> if p x then Some (i,x) else None) a 0
 
-let bsearch ?(cmp=Comparator.make Pervasives.compare) k a =
+let bsearch cmp k a =
   let rec aux i j =
     if i > j
     then `Just_after j
@@ -231,31 +231,8 @@ let exists f a =
   in
   aux 0
 
-let rec _for_all2 p a1 a2 i1 i2 ~len =
-  len=0 || (p a1.(i1) a2.(i2) && _for_all2 p a1 a2 (i1+1) (i2+1) ~len:(len-1))
-
-let forAll2 p a b =
-  Array.length a = Array.length b
-  &&
-  _for_all2 p a b 0 0 ~len:(Array.length a)
-
-let rec _exists2 p a1 a2 i1 i2 ~len =
-  len>0 && (p a1.(i1) a2.(i2) || _exists2 p a1 a2 (i1+1) (i2+1) ~len:(len-1))
-
-let exists2 p a b =
-  _exists2 p a b 0 0 ~len:(min (Array.length a) (Array.length b))
-
 let count f arr =
   reduce (fun acc ele -> if f ele then acc + 1 else acc) 0 arr
-
-let _iter2 f a b i j ~len =
-  for o = 0 to len-1 do
-    f (Array.get a (i+o)) (Array.get b (j+o))
-  done
-
-let iter2 f a b =
-  if length a <> length b then invalid_arg "iter2";
-  _iter2 f a b 0 0 ~len:(Array.length a)
 
 (* shuffle a[i...j[ using the given int random generator
    See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle *)
@@ -307,12 +284,6 @@ let flatMap f a =
       let a' = f a.(i) in
       aux (__rev_append_list a' acc 0) (i+1)
   in aux [] 0
-
-(** all the elements of a, but the i-th, into a list *)
-let exceptIndex a i =
-  reduceWithIndex
-    ~f:(fun acc j elt -> if i = j then acc else elt::acc)
-    ~acc:[] a
 
 let (--) i j =
   if i<=j
