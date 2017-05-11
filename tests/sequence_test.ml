@@ -6,20 +6,24 @@ open InfiniteJest.Test
    container to test out its functionality, here we picked Barray
 *)
 
+let yield (x:' a Sequence.t) : ('a option * 'a Sequence.t) = 
+  let open Sequence in match x () with 
+  | Nil -> (None, empty)
+  | Cons (a, r) -> (Some a, r)
+
 let suite =
   describe "Sequence" (fun () -> [
         test "Barray.toSequence" (fun () ->
-            let open Sequence in
             let s0 = Barray.toSequence [|1; 2; 3|] in
-            let Cons(a0, s1) = s0 () in
-            let Cons(a1, s2) = s1 () in
-            let Cons(a2, empty) = s2 () in
-            Expect.toEqual [a0; a1; a2] [1; 2; 3]
+            let (a0, s1) = yield s0 in 
+            let (a1, s2) = yield s1 in
+            let (a2, _) = yield s2 in
+            Expect.toEqual [a0; a1; a2] [Some 1; Some 2; Some 3]
           );
-       test "Barray.empty" (fun () ->
+        test "Barray.empty" (fun () ->
             let open Sequence in
             let s = Barray.toSequence [||] in
-            Expect.toEqual s empty
+            Expect.toEqual (s ()) (empty ())
           );
         test "Barray toSequence fromSequence invertability" (fun () ->
             [|1 ; 2; 3|] |> Barray.toSequence
