@@ -7,9 +7,12 @@ include Array
 
 type 'a t = 'a array
 
+
 let empty = [||]
 
 let isEmpty a = length a = 0
+
+let makeWithInit = init
 
 external unsafe_sub : 'a array -> int -> int -> 'a array = "caml_array_sub"
 
@@ -28,6 +31,10 @@ let set i a arr =
 let getOrRaise i arr = Array.get arr i
 
 let setOrRaise i e arr = Array.set arr i e
+
+let unsafeGet i a = Array.unsafe_get a i
+
+let unsafeSet i x a = Array.unsafe_set a i x
 
 let equals eq a b =
   let rec aux i =
@@ -63,17 +70,19 @@ let toSequence a =
     if i < length a
     then 
       let x = unsafe_get a i in
-      Sequence.Cons (x, aux(i + 1))
-    else Sequence.Nil
+      Bsequence.Cons (x, aux(i + 1))
+    else Bsequence.Nil
   in 
   aux 0
 
 let fromSequence i =
-  of_list @@ Sequence.foldLeft (fun acc item -> acc @ [item]) [] i
+  of_list @@ Bsequence.foldLeft (fun acc item -> acc @ [item]) [] i
+
+let mapWithIndex = mapi
 
 let map2 f a b =
   if Array.length a <> Array.length b then None else
-  Some (Array.init (Array.length a) (fun i -> f (Array.unsafe_get a i) (Array.unsafe_get b i)))
+    Some (Array.init (Array.length a) (fun i -> f (Array.unsafe_get a i) (Array.unsafe_get b i)))
 
 let reduce = Array.fold_left
 
@@ -95,6 +104,7 @@ let reduceWhile f acc a =
     else acc
   in fold_while_i f acc 0
 
+let forEach = Array.iter
 let forEachWithIndex f = Array.iteri (fun i x -> f x i)
 
 let blit = Array.blit
@@ -285,19 +295,20 @@ let flatMap f a =
       aux (__rev_append_list a' acc 0) (i+1)
   in aux [] 0
 
-let (--) i j =
-  if i<=j
-  then
-    Array.init (j-i+1) (fun k -> i+k)
-  else
-    Array.init (i-j+1) (fun k -> i-k)
+module Infix = struct
+  let (--) i j =
+    if i<=j
+    then
+      Array.init (j-i+1) (fun k -> i+k)
+    else
+      Array.init (i-j+1) (fun k -> i-k)
 
-let (--^) i j =
-  if i=j then [| |]
-  else if i>j
-  then Array.init (i-j) (fun k -> i-k)
-  else Array.init (j-i) (fun k -> i+k)
-
+  let (--^) i j =
+    if i=j then [| |]
+    else if i>j
+    then Array.init (i-j) (fun k -> i-k)
+    else Array.init (j-i) (fun k -> i+k)
+end
 
 
 

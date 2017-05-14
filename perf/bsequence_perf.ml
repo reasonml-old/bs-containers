@@ -7,9 +7,9 @@ let _ =
         ignore @@ ([| 1; 2; 3|] |> Barray.toSequence)
     ); 
     runPerfTest "Sequence.map" (fun _ ->
-        ignore @@ Sequence.map (fun x -> x * x) it
+        ignore @@ Bsequence.map (fun x -> x * x) it
     );
     runPerfTest "Sequence.foldLeft" (fun _ ->
-        Sequence.foldLeft (fun acc x -> x::acc) [] it
+        Bsequence.foldLeft (fun acc x -> x::acc) [] it
     )
 

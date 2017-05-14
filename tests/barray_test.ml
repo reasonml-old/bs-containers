@@ -30,14 +30,14 @@ let suite =
         test "Barray.make - invalid2" (fun () ->
             Expect.toRaise (fun () -> Barray.make (Sys.max_array_length + 1) 1) 
           );
-        test "Barray.init" (fun () -> 
-            Barray.init 1000 (fun _ -> 1) |> Expect.toEqual (Barray.make 1000 1)
+        test "Barray.makeWithInit" (fun () -> 
+            Barray.makeWithInit 1000 (fun _ -> 1) |> Expect.toEqual (Barray.make 1000 1)
           );
-        test "Barray.init empty" (fun () ->
-            Barray.init 0 (fun _ -> 1) |> Expect.toEqual [||]
+        test "Barray.makeWithInit empty" (fun () ->
+            Barray.makeWithInit 0 (fun _ -> 1) |> Expect.toEqual [||]
           );
-        test "Barray.init invalid" (fun () ->
-            Expect.toRaise(fun () -> Barray.init (~-1) (fun _ -> 1))
+        test "Barray.makeWithInit invalid" (fun () ->
+            Expect.toRaise(fun () -> Barray.makeWithInit (~-1) (fun _ -> 1))
           );
         test "Barray.get" (fun () ->
             [||] |> Barray.get 0
@@ -174,12 +174,12 @@ let suite =
             [||] |> Barray.map (fun x -> x) 
             |> Expect.toEqual [||]
           );
-        test "Barray.mapi" (fun () ->
-            [|1; 2; 3|] |> Barray.mapi (fun i x -> i + x)
+        test "Barray.mapWithIndex" (fun () ->
+            [|1; 2; 3|] |> Barray.mapWithIndex (fun i x -> i + x)
             |> Expect.toEqual [|1; 3; 5|]
           );
-        test "Barray.mapi empty" (fun () -> 
-            [||] |> Barray.mapi (fun _ x -> x) 
+        test "Barray.mapWithIndex empty" (fun () -> 
+            [||] |> Barray.mapWithIndex (fun _ x -> x) 
             |> Expect.toEqual [||]
           );
         test "Barray.map2 empty empty" (fun () ->
@@ -378,14 +378,14 @@ let suite =
             [|1; 2; 3; 4|] |> Barray.count (fun x -> x > 2)
             |> Expect.toEqual 2
           );
-        test "Barray.iter empty" (fun () ->
+        test "Barray.forEach empty" (fun () ->
             let a = ref [] in
-            Barray.iter (fun x -> a := !a @ [x]) [||];
+            Barray.forEach (fun x -> a := !a @ [x]) [||];
             Expect.toEqual !a []
           );
-        test "Barray.iter" (fun () ->
+        test "Barray.forEach" (fun () ->
             let a = ref [] in
-            Barray.iter (fun x -> a := !a @ [x]) [|1; 2; 3|];
+            Barray.forEach (fun x -> a := !a @ [x]) [|1; 2; 3|];
             Expect.toEqual !a [1; 2; 3]
           );
         test "Barray.filter empty" (fun () -> 
@@ -414,19 +414,19 @@ let suite =
             |> Expect.toEqual [|1; 1; 1; 2; 1; 3; 1; 4|]
           );
         test "Barray.range 0" (fun () ->
-            let open Barray in 
+            let open Barray.Infix in 
             1 -- 2 |> Expect.toEqual [|1; 2|]
           );
         test "Barray.range 1" (fun () ->
-            let open Barray in
+            let open Barray.Infix in
             3 -- 1 |> Expect.toEqual [|3; 2; 1|]
           );
         test "Barray.range 2 " (fun () ->
-            let open Barray in
+            let open Barray.Infix in
             1 --^ 3 |> Expect.toEqual [|1; 2|]
           );
         test "Barray.range 3" (fun () ->
-            let open Barray in
+            let open Barray.Infix in
             3 --^ 1 |> Expect.toEqual [|3; 2|]
           )
       ])

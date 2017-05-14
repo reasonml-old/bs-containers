@@ -19,7 +19,7 @@ external make : int -> 'a -> 'a t = "caml_make_vect"
     If the value of [x] is a floating-point number, then the maximum
     size is only [Sys.max_array_length / 2].*)
 
-val init : int -> (int -> 'a) -> 'a t
+val makeWithInit : int -> (int -> 'a) -> 'a t
 (** [Barray.init n f] returns a fresh t of length [n],
     with element number [i] initialized to the result of [f i].
     In other terms, [Array.init n f] tabulates the results of [f]
@@ -37,6 +37,10 @@ val set : int -> 'a -> 'a t -> bool
 val getOrRaise : int -> 'a t -> 'a
 
 val setOrRaise : int -> 'a -> 'a t -> unit
+
+val unsafeGet : int -> 'a t -> 'a
+
+val unsafeSet : int -> 'a -> 'a t -> unit
 
 val equals : 'a Equality.t -> 'a t -> 'a t -> bool
 
@@ -68,13 +72,13 @@ val fromList : 'a list -> 'a t
 (** [Array.fromList l] returns a fresh t containing the elements
     of [l]. *)
 
-val toSequence: 'a t -> 'a Sequence.t
+val toSequence: 'a t -> 'a Bsequence.t
 
-val fromSequence: 'a Sequence.t -> 'a t
+val fromSequence: 'a Bsequence.t -> 'a t
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 
-val mapi : (int -> 'a -> 'b) -> 'a t -> 'b t
+val mapWithIndex : (int -> 'a -> 'b) -> 'a t -> 'b t
 (** Same as {!Array.map}, but the
     function is applied to the index of the element as first argument,
     and the element itself as second argument. *)
@@ -99,8 +103,6 @@ val reduceWithIndex : ('a -> int -> 'b -> 'a) -> 'a -> 'b t -> 'a
 val reduceWhile : ('a -> 'b -> 'a * bool) -> 'a -> 'b t -> 'a
 (** Fold left on t until a stop condition is
     indicated by the accumulator *)
-
-val forEachWithIndex : ('a -> int -> unit) -> 'a t -> unit
 
 val blit : 'a t -> int -> 'a t -> int -> int -> unit
 (** [Barray.blit from i into j len] copies [len] elements from the first t
@@ -188,7 +190,9 @@ val exists: ('a -> bool) -> 'a t -> bool
 
 val count: ('a -> bool) -> 'a t -> int
 
-val iter : ('a -> unit) -> 'a t -> unit
+val forEach: ('a -> unit) -> 'a t -> unit
+
+val forEachWithIndex : ('a -> int -> unit) -> 'a t -> unit
 
 val shuffle : 'a t -> unit
 (** Shuffle randomly the t, in place *)
@@ -206,8 +210,10 @@ val filterMap : ('a -> 'b option) -> 'a t -> 'b t
 val flatMap : ('a -> 'b t) -> 'a t -> 'b t
 (** Transform each element into an t, then flatten *)
 
-val (--) : int -> int -> int t
-(** Range t *)
+module Infix : sig
+  val (--) : int -> int -> int t
+  (** Range t *)
 
-val (--^) : int -> int -> int t
-(** Range t, excluding right bound *)
+  val (--^) : int -> int -> int t
+  (** Range t, excluding right bound *)
+end
