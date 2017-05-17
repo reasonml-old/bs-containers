@@ -16,12 +16,12 @@ normal
 # Number of spaces used in all base cases, for example:
 #    let foo =
 #    ^^bar
-base = 2
+base = 4
 
 # Indent for type definitions:
 #    type t =
 #    ^^int
-type = 2
+type = 4
 
 # Indent after `let in` (unless followed by another `let`):
 #    let foo = () in

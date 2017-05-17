@@ -28,7 +28,7 @@ val makeWithInit : int -> (int -> 'a) -> 'a t
     If the return type of [f] is [float], then the maximum
     size is only [Sys.max_array_length / 2].*)
 
-val length: 'a t -> int
+val length : 'a t -> int
 
 val get : int -> 'a t -> 'a option
 
@@ -53,8 +53,8 @@ val append : 'a t -> 'a t -> 'a t
 val concat : 'a t list -> 'a t
 (** Same as [Barray.append], but concatenates a list of arrays. *)
 
-val slice : int -> int -> 'a t -> 'a t option
-(** [Barray.slice start end a] returns a fresh t of length [len],
+val slice : start_:int -> end_:int -> 'a t -> 'a t option
+(** [Barray.slice start end a] returns a fresh t,
     containing the elements number [start] to [end - 1]
     of t [a].
     Return None if [start] and [end] do not
@@ -65,16 +65,9 @@ val copy : 'a t -> 'a t
 (** [Barray.copy a] returns a copy of [a], that is, a fresh t
     containing the same elements as [a]. *)
 
-val toList : 'a t -> 'a list
-(** [Array.toList a] returns the list of all the elements of [a]. *)
+val toSequence : 'a t -> 'a Bsequence.t
 
-val fromList : 'a list -> 'a t
-(** [Array.fromList l] returns a fresh t containing the elements
-    of [l]. *)
-
-val toSequence: 'a t -> 'a Bsequence.t
-
-val fromSequence: 'a Bsequence.t -> 'a t
+val fromSequence : 'a Bsequence.t -> 'a t
 
 val map : ('a -> 'b) -> 'a t -> 'b t
 
@@ -104,7 +97,7 @@ val reduceWhile : ('a -> 'b -> 'a * bool) -> 'a -> 'b t -> 'a
 (** Fold left on t until a stop condition is
     indicated by the accumulator *)
 
-val blit : 'a t -> int -> 'a t -> int -> int -> unit
+val blit : x:'a t -> idx:int -> y:'a t -> idy:int -> len:int -> unit
 (** [Barray.blit from i into j len] copies [len] elements from the first t
     to the second. See {!Array.blit}. *)
 
@@ -169,7 +162,7 @@ val findIndex : ('a -> bool) -> 'a t -> (int * 'a) option
     and [p x] holds. Otherwise returns [None] *)
 
 val bsearch : 'a Comparator.t -> 'a -> 'a t ->
-  [ `All_lower | `All_bigger | `Just_after of int | `Empty | `At of int ]
+    [ `All_lower | `All_bigger | `Just_after of int | `Empty | `At of int ]
 (** [Barray.bsearch cmp x arr] finds the index of the object [x] in the t [arr],
     provided [arr] is {b sorted} using [cmp]. If the t is not sorted,
     the result is not specified (may raise Invalid_argument).
@@ -184,13 +177,13 @@ val bsearch : 'a Comparator.t -> 'a -> 'a t ->
     - [`Just_after i] if [arr.(i) < x < arr.(i+1)]
     - [`Empty] if the t is empty *)
 
-val forAll: ('a -> bool) -> 'a t -> bool
+val forAll : ('a -> bool) -> 'a t -> bool
 
-val exists: ('a -> bool) -> 'a t -> bool
+val exists : ('a -> bool) -> 'a t -> bool
 
-val count: ('a -> bool) -> 'a t -> int
+val count : ('a -> bool) -> 'a t -> int
 
-val forEach: ('a -> unit) -> 'a t -> unit
+val forEach : ('a -> unit) -> 'a t -> unit
 
 val forEachWithIndex : ('a -> int -> unit) -> 'a t -> unit
 
@@ -211,9 +204,9 @@ val flatMap : ('a -> 'b t) -> 'a t -> 'b t
 (** Transform each element into an t, then flatten *)
 
 module Infix : sig
-  val (--) : int -> int -> int t
-  (** Range t *)
+    val (--) : int -> int -> int t
+    (** Range t *)
 
-  val (--^) : int -> int -> int t
-  (** Range t, excluding right bound *)
+    val (--^) : int -> int -> int t
+    (** Range t, excluding right bound *)
 end
