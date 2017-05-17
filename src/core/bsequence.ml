@@ -1,7 +1,7 @@
 
 type +'a node =
-   | Nil
-   | Cons of 'a * 'a t
+    | Nil
+    | Cons of 'a * 'a t
 and 'a t = unit -> 'a node
 
 let empty () = Nil
@@ -22,10 +22,10 @@ let rec filterMap p i () =
     match i () with
     | Nil -> Nil
     | Cons (x, r) -> begin
-        match p x with 
-        | Some c -> Cons (c, filterMap p r)
-        | None -> filterMap p r ()
-    end
+            match p x with 
+            | Some c -> Cons (c, filterMap p r)
+            | None -> filterMap p r ()
+        end
 
 (** Append iterator y after iterator x *)
 let rec append x y = 

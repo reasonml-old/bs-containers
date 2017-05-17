@@ -76,8 +76,8 @@ let fromSequence i =
     let arr = ref [||] in
     let rec aux i =
         match i () with
-        | Nil -> !arr 
-        | Cons(x, r) -> arr := (append !arr [|x|]); aux r  
+        | Nil -> !arr
+        | Cons(x, r) -> ignore @@ Js.Array.push x !arr; aux r  
     in aux i
 
 let mapWithIndex = mapi
