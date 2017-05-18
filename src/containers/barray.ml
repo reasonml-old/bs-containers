@@ -536,6 +536,20 @@ let to_gen a =
 
 let to_klist a = _to_klist a 0 (Array.length a)
 
+let toIterator a =
+  let rec aux i () = 
+    if i < length a
+    then 
+      let x = unsafe_get a i in
+      Iterator.Cons (x, aux(i + 1))
+    else Iterator.Nil
+    in 
+    aux 0
+
+let fromIterator i =
+  of_list @@ Iterator.foldLeft (fun acc item -> acc @ [item]) [] i
+
+
 (** {2 Generic Functions} *)
 
 module type MONO_ARRAY = sig
