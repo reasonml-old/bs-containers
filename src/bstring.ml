@@ -3,8 +3,7 @@
 
 (** {1 Basic String Utils} *)
 
-include String
-
+type t = string
 type 'a gen = unit -> 'a option
 type 'a sequence = ('a -> unit) -> unit
 type 'a klist = unit -> [`Nil | `Cons of 'a * 'a klist]
@@ -19,17 +18,12 @@ module type S = sig
       Compatible with the [-safe-string] option.
       @raise Invalid_argument if indices are not valid *)
 
-  val fold : ('a -> char -> 'a) -> 'a -> t -> 'a
+  val reduce : ('a -> char -> 'a) -> 'a -> t -> 'a
 
   (** {2 Conversions} *)
 
-  val to_gen : t -> char gen
-  val to_seq : t -> char sequence
-  val to_klist : t -> char klist
-  val to_list : t -> char list
-
-  val pp : Buffer.t -> t -> unit
-  val print : Format.formatter -> t -> unit
+  val toSequence : t -> char sequence
+  val toList : t -> char list
 end
 
 let equal (a:string) b = a=b
@@ -38,39 +32,78 @@ let compare = String.compare
 
 let hash s = Hashtbl.hash s
 
-let init = String.init
+let make = String.make
 
+let makeWithInit = String.init
+
+let substring s ~from ~length = String.sub s from length
+
+let concat = String.concat
+
+let blit = String.blit
+
+let uncapitalize = String.uncapitalize
+let capitalize = String.capitalize
+let lowercase = String.lowercase
+let uppercase = String.uppercase
+let escaped = String.escaped
+let trim = String.trim
 
 (*let init n f =
   let buf = Bytes.init n f in
   Bytes.unsafe_to_string buf*)
 
+external get : string -> int -> char = "%string_safe_get"
+
 let length = String.length
 
-let rev s =
+let forEach = String.iter
+let map = String.map
+let forEachWithIndex = String.iteri
+let mapWithIndex = String.mapi
+
+let reverse s =
   let n = length s in
-  init n (fun i -> s.[n-i-1])
+  makeWithInit n (fun i -> s.[n-i-1])
 
-let rec _to_list s acc i len =
+let rec _toList s acc i len =
   if len=0 then List.rev acc
-  else _to_list s (s.[i]::acc) (i+1) (len-1)
+  else _toList s (s.[i]::acc) (i+1) (len-1)
 
-let _is_sub ~sub i s j ~len =
+let _isSubstring ~sub i s j ~len =
   let rec check k =
     if k = len
     then true
     else sub.[i+k] = s.[j+k] && check (k+1)
   in
-  j+len <= String.length s && check 0
+  j+len <= length s && check 0
 
-let is_sub ~sub i s j ~len =
-  if i+len > String.length sub then invalid_arg "CCString.is_sub";
-  _is_sub ~sub i s j ~len
+let isSubstring ~sub i s j ~len =
+  if i+len > length sub then invalid_arg "CCString.is_sub";
+  _isSubstring ~sub i s j ~len
 
 type _ direction =
   | Direct : [`Direct] direction
   | Reverse : [`Reverse] direction
 
+let indexOf s ?from c =
+  match from with
+  | Some i -> String.index_from s i c
+  | None -> String.index s c
+
+let lastIndexOf s ?from c =
+  match from with
+  | Some i -> String.rindex_from s i c
+  | None -> String.rindex s c
+
+let contains s ?from ?to_ c =
+  match from, to_ with
+  | None, None -> String.contains s c
+  | Some from, None -> String.contains_from s from c
+  | None, Some to_ -> String.rcontains_from s to_ c
+  | Some from, Some to_ -> 
+    String.contains_from s from c && String.rcontains_from s to_ c (* TODO: Make less terribly inefficient *)
+  
 (* we follow https://en.wikipedia.org/wiki/Knuth–Morris–Pratt_algorithm *)
 module Find = struct
   type 'a kmp_pattern = {
@@ -80,14 +113,14 @@ module Find = struct
   (* invariant: [length failure = length str].
      We use a phantom type to avoid mixing the directions. *)
 
-  let kmp_pattern_length p = String.length p.str
+  let kmp_pattern_length p = length p.str
 
   (* access the [i]-th element of [s] according to direction [dir] *)
   let get_
     : type a. dir:a direction -> string -> int -> char
     = fun ~dir -> match dir with
-      | Direct -> String.get
-      | Reverse -> (fun s i -> s.[String.length s - i - 1])
+      | Direct -> get
+      | Reverse -> (fun s i -> s.[length s - i - 1])
 
   let kmp_compile_
     : type a. dir:a direction -> string -> a kmp_pattern
@@ -137,8 +170,8 @@ module Find = struct
     let j = ref 0 in
     let pat_len = kmp_pattern_length pattern in
     while !j < pat_len && !i + !j < len do
-      let c = String.get s (!i + !j) in
-      let expected = String.get pattern.str !j in
+      let c = get s (!i + !j) in
+      let expected = get pattern.str !j in
       if c = expected
       then (
         (* char matches *)
@@ -172,8 +205,8 @@ module Find = struct
     let j = ref 0 in
     let pat_len = kmp_pattern_length pattern in
     while !j < pat_len && !i + !j < len do
-      let c = String.get s (len - !i - !j - 1) in
-      let expected = String.get pattern.str (String.length pattern.str - !j - 1) in
+      let c = get s (len - !i - !j - 1) in
+      let expected = get pattern.str (length pattern.str - !j - 1) in
       if c = expected
       then (
         (* char matches *)
@@ -214,24 +247,24 @@ module Find = struct
     then P_char sub.[0]
     else P_KMP (kmp_compile sub)
 
-  let rcompile sub : [`Reverse] pattern =
+  let compileReversed sub : [`Reverse] pattern =
     if length sub=1
     then P_char sub.[0]
     else P_KMP (kmp_rcompile sub)
 
   let find ?(start=0) ~(pattern:[`Direct] pattern) s = match pattern with
     | P_char c ->
-      (try String.index_from s start c with Not_found -> -1)
+      (try indexOf s ~from:start c with Not_found -> -1)
     | P_KMP pattern -> kmp_find ~pattern s start
 
-  let rfind ?start ~(pattern:[`Reverse] pattern) s =
+  let findReversed ?start ~(pattern:[`Reverse] pattern) s =
     let start = match start with
       | Some n -> n
-      | None -> String.length s - 1
+      | None -> length s - 1
     in
     match pattern with
     | P_char c ->
-      (try String.rindex_from s start c with Not_found -> -1)
+      (try lastIndexOf s ~from:start c with Not_found -> -1)
     | P_KMP pattern -> kmp_rfind ~pattern s start
 end
 
@@ -239,7 +272,7 @@ let find ?(start=0) ~sub =
   let pattern = Find.compile sub in
   fun s -> Find.find ~pattern s ~start
 
-let find_all ?(start=0) ~sub =
+let findAll ?(start=0) ~sub =
   let pattern = Find.compile sub in
   fun s ->
     let i = ref start in
@@ -251,25 +284,25 @@ let find_all ?(start=0) ~sub =
         Some res
       )
 
-let find_all_l ?start ~sub s =
+let findAllList ?start ~sub s =
   let rec aux acc g = match g () with
     | None -> List.rev acc
     | Some i -> aux (i::acc) g
   in
-  aux [] (find_all ?start ~sub s)
+  aux [] (findAll ?start ~sub s)
 
-let mem ?start ~sub s = find ?start ~sub s >= 0
+let includes ?start ~sub s = find ?start ~sub s >= 0
 
-let rfind ~sub =
-  let pattern = Find.rcompile sub in
-  fun s -> Find.rfind ~pattern s ~start:(String.length s-1)
+let findReversed ~sub =
+  let pattern = Find.compileReversed sub in
+  fun s -> Find.findReversed ~pattern s ~start:(length s-1)
 
 (* Replace substring [s.[pos]....s.[pos+len-1]] by [by] in [s] *)
 let replace_at_ ~pos ~len ~by s =
   let b = Buffer.create (length s + length by - len) in
   Buffer.add_substring b s 0 pos;
   Buffer.add_string b by;
-  Buffer.add_substring b s (pos+len) (String.length s - pos - len);
+  Buffer.add_substring b s (pos+len) (length s - pos - len);
   Buffer.contents b
 
 let replace ?(which=`All) ~sub ~by s =
@@ -277,26 +310,26 @@ let replace ?(which=`All) ~sub ~by s =
   match which with
   | `Left ->
     let i = find ~sub s ~start:0 in
-    if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
+    if i>=0 then replace_at_ ~pos:i ~len:(length sub) ~by s else s
   | `Right ->
-    let i = rfind ~sub s in
-    if i>=0 then replace_at_ ~pos:i ~len:(String.length sub) ~by s else s
+    let i = findReversed ~sub s in
+    if i>=0 then replace_at_ ~pos:i ~len:(length sub) ~by s else s
   | `All ->
     (* compile search pattern only once *)
     let pattern = Find.compile sub in
-    let b = Buffer.create (String.length s) in
+    let b = Buffer.create (length s) in
     let start = ref 0 in
-    while !start < String.length s do
+    while !start < length s do
       let i = Find.find ~pattern s ~start:!start in
       if i>=0 then (
         (* between last and cur occurrences *)
         Buffer.add_substring b s !start (i- !start);
         Buffer.add_string b by;
-        start := i + String.length sub
+        start := i + length sub
       ) else (
         (* add remainder *)
-        Buffer.add_substring b s !start (String.length s - !start);
-        start := String.length s (* stop *)
+        Buffer.add_substring b s !start (length s - !start);
+        start := length s (* stop *)
       )
     done;
     Buffer.contents b
@@ -312,7 +345,7 @@ module Split = struct
   and _split_search ~by s prev =
     let j = Find.find ~pattern:by s ~start:prev in
     if j < 0
-    then Some (SplitStop, prev, String.length s - prev)
+    then Some (SplitStop, prev, length s - prev)
     else Some (SplitAt (j+Find.pattern_length by), prev, j-prev)
 
   let _tuple3 x y z = x,y,z
@@ -327,10 +360,6 @@ module Split = struct
         state := state';
         Some (k s i len)
 
-  let gen ~by s = _mkgen ~by s _tuple3
-
-  let gen_cpy ~by s = _mkgen ~by s String.sub
-
   let _mklist ~by s k =
     let by = Find.compile by in
     let rec build acc state = match _split ~by s state with
@@ -342,7 +371,7 @@ module Split = struct
 
   let list_ ~by s = _mklist ~by s _tuple3
 
-  let list_cpy ~by s = _mklist ~by s String.sub
+  let listCopy ~by s = _mklist ~by s (fun s i n -> substring s ~from:i ~length:n)
 
   let _mkklist ~by s k =
     let by = Find.compile by in
@@ -352,10 +381,6 @@ module Split = struct
         `Cons (k s i len , make state')
     in make (SplitAt 0)
 
-  let klist ~by s = _mkklist ~by s _tuple3
-
-  let klist_cpy ~by s = _mkklist ~by s String.sub
-
   let _mkseq ~by s f k =
     let by = Find.compile by in
     let rec aux state = match _split ~by s state with
@@ -363,48 +388,29 @@ module Split = struct
       | Some (state', i, len) -> k (f s i len); aux state'
     in aux (SplitAt 0)
 
-  let seq ~by s = _mkseq ~by s _tuple3
-  let seq_cpy ~by s = _mkseq ~by s String.sub
+  let sequence ~by s = _mkseq ~by s _tuple3
+  let sequenceCopy ~by s = _mkseq ~by s (fun s i n -> substring s ~from:i ~length:n)
 
-  let left_exn ~by s =
+  let leftOrRaise ~by s =
     let i = find ~sub:by s in
     if i = ~-1 then raise Not_found
     else
-      let right = i + String.length by in
-      String.sub s 0 i, String.sub s right (String.length s - right)
+      let right = i + length by in
+      substring s ~from:0 ~length:i, substring s ~from:right ~length:(length s - right)
 
-  let left ~by s = try Some (left_exn ~by s) with Not_found -> None
+  let left ~by s = try Some (leftOrRaise ~by s) with Not_found -> None
 
-  let right_exn ~by s =
-    let i = rfind ~sub:by s in
+  let rightOrRaise ~by s =
+    let i = findReversed ~sub:by s in
     if i = ~-1 then raise Not_found
     else
-      let right = i + String.length by in
-      String.sub s 0 i, String.sub s right (String.length s - right)
+      let right = i + length by in
+      substring s ~from:0 ~length:i, substring s ~from:right ~length:(length s - right)
 
-  let right ~by s = try Some (right_exn ~by s) with Not_found -> None
+  let right ~by s = try Some (rightOrRaise ~by s) with Not_found -> None
 end
 
-let compare_versions a b =
-  let of_int s = try Some (int_of_string s) with _ -> None in
-  let rec cmp_rec a b = match a(), b() with
-    | None, None -> 0
-    | Some _, None -> 1
-    | None, Some _ -> -1
-    | Some x, Some y ->
-      match of_int x, of_int y with
-      | None, None ->
-        let c = String.compare x y in
-        if c<>0 then c else cmp_rec a b
-      | Some _, None -> 1
-      | None, Some _ -> -1
-      | Some x, Some y ->
-        let c = Pervasives.compare x y in
-        if c<>0 then c else cmp_rec a b
-  in
-  cmp_rec (Split.gen_cpy ~by:"." a) (Split.gen_cpy ~by:"." b)
-
-let edit_distance s1 s2 =
+let editDistance s1 s2 =
   if length s1 = 0
   then length s2
   else if length s2 = 0
@@ -426,7 +432,7 @@ let edit_distance s1 s2 =
 
       (* try add/delete/replace operations *)
       for j = 0 to length s2 - 1 do
-        let cost = if Char.compare (String.get s1 i) (String.get s2 j) = 0 then 0 else 1 in
+        let cost = if Char.compare (get s1 i) (get s2 j) = 0 then 0 else 1 in
         v1.(j+1) <- min (v1.(j) + 1) (min (v0.(j+1) + 1) (v0.(j) + cost));
       done;
 
@@ -438,153 +444,101 @@ let edit_distance s1 s2 =
 
 let repeat s n =
   assert (n>=0);
-  let len = String.length s in
+  let len = length s in
   assert(len > 0);
-  init (len * n) (fun i -> s.[i mod len])
+  makeWithInit (len * n) (fun i -> s.[i mod len])
 
-let prefix ~pre s =
-  String.length pre <= String.length s &&
+let isPrefix ~pre s =
+  length pre <= length s &&
   (let i = ref 0 in
-   while !i < String.length pre && s.[!i] = pre.[!i] do incr i done;
-   !i = String.length pre
+   while !i < length pre && s.[!i] = pre.[!i] do incr i done;
+   !i = length pre
   )
 
-let suffix ~suf s =
-  String.length suf <= String.length s &&
-  let off = String.length s - String.length suf in
+let isSuffix ~suf s =
+  length suf <= length s &&
+  let off = length s - length suf in
   (let i = ref 0 in
-   while !i < String.length suf && s.[off + !i] = suf.[!i] do incr i done;
-   !i = String.length suf
+   while !i < length suf && s.[off + !i] = suf.[!i] do incr i done;
+   !i = length suf
   )
 
 let take n s =
-  if n < String.length s
-  then String.sub s 0 n
+  if n < length s
+  then substring s ~from:0 ~length:n
   else s
 
 let drop n s =
-  if n < String.length s
-  then String.sub s n (String.length s - n)
+  if n < length s
+  then substring s ~from:n ~length:(length s - n)
   else ""
 
-let take_drop n s = take n s, drop n s
+let takeDrop n s = take n s, drop n s
 
-let chop_suffix ~suf s =
-  if suffix ~suf s
-  then Some (String.sub s 0 (String.length s-String.length suf))
+let chopSuffix ~suf s =
+  if isSuffix ~suf s
+  then Some (String.sub s 0 (length s-length suf))
   else None
 
-let chop_prefix ~pre s =
-  if prefix ~pre s
-  then Some (String.sub s (String.length pre) (String.length s-String.length pre))
+let chopPrefix ~pre s =
+  if isPrefix ~pre s
+  then Some (substring s ~from:(length pre) ~length:(length s-length pre))
   else None
 
-let blit = String.blit
+external unsafeGetUnchecked : string -> int -> char = "%string_unsafe_get"
+external unsafeBlitUnchecked :
+  string -> int -> bytes -> int -> int -> unit
+  = "caml_blit_string" "noalloc"
 
-let fold f acc s =
+
+let reduce f acc s =
   let rec fold_rec f acc s i =
-    if i = String.length s then acc
+    if i = length s then acc
     else fold_rec f (f acc s.[i]) s (i+1)
   in fold_rec f acc s 0
 
-let pad ?(side=`Left) ?(c=' ') n s =
-  let len_s = String.length s in
+let pad ?(side=`Left) ?(char=' ') n s =
+  let len_s = length s in
   if len_s >= n then s
   else
     let pad_len = n - len_s in
     match side with
-    | `Left -> init n (fun i -> if i < pad_len then c else s.[i-pad_len])
-    | `Right -> init n (fun i -> if i < len_s then s.[i] else c)
+    | `Left -> makeWithInit n (fun i -> if i < pad_len then char else s.[i-pad_len])
+    | `Right -> makeWithInit n (fun i -> if i < len_s then s.[i] else char)
 
-let _to_gen s i0 len =
-  let i = ref i0 in
-  fun () ->
-    if !i = i0+len then None
-    else (
-      let c = String.unsafe_get s !i in
-      incr i;
-      Some c
-    )
+let fromChar c = make 1 c
 
-let to_gen s = _to_gen s 0 (String.length s)
+let toSequence s k = forEach k s
 
-let of_char c = String.make 1 c
-
-let of_gen g =
-  let b = Buffer.create 32 in
-  let rec aux () = match g () with
-    | None -> Buffer.contents b
-    | Some c -> Buffer.add_char b c; aux ()
-  in aux ()
-
-let to_seq s k = String.iter k s
-
-let of_seq seq =
+let fromSequence seq =
   let b= Buffer.create 32 in
   seq (Buffer.add_char b);
   Buffer.contents b
 
-let rec _to_klist s i len () =
-  if len=0 then `Nil
-  else `Cons (s.[i], _to_klist s (i+1)(len-1))
+let toList s = _toList s [] 0 (length s)
 
-let of_klist l =
-  let b = Buffer.create 15 in
-  let rec aux l = match l() with
-    | `Nil ->
-      Buffer.contents b
-    | `Cons (x,l') ->
-      Buffer.add_char b x;
-      aux l'
-  in aux l
-
-let to_klist s = _to_klist s 0 (String.length s)
-
-let to_list s = _to_list s [] 0 (String.length s)
-
-let of_list l =
+let fromList l =
   let buf = Buffer.create (List.length l) in
   List.iter (Buffer.add_char buf) l;
   Buffer.contents buf
 
-let of_array a =
-  init (Array.length a) (fun i -> a.(i))
+let fromArray a =
+  makeWithInit (Array.length a) (fun i -> a.(i))
 
-let to_array s =
-  Array.init (String.length s) (fun i -> s.[i])
+let toArray s =
+  Array.init (length s) (fun i -> s.[i])
 
-let lines_gen s = Split.gen_cpy ~by:"\n" s
+let lines s = Split.listCopy ~by:"\n" s
 
-let lines s = Split.list_cpy ~by:"\n" s
-
-let concat_gen ~sep g =
-  let b = Buffer.create 256 in
-  let rec aux ~first () = match g () with
-    | None -> Buffer.contents b
-    | Some s ->
-      if not first then Buffer.add_string b sep;
-      Buffer.add_string b s;
-      aux ~first:false ()
-  in aux ~first:true ()
-
-let unlines l = String.concat "\n" l
-
-let unlines_gen g = concat_gen ~sep:"\n" g
+let unlines l = concat "\n" l
 
 let set s i c =
-  if i<0 || i>= String.length s then invalid_arg "CCString.set";
-  init (String.length s) (fun j -> if i=j then c else s.[j])
+  if i < 0 || i >= length s then invalid_arg "CCString.set";
+  makeWithInit (length s) (fun j -> if i=j then c else s.[j])
 
-let iter = String.iter
-
-
-let map = String.map
-let iteri = String.iteri
-let mapi = String.mapi
-
-let filter_map f s =
-  let buf = Buffer.create (String.length s) in
-  iter
+let filterMap f s =
+  let buf = Buffer.create (length s) in
+  forEach
     (fun c -> match f c with
        | None -> ()
        | Some c' -> Buffer.add_char buf c')
@@ -592,15 +546,15 @@ let filter_map f s =
   Buffer.contents buf
 
 let filter f s =
-  let buf = Buffer.create (String.length s) in
-  iter
+  let buf = Buffer.create (length s) in
+  forEach
     (fun c -> if f c then Buffer.add_char buf c)
     s;
   Buffer.contents buf
 
-let flat_map ?sep f s =
-  let buf = Buffer.create (String.length s) in
-  iteri
+let flatMap ?sep f s =
+  let buf = Buffer.create (length s) in
+  forEachWithIndex
     (fun i c ->
        begin match sep with
          | Some _ when i=0 -> ()
@@ -613,81 +567,55 @@ let flat_map ?sep f s =
 
 exception MyExit
 
-let for_all p s =
-  try iter (fun c -> if not (p c) then raise MyExit) s; true
+let forAll p s =
+  try forEach (fun c -> if not (p c) then raise MyExit) s; true
   with MyExit -> false
 
 let exists p s =
-  try iter (fun c -> if p c then raise MyExit) s; false
+  try forEach (fun c -> if p c then raise MyExit) s; false
   with MyExit -> true
 
 let map2 f s1 s2 =
   if length s1 <> length s2 then invalid_arg "CCString.map2";
-  init (String.length s1) (fun i -> f s1.[i] s2.[i])
+  makeWithInit (length s1) (fun i -> f s1.[i] s2.[i])
 
-let iter2 f s1 s2 =
+let forEach2 f s1 s2 =
   if length s1 <> length s2 then invalid_arg "CCString.iter2";
-  for i = 0 to String.length s1 - 1 do
+  for i = 0 to length s1 - 1 do
     f s1.[i] s2.[i]
   done
 
-let iteri2 f s1 s2 =
+let forEach2WithIndex f s1 s2 =
   if length s1 <> length s2 then invalid_arg "CCString.iteri2";
-  for i = 0 to String.length s1 - 1 do
+  for i = 0 to length s1 - 1 do
     f i s1.[i] s2.[i]
   done
 
-let fold2 f acc s1 s2 =
+let reduce2 f acc s1 s2 =
   if length s1 <> length s2 then invalid_arg "CCString.fold2";
   let rec fold' acc s1 s2 i =
-    if i = String.length s1 then acc
+    if i = length s1 then acc
     else fold' (f acc s1.[i] s2.[i]) s1 s2 (i+1)
   in
   fold' acc s1 s2 0
 
-let for_all2 p s1 s2 =
-  try iter2 (fun c1 c2 -> if not (p c1 c2) then raise MyExit) s1 s2; true
+let forAll2 p s1 s2 =
+  try forEach2 (fun c1 c2 -> if not (p c1 c2) then raise MyExit) s1 s2; true
   with MyExit -> false
 
 let exists2 p s1 s2 =
-  try iter2 (fun c1 c2 -> if p c1 c2 then raise MyExit) s1 s2; false
+  try forEach2 (fun c1 c2 -> if p c1 c2 then raise MyExit) s1 s2; false
   with MyExit -> true
 
-(** {2 Ascii functions} *)
-
-let capitalize_ascii s =
-  mapi
-    (fun i c -> if i=0 then Bchar.upperCaseIfAscii c else c)
-    s
-
-let uncapitalize_ascii s =
-  mapi
-    (fun i c -> if i=0 then Bchar.lowerCaseIfAscii c else c)
-    s
-
-let uppercase_ascii = map Bchar.upperCaseIfAscii
-
-let lowercase_ascii = map Bchar.lowerCaseIfAscii
-
-
-
-
-let pp buf s =
-  Buffer.add_char buf '"';
-  Buffer.add_string buf s;
-  Buffer.add_char buf '"'
-
-let print fmt s =
-  Format.fprintf fmt "\"%s\"" s
 
 module Sub = struct
   type t = string * int * int
 
   let make s i ~len =
-    if i<0||len<0||i+len > String.length s then invalid_arg "CCString.Sub.make";
+    if i<0||len<0||i+len > length s then invalid_arg "CCString.Sub.make";
     s,i,len
 
-  let full s = s, 0, String.length s
+  let full s = s, 0, length s
 
   let copy (s,i,len) = String.sub s i len
 
@@ -703,23 +631,13 @@ module Sub = struct
     if o1+len>len1 then invalid_arg "CCString.Sub.blit";
     blit a1 (i1+o1) a2 o2 len
 
-  let fold f acc (s,i,len) =
+  let reduce f acc (s,i,len) =
     let rec fold_rec f acc s i j =
       if i = j then acc
       else fold_rec f (f acc s.[i]) s (i+1) j
     in fold_rec f acc s i (i+len)
 
-  let to_gen (s,i,len) = _to_gen s i len
-  let to_seq (s,i,len) k =
+  let toSequence (s,i,len) k =
     for i=i to i+len-1 do k s.[i] done
-  let to_klist (s,i,len) = _to_klist s i len
-  let to_list (s,i,len) = _to_list s [] i len
-
-  let pp buf (s,i,len) =
-    Buffer.add_char buf '"';
-    Buffer.add_substring buf s i len;
-    Buffer.add_char buf '"'
-
-  let print fmt s =
-    Format.fprintf fmt "\"%s\"" (copy s)
+  let toList (s,i,len) = _toList s [] i len
 end
