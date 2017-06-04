@@ -10,6 +10,6 @@ let _ =
         ignore @@ Bsequence.map (fun x -> x * x) it
     );
     runPerfTest "Sequence.foldLeft" (fun _ ->
-        Bsequence.foldLeft (fun acc x -> x::acc) [] it
+        Bsequence.reduce (fun acc x -> x::acc) [] it
     )
 

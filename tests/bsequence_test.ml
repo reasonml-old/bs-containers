@@ -30,10 +30,10 @@ let suite =
             |> Barray.fromSequence
             |> Expect.toEqual [|1; 2; 3|]
           );
-        test "Bsequence.iter" (fun () ->
+        test "Bsequence.forEach" (fun () ->
             let l = ref [] in
             [|1; 2; 3|] |> Barray.toSequence
-            |> (fun iter -> Bsequence.iter (fun x -> l := !l @ [x]) iter; !l)
+            |> (fun iter -> Bsequence.forEach (fun x -> l := !l @ [x]) iter; !l)
             |> Expect.toEqual [1; 2; 3]
           );
         test "Bsequence.map" (fun () ->

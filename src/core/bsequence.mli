@@ -16,6 +16,6 @@ val filterMap: ('a -> 'b option) -> 'a t -> 'b t
 
 val flatMap: ('a -> 'b t) -> 'a t -> 'b t
 
-val foldLeft: ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+val reduce: ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
 
-val iter: ('a -> unit) -> 'a t -> unit
+val forEach: ('a -> unit) -> 'a t -> unit

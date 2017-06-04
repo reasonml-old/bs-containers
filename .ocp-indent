@@ -16,7 +16,7 @@ normal
 # Number of spaces used in all base cases, for example:
 #    let foo =
 #    ^^bar
-base = 4
+base = 2
 
 # Indent for type definitions:
 #    type t =

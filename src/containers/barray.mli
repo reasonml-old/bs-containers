@@ -38,9 +38,9 @@ val getOrRaise : int -> 'a t -> 'a
 
 val setOrRaise : int -> 'a -> 'a t -> unit
 
-val unsafeGet : int -> 'a t -> 'a
+val unsafeGetUnchecked : int -> 'a t -> 'a
 
-val unsafeSet : int -> 'a -> 'a t -> unit
+val unsafeSetUnchecked : int -> 'a -> 'a t -> unit
 
 val equals : 'a Equality.t -> 'a t -> 'a t -> bool
 

@@ -21,11 +21,11 @@ let rec filter p i () =
 let rec filterMap p i () = 
     match i () with
     | Nil -> Nil
-    | Cons (x, r) -> begin
-            match p x with 
-            | Some c -> Cons (c, filterMap p r)
-            | None -> filterMap p r ()
-        end
+    | Cons (x, r) -> 
+      begin match p x with 
+      | Some c -> Cons (c, filterMap p r)
+      | None -> filterMap p r ()
+      end
 
 (** Append iterator y after iterator x *)
 let rec append x y = 
@@ -38,12 +38,12 @@ let rec flatMap trans x () =
     | Nil -> Nil
     | Cons (this, next) -> append (trans this) (flatMap trans next)
 
-let rec foldLeft trans acc iter = 
+let rec reduce trans acc iter = 
     match iter () with
     | Nil -> acc
-    | Cons (x, next) -> foldLeft trans (trans acc x) next
+    | Cons (x, next) -> reduce trans (trans acc x) next
 
-let rec iter f i = 
+let rec forEach f i = 
     match i () with
     | Nil -> ()
-    | Cons (x, next) -> f x; iter f next
+    | Cons (x, next) -> f x; forEach f next
