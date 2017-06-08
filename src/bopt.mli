@@ -8,8 +8,14 @@ type +'a t = 'a option
 
 (** {2 Construction} *)
 
+include Mappable.S with type 'a t := 'a t
+include Applyable.S with type 'a t := 'a t
+include Reduceable.S with type 'a t := 'a t
+include Monad.S with type 'a t := 'a t
+include Iterable.S with type 'a t := 'a t
+
 (* was return *)
-val make : 'a -> 'a t
+(*val of_ : 'a -> 'a t*)
 (** [make x] is [Some x] *)
 
 val fromList : 'a list -> 'a t
@@ -70,10 +76,10 @@ val getLazy : (unit -> 'a) -> 'a t -> 'a
 
 (** {2 Iteration} *)
 
-val forEach : ('a -> unit) -> 'a t -> unit
+(*val forEach : ('a -> unit) -> 'a t -> unit*)
 (** [forEach f a] calls [f x] if [a] is [Some x] *)
 
-val map : ('a -> 'b) -> 'a t -> 'b t
+(*val map : ('a -> 'b) -> 'a t -> 'b t*)
 (** [map f a] is [Some (f x)] if [a] is [Some x], [None] otherwise *)
 
 val mapOr : default:'b -> ('a -> 'b) -> 'a t -> 'b
@@ -92,19 +98,19 @@ val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
     [None] otherwise *)
 
 (* alternative name: andThen *)
-val flatMap : ('a -> 'b t) -> 'a t -> 'b t
+(*val flatMap : ('a -> 'b t) -> 'a t -> 'b t*)
 (** [flatMap f a] is [f x] is [a] is [Some x], [None] otherwise *)
 
-val reduce : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b
+(*val reduce : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b*)
 (** [reduce f initial a] is [f inital x] if [a] is [Some x], [initial] otherwise *)
 
-val filter : ('a -> bool) -> 'a t -> 'a t
+(*val filter : ('a -> bool) -> 'a t -> 'a t*)
 (** [filter f a] is [a] if [a] is [Some x] and [f x] is [true], [None] otherwise *)
 
 (** {2 Applicative} *)
 
 (* was (<*>) *)
-val apply : ('a -> 'b) t -> 'a t -> 'b t
+(*val apply : ('a -> 'b) t -> 'a t -> 'b t*)
 (** [apply maybeF a] is [Some (f x)] if [maybeF] is [Some f] and [a] is [Some x],
     [None] otherwise *)
 
@@ -138,10 +144,10 @@ val any : 'a t list -> 'a t
 (** {2 Quantification} *)
 (** TODO: too mathy? *)
 
-val exists : ('a -> bool) -> 'a t -> bool
+(*val exists : ('a -> bool) -> 'a t -> bool*)
 (** [exists f a] is [f x] if [a] is [Some x], [false] otherwise *)
 
-val forAll : ('a -> bool) -> 'a t -> bool
+(*val forAll : ('a -> bool) -> 'a t -> bool*)
 (** [forAll f a] is [f x] if [a] is [Some x], [true] otherwise *)
 
 (** {2 Conversion} *)

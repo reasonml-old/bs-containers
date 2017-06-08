@@ -5,8 +5,8 @@ open Result
 
 let suite =
   describe "Bopt" (fun () -> [
-    test "make" (fun () ->
-      make 42
+    test "of_" (fun () ->
+      of_ 42
         |> Expect.toEqual (Some 42));
 
     test "fromList - []" (fun () ->
@@ -141,6 +141,28 @@ let suite =
       let xs = ref [] in
       None |> forEach (fun x -> xs := x :: !xs);
       !xs |> Expect.toEqual []);
+
+    test "find - Some _, true" (fun () ->
+      Some 7 |> find (fun x -> x == 7)
+             |> Expect.toEqual (Some 7));
+    test "find - Some _, false" (fun () ->
+      Some 7 |> find (fun x -> x <> 7)
+             |> Expect.toEqual (None));
+    test "find - None" (fun () ->
+      None |> find (fun _ -> true)
+           |> Expect.toEqual None);
+
+    test "findOrRaise - Some _, true" (fun () ->
+      Some 7 |> findOrRaise (fun x -> x == 7)
+             |> Expect.toEqual 7);
+    test "findOrRaise - Some _, false" (fun () ->
+      (fun  () ->
+        Some 7 |> findOrRaise (fun x -> x <> 7))
+               |> Expect.toRaise);
+    test "findOrRaise - None" (fun () ->
+      (fun  () ->
+        None |> findOrRaise (fun _ -> true))
+             |> Expect.toRaise);
 
     test "map - Some _" (fun () ->
       Some 7 |> map (( * ) 3)
