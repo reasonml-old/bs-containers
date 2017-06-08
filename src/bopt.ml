@@ -19,7 +19,7 @@ TODO:
 
 type 'a t = 'a option
 
-let make x = Some x
+let of_ x = Some x
 
 let fromList = function
   | x::_ -> Some x
@@ -82,6 +82,14 @@ let getLazy defaultFn = function
 let forEach f = function
   | None -> ()
   | Some x -> f x
+
+let find p = function
+  | Some x when p x -> Some x
+  | _ -> None
+
+let findOrRaise p = function
+  | Some x when p x -> x
+  | _ -> raise Not_found
 
 let map f = function
   | None -> None
