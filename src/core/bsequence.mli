@@ -1,7 +1,7 @@
 
 type +'a node =
-    | Nil
-    | Cons of 'a * 'a t
+  | Nil
+  | Cons of 'a * 'a t
 and 'a t = unit -> 'a node
 
 val empty: 'a t
