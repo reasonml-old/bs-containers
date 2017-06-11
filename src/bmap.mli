@@ -167,10 +167,6 @@ module type S = sig
 
   val toList : 'a t -> (key * 'a) list
 
-  val fromSeq: (key * 'a) Sequence.t -> 'a t
-
-  val toSeq: 'a t -> (key * 'a) Sequence.t
-
   val keysList : _ t -> key list
   (** List of keys *)
 

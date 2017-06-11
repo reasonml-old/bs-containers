@@ -77,10 +77,6 @@ module type S = sig
 
   val toList : 'a t -> (key * 'a) list
 
-  val fromSeq: (key * 'a) Sequence.t -> 'a t
-
-  val toSeq: 'a t -> (key * 'a) Sequence.t
-
   val keysList : _ t -> key list
 
   val valuesList : 'a t -> 'a list
@@ -178,15 +174,6 @@ module Make(O : Map.OrderedType) = struct
 
   let toList m =
     IMap.fold (fun k v acc -> (k,v)::acc) m []
-
-  let addSeq m s =
-    let m = ref m in
-    s (fun (k,v) -> m := IMap.add k v !m);
-    !m
-
-  let fromSeq s = addSeq IMap.empty s
-
-  let toSeq m yield = IMap.iter (fun k v -> yield (k,v)) m
 
   let keysList m = fold (fun k _ list -> k::list) m []
 

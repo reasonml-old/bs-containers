@@ -7,4 +7,6 @@ let _ =
     Bopt_test.suite;
     Bresult_test.suite;
     Int_test.suite;
+    Barray_test.suite;
+    Bsequence_test.suite
   ]
