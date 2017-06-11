@@ -9,6 +9,13 @@
 
 (*-- Start stdlib string, from https://github.com/ocaml/ocaml/blob/4.02.3/stdlib/string.mli --*)
 
+type t = string
+(** An alias for the type of strings. *)
+
+type 'a gen = unit -> 'a option
+type 'a sequence = ('a -> unit) -> unit
+
+
 external get : string -> int -> char = "%string_safe_get"
 (** [String.get s n] returns the character at index [n] in string [s].
     You can also write [s.[n]] instead of [String.get s n].
@@ -87,9 +94,6 @@ val capitalize : string -> string
 val uncapitalize : string -> string
 (** Return a copy of the argument, with the first character set to lowercase. *)
 
-type t = string
-(** An alias for the type of strings. *)
-
 (**/**)
 
 (* The following is for system use only. Do not call directly. *)
@@ -101,10 +105,6 @@ external unsafeBlitUnchecked :
 
 (*-- End stdlib string --*)
 
-
-type 'a gen = unit -> 'a option
-type 'a sequence = ('a -> unit) -> unit
-type 'a klist = unit -> [`Nil | `Cons of 'a * 'a klist]
 
 (** {2 Common Signature} *)
 
