@@ -20,7 +20,6 @@ TODO:
 type t = string
 type 'a gen = unit -> 'a option
 type 'a sequence = ('a -> unit) -> unit
-type 'a klist = unit -> [`Nil | `Cons of 'a * 'a klist]
 
 module type S = sig
   type t
