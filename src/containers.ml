@@ -16,7 +16,14 @@ module Hashtbl = Bhashtbl
 module Heap = Bheap
 module Int = Int
 module Int64 = Bint64
-module List = Blist
+module List = struct
+  include Blist
+  
+  module Association = Blist_association
+  module Pairs = Blist_pairs
+  module Ref = Blist_ref
+  module Ex = Blist_ex
+end
 module ListLabels = Blistlabels
 module Map = Bmap
 module Option = Bopt
