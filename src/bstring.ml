@@ -1,6 +1,20 @@
 
 (* This file is free software, part of containers. See file "license" for more details. *)
 
+(*
+TODO:
+
+- [x] Use `camelCase` instead of `snake_case`
+- [x] Get rid of scary monadic and math-y terminology
+- [x] Follow the conventions used in the `Js.*` modules
+- [ ] Type functions correctly, e.g. `compare` should return a proper variant, not `0`, `1` or `-1`
+- [x] Remove operators and aliases, e.g. `pure` as an alias for `return`
+- [ ] Remove the use of exceptions for internal logic
+- [x] Replace `Format.printf` calls, they pull in a lot stuff for little benefit
+- [ ] Document everything properly, with examples
+- [ ] Add tests for everything
+*)
+
 (** {1 Basic String Utils} *)
 
 type t = string
